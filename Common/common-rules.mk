@@ -91,9 +91,8 @@ default_goal: default
 # GNU make 3.80 and earlier don't have .DEFAULT_GOAL
 
 # all objects to be made from Common directory must appear here
-ALL_COMOBJ = fullbz.o subgrp.o gmap.o scalapack.o inversion.o \
-      write_matrix.o minibzaverage.o vcoul_generator.o \
-      createpools.o fft_parallel.o irrbz.o \
+ALL_COMOBJ = fullbz.o gmap.o scalapack.o inversion.o \
+      write_matrix.o minibzaverage.o vcoul_generator.o fft_parallel.o \
       check_inversion.o wfn_rho_vxc_io.o \
       sort.o blas.o scalapack.o lapack.o fftw.o slatec.o misc.o input_utils.o \
       symmetries.o hdf5_io.o wfn_io_hdf5.o epsread_hdf5.o epswrite_hdf5.o \
@@ -113,16 +112,12 @@ $(ALL_COMMON_OBJ) : $(GLOBALMODS) $(COMMON)/f_defs.h $(COMMON)/compiler.h
 $(COMMON)/global.o $(COMMON)/global_m.mod: $(COMMON)/scalapack_aux_m.mod $(COMMON)/nrtype_m.mod $(COMMON)/timing_m.mod $(COMMON)/typedefs_m.mod \
    $(COMMON)/peinfo_m.mod $(COMMON)/push_pop_m.mod $(COMMON)/message_m.mod $(COMMON)/f_defs.h $(COMMON)/compiler.h
 $(COMMON)/vcoul_generator.o $(COMMON)/vcoul_generator_m.mod: $(COMMON)/minibzaverage_m.mod
-$(COMMON)/subgrp.o $(COMMON)/irrbz.o : $(COMMON)/misc_m.mod
-$(COMMON)/norm.o : $(COMMON)/blas_m.mod
 $(COMMON)/misc.o $(COMMON)/misc_m.mod : $(COMMON)/blas_m.mod $(COMMON)/global_m.mod $(COMMON)/f_defs.h $(COMMON)/scalapack_m.mod
-$(COMMON)/irrbz.o $(COMMON)/irrbz_m.mod : $(COMMON)/misc_m.mod $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/peinfo.o $(COMMON)/peinfo_m.mod : $(COMMON)/nrtype_m.mod $(COMMON)/f_defs.h $(COMMON)/intrinsics_m.mod
 $(COMMON)/scalapack_aux.o $(COMMON)/scalapack_aux_m.mod : $(COMMON)/push_pop_m.mod $(COMMON)/f_defs.h
 $(COMMON)/timing.o $(COMMON)/timing_m.mod : $(COMMON)/push_pop_m.mod $(COMMON)/nrtype_m.mod $(COMMON)/f_defs.h $(COMMON)/intrinsics_m.mod $(COMMON)/peinfo_m.mod
 $(COMMON)/input_utils.o $(COMMON)/input_utils_m.mod : $(COMMON)/blas_m.mod $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/inread_common.o $(COMMON)/inread_common_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
-$(COMMON)/createpools.o $(COMMON)/createpools_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/blas.o $(COMMON)/blas_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/intrinsics.o $(COMMON)/intrinsics_m.mod : $(COMMON)/f_defs.h $(COMMON)/compiler.h
 $(COMMON)/essl.o $(COMMON)/essl_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h

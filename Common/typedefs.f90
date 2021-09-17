@@ -4,9 +4,9 @@
 !
 ! Modules:
 !
-! (1) typedefs      Originally By GMR      Last Modified 7/8/2008 (JRD)
+! (1) typedefs      Originally By GMR      Last Modified Meng Wu
 !
-!>    Derived types that are used throughout the code.
+!    Derived types that are used throughout the code.
 !
 !==========================================================================
 
@@ -62,21 +62,10 @@ module typedefs_m
 
   type symmetry
      integer :: ntran         !< number of operations in full group
-     ! integer :: ntranq        !< number of operations in small group of q
-     ! real(DP) :: rq(3)        !< The q-point this ntranq belongs to
-     
      integer :: mtrx(3,3,48)  !< symmetry matrix
-     ! <<<<<<
-     ! mtrx_reci(1:3,1:3,itran) = (A \cdot A^{T}) \cdot mtrx(1:3,1:3,itran) \cdot (A \cdot A^{T})^{-1}
-     ! ------------------------
-     ! at = A^{T}
-     ! bg = B
-     ! ------------------------
      integer :: mtrx_reci(3,3,48) ! < symmetry matrix in basis of reciprocal space lattice vectors, b1, b2, b3
      real(DP) :: mtrx_cart(3,3,48) ! < symmetry matrix in cartesian coordinates
-     ! >>>>>>
      real(DP) :: tnp(3,48)    !< fractional translations
-     ! integer :: indsub(48)    !< symmetry operations in subgroup of q
      integer :: kgzero(3,48)  !< Umklapp vectors for subgroup symmetry operations
      integer :: cell_symmetry !< 0 = cubic, 1 = hexagonal
   end type symmetry
@@ -87,7 +76,6 @@ module typedefs_m
      integer :: nr  !< number in reduced zone
      integer :: nf  !< number in full zone
      real(DP) :: sz !< radius of a spherical subzone equivalent to
-     ! !! one point in the set f
      integer, pointer :: itran(:) !< sym op to go from irrbz to fullbz
      integer, pointer :: indr(:)  !< irrbz k/q-point mapped to fullbz
      integer, pointer :: kg0(:,:) !< Umklapp vectors (for Wigner-Seitz cell)
@@ -155,20 +143,10 @@ module typedefs_m
   type int_wavefunction
      integer :: nspin
      integer :: nspinor = 1 !< nspinor = 2 if doing two-component spinor calculation; 1 is default
-     ! integer, pointer ::  ng(:)     !< (nk)
-     ! integer, pointer :: isort(:,:) !< (ngmax, nk)
-     ! ! integer, pointer :: cbi(:)
-     ! ! [NEW] cg(ig,ib,is,ik)
-     ! SCALAR, pointer :: cg(:,:,:,:)
-     ! SCALAR, pointer :: cgk(:,:,:,:)
-
      integer, allocatable ::  ng(:)     !< (nk)
-     integer, allocatable :: isort(:,:) !< (ngmax, nk)
-     ! integer, pointer :: cbi(:)
-     ! [NEW] cg(ig,ib,is,ik)
-     SCALAR, allocatable :: cg(:,:,:,:)
-     SCALAR, allocatable :: cgk(:,:,:,:)
-     
+     integer, allocatable :: isort(:,:) !< (ngmax, nk)     
+     SCALAR, allocatable :: cg(:,:,:,:) ! cg(ig,ib,is,ik)
+     SCALAR, allocatable :: cgk(:,:,:,:)     
   end type int_wavefunction
 
   ! For BSE
@@ -180,10 +158,7 @@ module typedefs_m
      integer, pointer :: cbi(:)
      !> I think this can be decommissioned if we use kp%rk instead
      real(DP), pointer :: qk(:,:)
-     ! [OLD] cg(ig,ik/ib,is)
-     SCALAR, pointer :: cg(:,:,:)
-     ! [NEW] cg(ig,ib,is,ik)
-     ! SCALAR, pointer :: cg(:,:,:,:)
+     SCALAR, pointer :: cg(:,:,:) ! cg(ig,ib,is,ik)
      SCALAR, pointer :: cgk(:,:,:,:)
   end type int_wavefunction_bse
 
@@ -204,8 +179,7 @@ module typedefs_m
      integer, allocatable :: isort(:)
      !> (nband+ncrit,spin). Note: the nband+ncrit index is actually useless!
      real(DP), allocatable :: ev(:,:)
-     SCALAR, allocatable :: zv(:,:)   !< (ngv,spin)
-     
+     SCALAR, allocatable :: zv(:,:)   !< (ngv,spin)     
      ! !> real-space wavefunction for all "local" val. bands (fft1,fft2,fft3,band)
      ! complex(DPC), pointer :: wfn_fft(:,:,:,:)
   end type valence_wfns
@@ -217,15 +191,9 @@ module typedefs_m
      integer :: nband  !< This is actually the number of valence+conduction bands!
      integer :: ngc    !< Number of G-vectors
      integer :: idx_kp !< Idx of current kpt in kp structure
-     ! integer, pointer :: isort(:)
-     ! real(DP), pointer :: ec(:,:) !< (nband,nspin)
-     ! SCALAR, pointer :: zc(:,:)   !< (ngc*ncownactual,spin)
      integer, allocatable :: isort(:)
      real(DP), allocatable :: ec(:,:) !< (nband,nspin)
      SCALAR, allocatable :: zc(:,:)   !< (ngc*ncownactual,spin)
-     
-     ! !> real-space wavefunction for all "local" cond. bands (fft1,fft2,fft3,band)
-     ! complex(DPC), pointer :: wfn_fft(:,:,:,:)
   end type conduction_wfns
 
   !----------------------------
@@ -269,8 +237,6 @@ module typedefs_m
      logical :: averagew
      type(coulomb_modifier_t) :: coulomb_mod
      logical :: coul_mod_flag   !< Flag which tells if the coulomb interaction has been
-     ! modified (for hybrid functional like calculation in sigma)
-     !> -----------------
      integer :: eqp_start, eqp_end
      logical :: average_vq     
      real(DP) :: varepsilon
@@ -445,12 +411,7 @@ module typedefs_m
      real(DP), pointer :: qk(:,:)
      real(DP), pointer :: el(:,:,:)
      real(DP), pointer :: elda(:,:,:)
-     ! ======
-     ! cg(ibig,is,ik)
-     SCALAR, pointer :: cg(:,:,:)
-     ! ------
-     ! cg(ig,ib,is,ik)
-     ! SCALAR, pointer :: cg(:,:,:,:)
+     SCALAR, pointer :: cg(:,:,:) ! cg(ibig,is,ik)
   end type wfnkmpiinfo
 
   !---------------------------
@@ -464,7 +425,6 @@ module typedefs_m
   !---------------------------
 
   type polarizability
-     ! logical :: no_screening
      logical :: serial_output
      integer :: serial_output_nc
      logical :: low_mem
@@ -480,11 +440,7 @@ module typedefs_m
      integer :: nBrdning
      real(DP) :: Brdning_stepsize
      real(DP), pointer :: dFreqGrid(:) !< Grid of Frequencies for Full Frequency
-     ! real(DP) :: dFreqStepIncrease
-     ! real(DP) :: dFreqCutoff1
-     ! real(DP) :: dFreqCutoff2
      real(DP) :: dFreqCutoff     
-     ! real(DP) :: omegappoverDeltaE !> determine the largest imaginary frequency
      real(DP) :: delta_freq_imag !> first non-zero imaginary frequency
 
      integer :: nSFreq    !< number of frequencies used in spectral function
@@ -504,22 +460,15 @@ module typedefs_m
      logical :: eqp_corrections !< are we using eqp.dat and eqp_q.dat files
      complex(DPC), pointer :: dFreqBrd(:)  !< Corresponding Broadenings for Full Frequency
      integer :: fullConvLog !< logging pol matrix head & tail convergence
-     ! integer :: iwritecoul !< flag to write vcoul
      integer :: nmtx
      integer, pointer :: nmtx_of_q(:)
      integer :: qgrid(3)
-     ! integer, pointer :: qflags(:)
      integer :: nq0, nq1, nq !< Number of q->0 points, q/=0 points, and total number of q-points
      logical :: subsample !< whether we have more than one q0 point (used in subsampled calculation)
      logical :: non_uniform !< do non-uniform sampling using Voronoi decomposition of BZ
      integer :: gcomm
      logical :: min_fftgrid   !< use the smallest possible fftbox
-     ! FHJ: These flags control some experimental optimizations
-     integer :: os_opt_ffts       !< optimizes calculation/reuse of FFTs (real-space WFNs)
-     ! integer :: nfreq_group     !< num. of frequencies to calculate in parallel
-     ! integer :: nfreq_in_group  !< num. of epsilon frequencies held by any processor
-     ! integer :: os_nsfreq_para !< num. of spectral frequencies held by any processor
-     
+     integer :: os_opt_ffts       !< optimizes calculation/reuse of FFTs (real-space WFNs)     
      logical :: os_hdf5           !< use parallel IO?
      logical :: restart        !< are we restarting the calculation? Only ok with HDF5
      integer :: stop_after_qpt !< pretend the calculation was prematurely killed after this qpt (-1=don`t kill)
@@ -532,21 +481,14 @@ module typedefs_m
      logical :: skip_chi
      logical :: use_hdf5      !< with -DHDF5, whether or not we actually use hdf5
      logical :: need_WFNq     !< will we need the WFNq file? (nq0>0.and.valueq0==1.and.iqexactlyzero==0)
-     ! integer :: iqexactlyzero !< 1 if the q->0 point is *exactly* zero and will be read from WFN; 0 otherwise
-     ! integer :: valueq0       !< 1=semiconductor (read from WFNq); 2=metal (read from WFN)
      integer, pointer :: irow(:)
      integer, pointer :: isrtx(:)
      integer, pointer :: isrtxi(:)
      integer :: icutv               !< icutv encodes presence and type of truncation
      real(DP) :: truncval(3)   !< in Bohr (au)
      real(DP), pointer :: qpt(:,:)
-     !> FHJ: gme = <c,k|e^(-i(q+G).r)|v,k+q>, and the indices are:
-     !! (nmtx, ncownactual, nvownactual, nspin, nrk, nfreq_group)
-     ! SCALAR, pointer :: gme(:,:,:,:,:,:)
-     ! SCALAR, allocatable :: gme(:,:,:,:,:,:)     
      SCALAR, allocatable :: gme(:,:,:,:,:)
      SCALAR, allocatable :: gme2(:,:,:,:)
-     ! SCALAR, pointer :: chi(:,:,:)
      SCALAR, allocatable :: chi(:,:,:)
 
      integer :: ncrit
@@ -555,12 +497,8 @@ module typedefs_m
      logical :: rfermi
      real(DP) :: ecuts    !< energy cutoff of screened coulomb interaction in Ry
                           !> Reference regarding retarded/advanced functions: Catalin`s thesis, Eq. (1.44)
-     ! complex(DPC), pointer :: chiRDyn(:,:,:,:) !< Retarded polarizability
-     ! complex(DPC), pointer :: chiTDyn(:,:,:,:) !< Spectral function of polarizability
      complex(DPC), allocatable :: chiRDyn(:,:,:,:) !< Retarded polarizability
-     complex(DPC), allocatable :: chiTDyn(:,:,:,:) !< Spectral function of polarizability
-     
-     ! real(DP), pointer :: edenDyn(:,:,:,:,:) !< Dynamic energy denominator     
+     complex(DPC), allocatable :: chiTDyn(:,:,:,:) !< Spectral function of polarizability    
      real(DP), pointer :: edenDyn(:,:,:,:) !< Dynamic energy denominator     
      real(DP), pointer :: edenDyn2(:,:,:) !< Dynamic energy denominator     
      logical :: degeneracy_check_override
@@ -727,10 +665,8 @@ module typedefs_m
      logical :: eqp_co_q_corrections    !< do we use eqp_co_q.dat
 
      !> For Coulomb interaction truncation
-     ! integer :: iwritecoul
      integer :: icutv              !< icutv encodes presence and type of truncation
      real(DP) :: truncval(3)       !< in Bohr (au)
-     !! double integral truncated_factor
      logical :: use_hdf5        !< with -DHDF5, whether or not we actually use hdf5
      logical :: bNoComm         !< If this is true, each processor will store the entire epsilon matrix
      logical :: bLittleComm     !< If this is true, each processor will store its own epsilon matrix          
@@ -803,7 +739,6 @@ module typedefs_m
      ! xct%epsowni(igp_loc, iowner+1) = INDXG2L(igp, xct%nb, peinf%inode, 0, peinf%npes)
      logical :: output_hbse
      real (DP), dimension(3) :: finiteq_cart_unit
-     ! logical :: long_range_exchange
      logical :: calcM, calcChi, calcAbs
      
      !> Used in haydock/diag only
@@ -827,7 +762,6 @@ module typedefs_m
      real(DP) :: delta_frequency  !< Frequency step for absorption spectrum
 
      logical :: save_memory
-     ! logical :: speed_eps
      logical :: zero_vq0 !< Use V_G(q) = 1/|q+G|^2
      integer :: diag_algo !> = 0: Use pdsyevx/pzheevx, parallel bisection followed by inverse iteration
                           !> = 1: Use pdsyevr/pzheevr, multiple relatively robust representations
@@ -844,7 +778,6 @@ module typedefs_m
      logical :: save_memory_mdat
      real(DP) :: vcoul0, vcoul0_q0 !> store MC averaged vcoul(q=G=0) calculated from calc_vcoul0
      SCALAR :: wcoul0, wcoul0_q0
-     ! real(DP) :: wcoul0 !> store MC averaged epsinv(q=G=0)*vcoul(q=G=0) calculated from calc_wcoul0
      integer :: qgrid(3)
      integer :: broadeningtype !> 0: lorentzian, 1: gaussian, 2: voigt
      integer :: niter !> number of iterations in Lanczos algorithm
@@ -899,7 +832,6 @@ module typedefs_m
      logical :: lanczos_gauss_quad
      logical :: debug_lanczos    
      ! !> when we read from vmt.dat, we should set flag%calculate_vmt = .false.
-     ! logical :: calculate_vmt
      logical :: bare_vmt     
   end type flags
 
@@ -959,9 +891,7 @@ module typedefs_m
      integer :: ng
      integer :: ns
      integer :: nspinor = 1 !< nspinor = 2 if doing two-component spinor calculation; 1 is default
-     ! ======
      integer :: nspin
-     ! ------
      SCALAR, pointer :: cg(:,:,:)
      SCALAR, pointer :: ph(:)
      integer, pointer :: ind(:)

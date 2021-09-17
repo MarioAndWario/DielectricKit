@@ -87,11 +87,6 @@ contains
     logical :: use_this_sym, disable_frac, found_identity
 
     PUSH_SUB(get_symmetries)
-
-    ! ! transpose input for C call
-    ! do ii = 1, 3
-    !    C_avec(ii, 1:3) = avec(1:3, ii)
-    ! enddo
     
     C_avec = TRANSPOSE(avec)
 
@@ -175,29 +170,15 @@ contains
        !     tnp_temp(jj, isym)=tnp_temp(jj, isym)-dble(int(tnp_temp(jj, isym)-0.5d0))
        ! enddo
 
-       if(disable_frac) then
-          if(any(abs(tnp_temp(1:3,isym)) > TOL_Zero)) use_this_sym = .false.
+       if (disable_frac) then
+          if (any(abs(tnp_temp(1:3,isym)) > TOL_Zero)) use_this_sym = .false.
        endif
 
-       if(use_this_sym) then
+       if (use_this_sym) then
           ntran = ntran + 1
-          if(ntran > 48) call die("Internal error: There are more than 48 accepted symmetry operations.")
-          ! this could only happen for a supercell, and we are supposed to have handled that situation already
-          !> if accepted, add this operation to the list
-          !> call invert_matrix_int(mtrx_inv(1:3, 1:3, isym), mtrx(1:3, 1:3, ntran))
-          ! mtrx_inv_DP(1:3,1:3) = mtrx_inv(1:3, 1:3, isym)
-
-          ! call M33INV(mtrx_inv_DP, mtrx_DP, flag_inv)
-          ! if (.not. flag_inv) then
-          !    call die("get_symmetries: mtrx_inv not invertible.", only_root_writes=.true.)
-          ! endif
-          ! mtrx(1:3, 1:3, ntran) = NINT(mtrx_DP(1:3,1:3))
-
+          if (ntran > 48) call die("Internal error: There are more than 48 accepted symmetry operations.")
           mtrx(:,:,ntran) = TRANSPOSE(mtrx_inv(:,:,isym))
-
-          ! tnp(1:3, ntran) = 2 * PI_D * tnp_temp(1:3, isym)
           tnp(1:3, ntran) = tnp_temp(1:3, isym)
-
        endif
     enddo
 

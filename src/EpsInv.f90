@@ -105,7 +105,7 @@ program EpsInv
   filename_chi_hdf5 = "chimat.h5"
   if (peinf%inode .eq. 0) then
      if ((command_argument_count() .eq. 0)) then
-        write(*,'(1x,a)') "usage: EpsInv.x chi[0]mat.h5 [mc]"
+        write(*,'(1x,a)') "usage: EpsInv.x chi[0]mat.h5"
         call h5close_f(error)
 #ifdef MPI
         call MPI_FINALIZE(mpierr)
@@ -183,28 +183,28 @@ program EpsInv
   call get_symmetries(crys%nat, crys%atyp, apos_frac, crys%avec, nfft_, cell_symmetry_, ntran_, mtrx_, tnp_, spacegroup_, symbol_)
 
   if (peinf%inode .eq. 0) then
-     write(*,'(A)') "Atoms:"
+     write(6,'(A)') "Atoms:"
      do i = 1, crys%nat
-        write(*,'(A,I5,A,I5,A,3F12.9,A)') "Atom #", i, " Z = ", crys%atyp(i), " f = (", apos_frac(:,i), " )"
+        write(6,'(A,I5,A,I5,A,3F12.9,A)') "Atom #", i, " Z = ", crys%atyp(i), " f = (", apos_frac(:,i), " )"
      enddo
-     write(*,*) 'Lattice vectors = [a1, a2, a3] :'
+     write(6,*) 'Lattice vectors = [a1, a2, a3] :'
      do i = 1, 3
-        write(*,'(F15.8,1X,F15.8,1X,F15.8,1X)') crys%avec(i,:)
+        write(6,'(F15.8,1X,F15.8,1X,F15.8,1X)') crys%avec(i,:)
      enddo
-     write(*,*) 'Reciprocal vectors = [b1, b2, b3] :'
+     write(6,*) 'Reciprocal vectors = [b1, b2, b3] :'
      do i = 1, 3
-        write(*,'(F15.8,1X,F15.8,1X,F15.8,1X)') crys%bvec(i,:)
+        write(6,'(F15.8,1X,F15.8,1X,F15.8,1X)') crys%bvec(i,:)
      enddo
-     write(*,*) 'bdot = [b1, b2, b3]^T \cdot [b1, b2, b3] :'
+     write(6,*) 'bdot = [b1, b2, b3]^T \cdot [b1, b2, b3] :'
      do i = 1, 3
-        write(*,'(F15.8,1X,F15.8,1X,F15.8,1X)') crys%bdot(i,:)
+        write(6,'(F15.8,1X,F15.8,1X,F15.8,1X)') crys%bdot(i,:)
      enddo
 
-     write(*,*) "cell_symmetry_ = ", cell_symmetry_
-     write(*,*) "ntran_ = ", ntran_
-     write(*,*) "spacegroup_ = ", spacegroup_
-     write(*,*) "symbol_ = ", symbol_
-     write(*,*) '-----------------------'
+     write(6,'(A,I10)') "cell_symmetry_ = ", cell_symmetry_
+     write(6,'(A,I10)') "ntran_ = ", ntran_
+     write(6,'(A,I10)') "spacegroup_ = ", spacegroup_
+     write(6,'(A,A)') "symbol_ = ", symbol_
+     write(6,'(A)') '-----------------------'
   endif
   SAFE_DEALLOCATE(apos_frac)
 
@@ -219,7 +219,6 @@ program EpsInv
      !! Determine hexagonal + triangular cell
      !! https://en.wikipedia.org/wiki/Hexagonal_crystal_family
   elseif ((spacegroup_ .ge. 143) .and. (spacegroup_ .le. 194)) then
-     !! ML MoS2: 187
      celltype = 4
   else
      celltype = 0
@@ -415,7 +414,7 @@ program EpsInv
   call MPI_BARRIER(MPI_COMM_WORLD, mpierr)
 
   if (peinf%inode .eq. 0) then
-     call eps_hdf5_setup_2(kp, gvec, syms, crys, pol, TRUNC(filename_eps_hdf5), restart = pol%restart)
+     call eps_hdf5_setup(kp, gvec, syms, crys, pol, TRUNC(filename_eps_hdf5), restart = pol%restart)
   endif
 
   !! 2D block-cyclic distribution of chimat
@@ -480,7 +479,6 @@ program EpsInv
 
   !! Initialize BLACS grid for 1d block distributed column matrix dmat_1d_block(ig1,ig2_loc,ifreq,is)
   block_size_col = ICEIL(pol%nmtx, peinf%npes)
-  ! write(*,*) "block_size_col = ", block_size_col
 
   call blacs_get(0, 0, cntxt_1d)
   call blacs_gridinit(cntxt_1d, 'R', 1, peinf%npes)
@@ -513,7 +511,6 @@ program EpsInv
   if (info_blacs .ne. 0) then
      call die('DESCINIT failed for dmat_1d_block', only_root_writes=.true.)
   endif
-  ! write(*,*) "npr = ", npr, " npc = ", npc
 
   SAFE_ALLOCATE(zmat_1d_block, (pol%nmtx, MAX(npc, 1)))
 
@@ -526,7 +523,6 @@ program EpsInv
 
   call timacc(2,2)
 
-  !! [WORKING]
   !! Main loop over all q-points
   iq_loop: do iq = 1, pol%nq
      if (peinf%inode .eq. 0) then
@@ -702,16 +698,8 @@ program EpsInv
         write(*,'(1X,A)') "call vcoul_generator_zerovq0(...)"
      endif
      call vcoul_generator(pol%icutv, gvec, crys, pol%nmtx, pol%isrtx, pol%qpt(:, iq), vcoul)
-
-     if (peinf%inode .eq. 0) then
-        ! if (iq <= pol%nq0) then
-        write(*,'(A,3F12.6,A,ES20.12,A,ES20.12)') "q0 = ", pol%qpt(:, iq), " vcoul(1) = ", vcoul(1), " vcoul(2) = ", vcoul(2)
-        ! endif
-     endif
-
      call timacc(4,2)
 
-     ! write(*,'(A,I5,A,I5,A,I5)') "inode = ", peinf%inode, " scal%npr = ", scal%npr, " scal%npc = ", scal%npc
      if (pol%freq_dep .eq. 0) then
         SAFE_ALLOCATE(eps, (MAX(scal%npr,1), MAX(scal%npc,1)))
         eps = ZERO
@@ -723,8 +711,9 @@ program EpsInv
      endif
 
      call timacc(5,1)
+
      !! Construct eps
-     !! <- GPP ->
+     !! GPP
      if (pol%freq_dep .eq. 0) then
         !$OMP PARALLEL DO collapse(2) private(target_myprow, target_mypcol, ig1_loc, ig2_loc)
         do ig2 = 1, pol%nmtx
@@ -784,11 +773,10 @@ program EpsInv
      endif
 
      if (peinf%inode .eq. 0) then
-        !! <- GPP ->
+        !! GPP
         if (pol%freq_dep .eq. 0) then
-           ! write(6,'(1X,A,I6,A,2ES20.12,A,I5)') 'q-pt ', iq, ':    Eps(G=0,Gp=0) = ', eps(pol%isrtxi(1), pol%isrtxi(1)), " isrtxi(1) = ", pol%isrtxi(1)
            write(6,'(1X,A,I6,A,2F15.8,A,I5)') 'q-pt ', iq, ':    Eps(G=0,Gp=0) = ', eps(pol%isrtxi(1), pol%isrtxi(1)), " isrtxi(1) = ", pol%isrtxi(1)
-           !! <- FF ->
+           !! FF
         else
            do ifreq = 1, pol%nfreq
               write(6,'(1X,A,I6,A,I6,A,2F15.8,A,I5)') 'q-pt ', iq, " freq ", ifreq, ':    Eps(G=0,Gp=0) = ', epsRDyn(pol%isrtxi(1),pol%isrtxi(1),ifreq), " isrtxi(1) = ", pol%isrtxi(1)
@@ -815,10 +803,10 @@ program EpsInv
      endif
 
      if (peinf%inode .eq. 0) then
-        !! Genealized plasmon-pole model: only static frequency, omega = 0
+        !! Genealized plasmon-pole model (GPP): only static frequency, omega = 0
         if (pol%freq_dep .eq. 0) then
            write(6,'(1X,A,I6,A,2F15.8,A,I5)') 'q-pt ', iq, ': Epsinv(G=0,Gp=0) = ', eps(pol%isrtxi(1), pol%isrtxi(1)), " isrtxi(1) = ", pol%isrtxi(1)
-           !! Full frequency
+           !! Full frequency (FF)
         else
            do ifreq = 1, pol%nfreq
               write(6,'(1X,A,I6,A,I6,A,2F15.8,A,I5)') 'q-pt ', iq, " ifreq ", ifreq, ': Epsinv(G=0,Gp=0) = ', epsRDyn(pol%isrtxi(1), pol%isrtxi(1), ifreq), " isrtxi(1) = ", pol%isrtxi(1)

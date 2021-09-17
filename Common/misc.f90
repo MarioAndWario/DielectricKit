@@ -50,13 +50,12 @@ module misc_m
   use scalapack_m
   implicit none
   private
-  public ::   checknorm_2, get_volume, findvector, procmem, sizeof_scalar, &
+  public ::   checknorm, get_volume, findvector, procmem, sizeof_scalar, &
        voigt, bse_index, get_gumk3, get_gumk4, M33INV, &
        output_header, generate_full_WS_BZ, ik_index, ikp_index, nkkp, subgroup, subgroup_2, read_vxc_dat
 contains
 
-  ! subroutine checknorm_2(filename, iband, ik, nspin, wfn, ispin)
-  subroutine checknorm_2(filename, iband, ik, nspin, wfn, ispin, tol)
+  subroutine checknorm(filename, iband, ik, nspin, wfn, ispin, tol)
     character (len=*), intent(in) :: filename
     integer, intent(in) :: iband,ik, nspin
     SCALAR, intent(in) :: wfn(:,:) !< (ng,nspin*nspinor)
@@ -67,7 +66,7 @@ contains
     integer :: wfnsize
     SCALAR, allocatable :: wfn_1d(:)
 
-    PUSH_SUB(checknorm_2)
+    PUSH_SUB(checknorm)
 
     if (present(tol)) then
        tol_ = tol
@@ -86,7 +85,6 @@ contains
        wfn_1d = PACK(wfn, .true.)
        norm = blas_dot(wfnsize,wfn_1d,1,wfn_1d,1)
 
-       ! if (ABS(norm - 1.0D0) > TOL_SMALL) then
        if (ABS(norm - 1.0D0) > tol_) then
           write(0,555) TRUNC(filename),ABS(norm-1.0D0),iband,1,ik
           call die("Incorrect normalization.")
@@ -97,7 +95,6 @@ contains
              wfn_1d = PACK(wfn(:,1), .true.)
              norm = blas_dot(wfnsize,wfn_1d,1,wfn_1d,1)
 
-             ! if (ABS(norm - 1.0D0) > TOL_SMALL) then
              if (ABS(norm - 1.0D0) > tol_) then
                 write(0,555) TRUNC(filename),ABS(norm-1.0D0),iband,1,ik
                 call die("Incorrect normalization.")
@@ -106,7 +103,6 @@ contains
              wfn_1d = PACK(wfn(:,2), .true.)
              norm = blas_dot(wfnsize,wfn_1d,1,wfn_1d,1)
 
-             ! if (ABS(norm - 1.0D0) > TOL_SMALL) then
              if (ABS(norm - 1.0D0) > tol_) then
                 write(0,555) TRUNC(filename),ABS(norm-1.0D0),iband,2,ik
                 call die("Incorrect normalization.")
@@ -118,7 +114,6 @@ contains
           wfn_1d = PACK(wfn(:,1), .true.)
           norm = blas_dot(wfnsize,wfn_1d,1,wfn_1d,1)
 
-          ! if (ABS(norm - 1.0D0) > TOL_SMALL) then
           if (ABS(norm - 1.0D0) > tol_) then
              write(0,555) TRUNC(filename),ABS(norm-1.0D0),iband,1,ik
              call die("Incorrect normalization.")
@@ -127,7 +122,6 @@ contains
           wfn_1d = PACK(wfn(:,2), .true.)
           norm = blas_dot(wfnsize,wfn_1d,1,wfn_1d,1)
 
-          ! if (ABS(norm - 1.0D0) > TOL_SMALL) then
           if (ABS(norm - 1.0D0) > tol_) then
              write(0,555) TRUNC(filename),ABS(norm-1.0D0),iband,2,ik
              call die("Incorrect normalization.")
@@ -143,10 +137,10 @@ contains
          3x,'abs(norm - 1) =',f10.7,/,&
          3x,'iband =',i6,1x,'ispin =',i2,1x,'ik =',i6,/)
 
-    POP_SUB(checknorm_2)
+    POP_SUB(checknorm)
 
     return
-  end subroutine checknorm_2
+  end subroutine checknorm
 
   subroutine get_volume(vol,b)
     real(DP), intent(out) :: vol
@@ -563,73 +557,6 @@ contains
     return
   end function nkkp
 
-  ! !> qg - gumk_out falls into first WS BZ, having the shortest distance to Gamma
-  ! subroutine get_gumk(bdot, qg, gumk_out)
-  !   real(DP), intent(in) :: bdot(3,3)
-  !   real(DP), intent(in) :: qg(3)
-  !   integer, intent(out) :: gumk_out(3)
-
-  !   real(DP) :: tempq_len2_min, tempq(3), tempq_len2
-  !   integer :: idx, idy, idz, dx_out, dy_out, dz_out, dx, dy, dz
-  !   integer :: dxlist(5), dylist(5), dzlist(5)
-
-  !   dxlist(1) = 0
-  !   dxlist(2) = -1
-  !   dxlist(3) = 1
-  !   dxlist(4) = -2
-  !   dxlist(5) = 2
-
-  !   dylist(1) = 0
-  !   dylist(2) = -1
-  !   dylist(3) = 1
-  !   dylist(4) = -2
-  !   dylist(5) = 2
-
-  !   dzlist(1) = 0
-  !   dzlist(2) = -1
-  !   dzlist(3) = 1
-  !   dzlist(4) = -2
-  !   dzlist(5) = 2
-
-  !   tempq_len2_min = INF
-
-  !   dx_out = 0
-  !   dy_out = 0
-  !   dz_out = 0
-
-  !   do idx = 1, 5
-  !      do idy = 1, 5
-  !         do idz = 1, 5
-  !            dx = dxlist(idx) ! = [0, -1, 1, -2, 2]
-  !            dy = dylist(idy) ! = [0, -1, 1, -2, 2]
-  !            dz = dzlist(idz) ! = [0, -1, 1, -2, 2]
-
-  !            !> We shift the BZ along the negative axes direction with a small number (tol=1.0E-8),
-  !            !> such that [-0.5-tol, -0.5-tol, -0.5-tol] will be map to [0.5, 0.5, 0.5]
-  !            !> This is to break tie between, e.g., [-0.5, -0.5, -0.5] and [0.5, 0.5, 0.5]
-  !            !> We prefer that the final q in BZ is [0.5, 0.5, 0.5]
-  !            tempq(:) = qg(:) - 1.0D-8
-  !            tempq(1) = tempq(1) - DBLE(dx)
-  !            tempq(2) = tempq(2) - DBLE(dy)
-  !            tempq(3) = tempq(3) - DBLE(dz)
-  !            tempq_len2 = DOT_PRODUCT(tempq, MATMUL(bdot, tempq))
-
-  !            if ( tempq_len2 < tempq_len2_min ) then
-  !               tempq_len2_min = tempq_len2
-  !               dx_out = dx
-  !               dy_out = dy
-  !               dz_out = dz
-  !            endif
-  !         enddo
-  !      enddo
-  !   enddo
-
-  !   gumk_out(1) = dx_out
-  !   gumk_out(2) = dy_out
-  !   gumk_out(3) = dz_out
-
-  ! end subroutine get_gumk
-
   !> (kvector(:) - dble(gumk_out(:))) falls into first WS BZ, having the shortest distance to Gamma
   subroutine get_gumk3(bdot, kvector, gumk_out)
     real(DP), intent(in) :: bdot(3,3)
@@ -671,9 +598,6 @@ contains
 
     nb = (/ nb1, nb2, nb3 /)
     dim_flag = (nb > 1)
-    ! if (peinf%inode .eq. 0) then
-    !    write(*,'("nb = ", 3I5, "dim_flag",3L5)') nb1, nb2, nb3, dim_flag
-    ! endif
 
     do ib1 = 1, nb1
        b1 = b1list(ib1)
@@ -713,7 +637,6 @@ contains
           enddo
        enddo
     enddo
-    ! write(*,'(A,3F15.8,A,3F15.8)') "k_in = ", kvector, "k_out = ", kvector_
     gumk_out(:) = b_out(:)
 
   end subroutine get_gumk3
@@ -759,9 +682,6 @@ contains
 
     nb = (/ nb1, nb2, nb3 /)
     dim_flag = (nb > 1)
-    ! if (peinf%inode .eq. 0) then
-    !    write(*,'("nb = ", 3I5, "dim_flag",3L5)') nb1, nb2, nb3, dim_flag
-    ! endif
 
     do ib1 = 1, nb1
        b1 = b1list(ib1)
@@ -1108,12 +1028,7 @@ contains
        do while (nk_found < sig%nkn)
           nb_diag_vxc = 0
           nb_offdiag_vxc = 0
-          ! read(unit_vxc, '(3F13.9,2I8)', iostat=eof) k_(:), nb_diag_vxc, nb_offdiag_vxc
           read(unit_vxc, *, iostat=eof) k_(:), nb_diag_vxc, nb_offdiag_vxc
-          ! if (nb_offdiag_vxc .ne. 0) then
-          !    call die("Off-diagonal vxc not supported.", only_root_writes=.true.)
-          ! endif
-          ! write(*,*) "k_ = ", k_(:), "nb_diag_vxc = ", nb_diag_vxc, " nb_offdiag_vxc = ", nb_offdiag_vxc
 
           !> eof /= 0 means we reach the end of file
           if (eof .ne. 0) then
@@ -1137,9 +1052,7 @@ contains
           !> We have to read this block even if we may not use it
           nb_outer_found = 0
           do ib_vxc = 1, nb_diag_vxc
-             ! read(unit_vxc, '(2I8,2F15.9)', iostat=eof) is, ib_, e_DPC
              read(unit_vxc, *, iostat=eof) is, ib_, e_DPC
-             ! write(*,*) "k_ = ", k_, " ib_ = ", ib_, " e_DPC = ", e_DPC
              if (eof .ne. 0) then
                 write(*,'(A,3F12.5,A,I5,A,2F12.5,A,I5,A,I5)') "k_ = ", k_, " ib_ = ", ib_, " e_DPC = ", e_DPC, " nb_outer_found = ", nb_outer_found, " sig%ndiag = ", sig%ndiag
                 write(errmsg,'(a)') 'Wrong contents of k-point blocks in file '//TRUNC(filename)
@@ -1160,28 +1073,12 @@ contains
              call die("Missing bands in file "//TRUNC(filename), only_root_writes=.true.)
           endif
 
-          ! !> [WORKING]
-          ! do ib_vxc = 1, nb_offdiag_vxc
-          !    read(unit_vxc, '(3I8,2F15.9)', iostat=eof) is, ib1_, ib_, e_DPC
-          !    write(*,*) "k_ = ", k_, "ib1_ = ", ib1_, " ib_ = ", ib_, " e_DPC = ", e_DPC
-          !    if (eof .ne. 0) then
-          !       write(*,'(A,3F12.5,A,I5,A,I5,A,2F12.5,A,I5,A,I5)') "k_ = ", k_, "ib1_ = ", ib1_, " ib_ = ", ib_, " e_DPC = ", e_DPC, " nb_outer_found = ", nb_outer_found, " sig%ndiag = ", sig%noffdiag
-          !       write(errmsg,'(a)') 'Wrong contents of k-point blocks in file '//TRUNC(filename)
-          !       call die(errmsg, only_root_writes=.true.)
-          !    endif
-          !    if (ik_outer_target .eq. 0) cycle
-          !    vxc_tot(sig%ndiag+ib_vxc, is, ik_outer_target) = e_DPC/RYD
-          ! enddo !> ib_eqp
-
-          !> [WORKING]
           if (sig%noffdiag > 1) then
              nbnmin = sig%off1(1)
              nbnmax = sig%off2(sig%noffdiag)
              ik_offdiag = 0
              do ib_vxc = 1, nb_offdiag_vxc
-                ! read(unit_vxc, '(3I8,2F15.9)', iostat=eof) is, ib1_, ib2_, e_DPC
                 read(unit_vxc, *, iostat=eof) is, ib1_, ib2_, e_DPC
-                ! write(*,*) "k_ = ", k_, "ib1_ = ", ib1_, " ib2_ = ", ib2_, " e_DPC = ", e_DPC
                 if (eof .ne. 0) then
                    write(*,'(A,3F12.5,A,I5,A,I5,A,2F12.5,A,I5,A,I5)') "k_ = ", k_, "ib1_ = ", ib1_, " ib2_ = ", ib2_, " e_DPC = ", e_DPC, " nb_outer_found = ", nb_outer_found, " sig%ndiag = ", sig%noffdiag
                    write(errmsg,'(a)') 'Wrong contents of k-point blocks in file '//TRUNC(filename)

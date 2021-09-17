@@ -101,9 +101,6 @@ ALL_COMOBJ = fullbz.o subgrp.o gmap.o scalapack.o inversion.o \
 
 ALL_COMMON_OBJ = $(addprefix $(COMMON)/,$(ALL_COMOBJ))
 
-ALL_COMOBJ_C = periodic_table.o wfn_utils.o
-ALL_COMMON_OBJ_C = $(addprefix $(COMMON)/,$(ALL_COMOBJ_C))
-
 # these are involved in the modules which all routines must use
 GLOBOBJ = global.o typedefs.o nrtype.o push_pop.o message.o peinfo.o timing.o intrinsics.o scalapack_aux.o
 GLOBALOBJS = $(addprefix $(COMMON)/,$(GLOBOBJ))
@@ -170,10 +167,7 @@ endif
 $(COMMON)/wfn_utils.o : $(COMMON)/wfn_utils.h $(COMMON)/periodic_table.h $(COMMON)/periodic_table.o
 $(COMMON)/periodic_table.o : $(COMMON)/periodic_table.h
 
-common: $(ALL_COMMON_OBJ) $(ALL_COMMON_OBJ_C) $(GLOBALOBJS) 
-ifeq ($(findstring -DUSEVORO,$(MATHFLAG)),-DUSEVORO)
-  common: voro
-endif
+common: $(ALL_COMMON_OBJ) $(GLOBALOBJS) 
 
 spglib: $(SPGLIB)/libsymspg.a
 clean-spglib:
@@ -252,16 +246,7 @@ endif
 	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
 
 clean:
-	$(MAKE_CLEAN) *.mod
-
-clean-keepmod:
-	$(MAKE_CLEAN)
-
-cleanall:
 	$(MAKE_CLEAN) *.mod *.x
-
-clean-wfn_utils:
-	-$(REMOVE) $(COMMON)/wfn_utils.o $(COMMON)/periodic_table.o
 
 donkey:
 	@$(PREFIX)/LOGO/print_logo.sh $(FLAVOR) && sleep 1

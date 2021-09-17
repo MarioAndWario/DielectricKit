@@ -2,7 +2,7 @@
 !
 ! Modules:
 !
-! (1) blas_m      Originally By DAS      Last Modified 1/13/2011 (das)
+! (1) blas_m      Originally By DAS      Last Modified by Meng Wu
 !
 !     Interfaces for BLAS functions, taken from http://www.netlib.org/blas/
 !     Every BLAS function used in the code should be listed here, and this

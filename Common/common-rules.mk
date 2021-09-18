@@ -10,12 +10,6 @@ else
   FLAVOR  = .real
 endif
 
-ifeq ($(findstring -DFFTW3,$(MATHFLAG)),-DFFTW3)
-  $(warning -DFFTW3 is deprecated; please use -DUSEFFTW3 in MATHFLAG in arch.mk file)
-#  MATHFLAG := $(subst -DFFTW3,-DUSEFFTW3,$(MATHFLAG))
-  MATHFLAG += -DUSEFFTW3
-endif
-
 ifeq ($(findstring -DUSESCALAPACK,$(MATHFLAG)),-DUSESCALAPACK)
   ifneq ($(findstring -DMPI,$(PARAFLAG)),-DMPI)
     $(error -DUSESCALAPACK flag requires -DMPI; please check your arch.mk file)
@@ -56,7 +50,7 @@ SPGLIB = $(PREFIX)/spglib-1.0.9
 # this one is for C, C++, and cpp step for Fortran
 INCLUDE = -I$(COMMON)
 # this one is for Fortran compilation
-FTNINC = $(INCFLAG) $(COMMON) $(INCFLAG) $(FFTWINCLUDE)
+FTNINC = $(INCFLAG) $(COMMON) $(INCFLAG)
 ifeq ($(findstring -DHDF5,$(MATHFLAG)),-DHDF5)
   FTNINC += $(INCFLAG) $(HDF5INCLUDE)
 endif
@@ -91,12 +85,11 @@ default_goal: default
 # GNU make 3.80 and earlier don't have .DEFAULT_GOAL
 
 # all objects to be made from Common directory must appear here
-ALL_COMOBJ = fullbz.o gmap.o scalapack.o inversion.o \
-      write_matrix.o minibzaverage.o vcoul_generator.o fft_parallel.o \
-      check_inversion.o wfn_rho_vxc_io.o \
-      sort.o blas.o scalapack.o lapack.o fftw.o slatec.o misc.o input_utils.o \
+ALL_COMOBJ = scalapack.o inversion.o \
+      write_matrix.o vcoul_generator.o check_inversion.o  \
+      sort.o blas.o scalapack.o lapack.o slatec.o misc.o input_utils.o \
       symmetries.o hdf5_io.o wfn_io_hdf5.o epsread_hdf5.o epswrite_hdf5.o \
-      io_utils.o cells.o inread_common.o so32su2.o elpa_interface.o complex_incomplete_gamma.o
+      io_utils.o inread_common.o so32su2.o
 
 ALL_COMMON_OBJ = $(addprefix $(COMMON)/,$(ALL_COMOBJ))
 
@@ -111,7 +104,6 @@ $(COMMON)/f_defs.h :
 $(ALL_COMMON_OBJ) : $(GLOBALMODS) $(COMMON)/f_defs.h $(COMMON)/compiler.h
 $(COMMON)/global.o $(COMMON)/global_m.mod: $(COMMON)/scalapack_aux_m.mod $(COMMON)/nrtype_m.mod $(COMMON)/timing_m.mod $(COMMON)/typedefs_m.mod \
    $(COMMON)/peinfo_m.mod $(COMMON)/push_pop_m.mod $(COMMON)/message_m.mod $(COMMON)/f_defs.h $(COMMON)/compiler.h
-$(COMMON)/vcoul_generator.o $(COMMON)/vcoul_generator_m.mod: $(COMMON)/minibzaverage_m.mod
 $(COMMON)/misc.o $(COMMON)/misc_m.mod : $(COMMON)/blas_m.mod $(COMMON)/global_m.mod $(COMMON)/f_defs.h $(COMMON)/scalapack_m.mod
 $(COMMON)/peinfo.o $(COMMON)/peinfo_m.mod : $(COMMON)/nrtype_m.mod $(COMMON)/f_defs.h $(COMMON)/intrinsics_m.mod
 $(COMMON)/scalapack_aux.o $(COMMON)/scalapack_aux_m.mod : $(COMMON)/push_pop_m.mod $(COMMON)/f_defs.h
@@ -120,30 +112,18 @@ $(COMMON)/input_utils.o $(COMMON)/input_utils_m.mod : $(COMMON)/blas_m.mod $(COM
 $(COMMON)/inread_common.o $(COMMON)/inread_common_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/blas.o $(COMMON)/blas_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/intrinsics.o $(COMMON)/intrinsics_m.mod : $(COMMON)/f_defs.h $(COMMON)/compiler.h
-$(COMMON)/essl.o $(COMMON)/essl_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/lapack.o $(COMMON)/lapack_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/scalapack.o $(COMMON)/scalapack_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
-$(COMMON)/fftw.o $(COMMON)/fftw_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
-$(COMMON)/inversion.o $(COMMON)/inversion_m.mod: $(COMMON)/lapack_m.mod $(COMMON)/scalapack_m.mod $(COMMON)/undef.h $(COMMON)/essl_m.mod
-$(COMMON)/elpa_interface.o $(COMMON)/elpa_interface_m.mod: $(COMMON)/global_m.mod $(COMMON)/scalapack_m.mod
+$(COMMON)/inversion.o $(COMMON)/inversion_m.mod: $(COMMON)/lapack_m.mod $(COMMON)/scalapack_m.mod $(COMMON)/undef.h
 $(COMMON)/sort.o $(COMMON)/sort_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/typedefs.o $(COMMON)/typedefs_m.mod : $(COMMON)/nrtype_m.mod $(COMMON)/f_defs.h
 $(COMMON)/nrtype.o $(COMMON)/nrtype_m.mod : $(COMMON)/f_defs.h
 $(COMMON)/push_pop.o $(COMMON)/push_pop_m.mod : $(COMMON)/peinfo_m.mod $(COMMON)/message_m.mod $(COMMON)/nrtype_m.mod $(COMMON)/f_defs.h
 $(COMMON)/message.o $(COMMON)/message_m.mod : $(COMMON)/peinfo_m.mod $(COMMON)/nrtype_m.mod $(COMMON)/f_defs.h
-$(COMMON)/wfn_rho_vxc_io.o $(COMMON)/wfn_rho_vxc_io_m.mod : $(COMMON)/check_inversion_m.mod $(COMMON)/sort_m.mod $(COMMON)/global_m.mod $(COMMON)/misc_m.mod
-$(COMMON)/kernel_io.o $(COMMON)/kernel_io_m.mod : $(COMMON)/global_m.mod $(COMMON)/wfn_rho_vxc_io_m.mod \
-	$(COMMON)/kernel_io_inc.f90 $(COMMON)/kernel_io_hdf5_inc.f90 $(COMMON)/hdf5_io_m.mod $(COMMON)/wfn_io_hdf5_m.mod
 $(COMMON)/check_inversion.o $(COMMON)/check_inversion_m.mod : $(COMMON)/global_m.mod
 $(COMMON)/io_utils.o $(COMMON)/io_utils_m.mod : $(COMMON)/global_m.mod
 $(COMMON)/write_matrix.o : $(COMMON)/scalapack_m.mod
-$(COMMON)/minibzaverage.o $(COMMON)/minibzaverage_m.mod: $(COMMON)/misc_m.mod $(COMMON)/slatec_m.mod
-$(COMMON)/fft_parallel.o $(COMMON)/fft_parallel_m.mod : $(COMMON)/global_m.mod $(COMMON)/fftw_m.mod $(COMMON)/f_defs.h
-$(COMMON)/fullbz.o $(COMMON)/fullbz_m.mod : $(COMMON)/global_m.mod $(COMMON)/misc_m.mod $(COMMON)/f_defs.h
 $(COMMON)/write_matrix.o $(COMMON)/write_matrix_m.mod : $(COMMON)/global_m.mod $(COMMON)/scalapack_m.mod $(COMMON)/io_utils_m.mod $(COMMON)/f_defs.h $(COMMON)/hdf5_io_m.mod
-$(COMMON)/splines.o $(COMMON)/splines_m.mod : $(COMMON)/global_m.mod
-$(COMMON)/cells.o $(COMMON)/cells_m.mod : $(COMMON)/global_m.mod
-$(COMMON)/gmap.o $(COMMON)/gmap_m.mod : $(COMMON)/global_m.mod $(COMMON)/misc_m.mod
 $(COMMON)/symmetries.o $(COMMON)/symmetries_m.mod : $(COMMON)/global_m.mod $(COMMON)/misc_m.mod $(COMMON)/sort_m.mod
 $(COMMON)/hdf5_io.o $(COMMON)/hdf5_io_m.mod : $(COMMON)/global_m.mod
 $(COMMON)/wfn_io_hdf5.o $(COMMON)/wfn_io_hdf5_m.mod : $(COMMON)/hdf5_io_m.mod $(COMMON)/global_m.mod
@@ -158,9 +138,6 @@ ifeq ($(COMPFLAG),-DOPEN64)
 # $(COMMON)/intrinsics_m.mod : $(COMMON)/OMP_LIB.mod 
 # $(COMMON)/OMP_LIB.mod : $(COMMON)/omp_lib.o 
 endif
-
-$(COMMON)/wfn_utils.o : $(COMMON)/wfn_utils.h $(COMMON)/periodic_table.h $(COMMON)/periodic_table.o
-$(COMMON)/periodic_table.o : $(COMMON)/periodic_table.h
 
 common: $(ALL_COMMON_OBJ) $(GLOBALOBJS) 
 

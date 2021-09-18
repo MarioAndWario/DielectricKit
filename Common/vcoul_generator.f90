@@ -16,7 +16,7 @@
 !! 6: Slab truncation (for 2D systems)
 module vcoul_generator_m
   use global_m
-  use minibzaverage_m
+  ! use minibzaverage_m
   implicit none
   private :: length2
   public :: vcoul_generator, destroy_qran, destroy_qran_mBZ
@@ -111,21 +111,16 @@ contains
           q_plus_G_xy(1:2) = q_plus_G(1:2)
           q_plus_G_xy(3) = 0.0D0
           !! kxy = |q+G|_{\parallel}
-          ! kxy = SQRT(DOT_PRODUCT(q_plus_G_xy, MATMUL(crys%bdot, q_plus_G_xy)))
           kxy = SQRT(length2(q_plus_G_xy, U_))
           q_plus_G_z(1:2) = 0.0D0
           q_plus_G_z(3) = q_plus_G(3)
           !! kz = |q+G|_z = |G|_z, since we require that qvec(3) = 0
-          ! kz = SQRT(DOT_PRODUCT(q_plus_G_z, MATMUL(crys%bdot, q_plus_G_z)))
           kz = SQRT(length2(q_plus_G_z, U_))
           if (kz > TOL_ZERO) then
              call die("kz > 0", only_root_writes=.true.)
           endif
-          !! [WORKING]
-          ! half_Lz = 2D0*PI_D/(SQRT(crys%bdot(3,3))*2D0)
           half_Lz = SQRT(crys%adot(3,3)) / 2.0D0
 
-          ! write(*,'(A,ES20.12,A,ES20.12,A,ES20.12)') "half_Lz = ", half_Lz, "SQRT(crys%adot(3,3))/2 = ", SQRT(crys%adot(3,3))/2.0, " NORM2(crys%avec(:,3))/2.0 = ", NORM2(crys%avec(:,3))*crys%alat/2.0
           if (qG2 .lt. TOL_ZERO) then
              vcoul(1) = 0.0D0
              !<- q0 + G/=0 or q1 + any G ->
@@ -134,7 +129,6 @@ contains
              !! here we assume R=Lz/2 as the slab truncation length
              !! Also note that here we don't use random-integration method to calculate <- q0 + G/= 0 or q1 + any G ->
              vcoul(1) = 8.0D0 * PI_D / qG2 * (1.0D0 - EXP(-kxy*half_Lz)*COS(kz*half_Lz))
-          ! write(*,'(A,3F20.9,A,F20.9,A,F20.9,A,F20.9,A,F20.9)') "q+G = ", q_plus_G(:), " qG2 = ", qG2, " kxy = ", kxy, " kz = ", kz, " half_Lz = ", half_Lz             
           endif
 
           do ig = 2, ncoul
@@ -145,12 +139,10 @@ contains
              q_plus_G_xy(1:2) = q_plus_G(1:2)
              q_plus_G_xy(3) = 0.0D0
              !! kxy = |q+G|_{\parallel}
-             ! kxy = SQRT(DOT_PRODUCT(q_plus_G_xy, MATMUL(crys%bdot, q_plus_G_xy)))
              kxy = SQRT(length2(q_plus_G_xy, U_))
              q_plus_G_z(1:2) = 0.0D0
              q_plus_G_z(3) = q_plus_G(3)
              !! kz = |q+G|_z = |G|_z, since we require that qvec(3) = 0
-             ! kz = SQRT(DOT_PRODUCT(q_plus_G_z, MATMUL(crys%bdot, q_plus_G_z)))
              kz = SQRT(length2(q_plus_G_z, U_))
              ! half_Lz = 2D0*PI_D/(sqrt(crys%bdot(3,3))*2D0)
              vcoul(ig) = 8.0D0 * PI_D / qG2 * (1.0D0 - EXP(-kxy*half_Lz)*COS(kz*half_Lz))

@@ -161,15 +161,6 @@ contains
           use_this_sym = .true.
        endif
 
-       ! ! make sure fractional translations are in the right range, just a convention
-       ! ! this makes the results agree with the ESPRESSO routines, but really makes no practical difference
-       ! do jj = 1, 3
-       !   if (tnp_temp(jj, isym).ge.TOL_Zero+0.5d0) &
-       !     tnp_temp(jj, isym)=tnp_temp(jj, isym)-dble(int(tnp_temp(jj, isym)+0.5d0))
-       !   if (tnp_temp(jj, isym).lt.TOL_Zero-0.5d0) &
-       !     tnp_temp(jj, isym)=tnp_temp(jj, isym)-dble(int(tnp_temp(jj, isym)-0.5d0))
-       ! enddo
-
        if (disable_frac) then
           if (any(abs(tnp_temp(1:3,isym)) > TOL_Zero)) use_this_sym = .false.
        endif

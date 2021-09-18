@@ -16,7 +16,6 @@
 !! 6: Slab truncation (for 2D systems)
 module vcoul_generator_m
   use global_m
-  ! use minibzaverage_m
   implicit none
   private :: length2
   public :: vcoul_generator, destroy_qran, destroy_qran_mBZ
@@ -319,21 +318,6 @@ contains
     POP_SUB(circular_uniform_distribution)
     return
   end subroutine circular_uniform_distribution
-
-  ! subroutine generate_random_number(ran_seed, ran)
-  !   integer, intent(in) :: ran_seed(2)
-  !   real(DP), intent(out) :: ran(:,:)
-  !   PUSH_SUB(generate_random_number)
-
-  !   call random_seed(put=ran_seed)
-  !   !! ran will be used in two places:
-  !   !! 1. used to generate random points in minibz for vcoul with nonzero |q+G|
-  !   !! 2. used to generate random points in spherical shell for vcoul0
-  !   call random_number(ran)
-
-  !   POP_SUB(spherical_uniform_distribution)
-  !   return
-  ! end subroutine generate_random_number
 
   subroutine generate_random_number(ran_seed, ran)
     integer, intent(in) :: ran_seed(:)

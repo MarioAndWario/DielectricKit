@@ -24,7 +24,7 @@
 program EpsInv
   use global_m
   use symmetries_m
-  use blas_m
+  ! use blas_m
   use misc_m
   use input_utils_m
   use wfn_io_hdf5_m

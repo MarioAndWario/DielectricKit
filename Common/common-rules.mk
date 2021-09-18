@@ -87,7 +87,7 @@ default_goal: default
 # all objects to be made from Common directory must appear here
 ALL_COMOBJ = scalapack.o inversion.o \
       write_matrix.o vcoul_generator.o check_inversion.o  \
-      sort.o blas.o scalapack.o lapack.o slatec.o misc.o input_utils.o \
+      sort.o blas.o scalapack.o lapack.o misc.o input_utils.o \
       symmetries.o hdf5_io.o wfn_io_hdf5.o epsread_hdf5.o epswrite_hdf5.o \
       io_utils.o inread_common.o so32su2.o
 

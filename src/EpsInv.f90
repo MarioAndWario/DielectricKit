@@ -24,7 +24,7 @@
 program EpsInv
   use global_m
   use symmetries_m
-  ! use blas_m
+  use blas_m
   use misc_m
   use input_utils_m
   use wfn_io_hdf5_m
@@ -286,7 +286,7 @@ program EpsInv
         call die("ploteps: matrix_flavor mismatch betwen code and epsmat.")
      endif
 
-     call read_eps_params_hdf5_2(TRUNC(filename_chi_hdf5), pol)
+     call read_eps_params_hdf5(TRUNC(filename_chi_hdf5), pol)
      if (pol%timeordered) then
         write(*,'(1X,A)') "Time-ordered <=> varepsilon is non-zero for real-axis frequencies"
         if (pol%nfreq_real .gt. 0) then
@@ -586,7 +586,6 @@ program EpsInv
 
      !! PHDF5 reads chimat.h5 for one q, all frequencies into 1D block-cyclic distributed dmat_1d_block(icomplex,ig1,ig2_loc,iomega,is)
      !! use pzgemr2d to load dmat_1d_block to pol%chi(:, :, is)
-
      ig2_offset = INDXL2G( 1, block_size_col, peinf%inode, 0, peinf%npes)
      SAFE_ALLOCATE(dmat_1d_block, (SCALARSIZE, pol%nmtx, MAX(npc, 1), pol%nfreq, kp%nspin))
      dmat_1d_block = 0.0D0
@@ -598,6 +597,7 @@ program EpsInv
      call h5pclose_f(plist_id, error)
      CALL h5pcreate_f(H5P_DATASET_XFER_F, plist_id, error)
      CALL h5pset_dxpl_mpio_f(plist_id, H5FD_MPIO_COLLECTIVE_F, error)
+     
      !! pol%nmtx = MAXVAL(pol%nmtx_of_q) here
      if (npc > 0) then
         count_mat(:) = (/ SCALARSIZE, pol%nmtx, npc, pol%nfreq, kp%nspin, 1 /)
@@ -695,7 +695,7 @@ program EpsInv
      vcoul = 0.0D0
 
      if (peinf%inode .eq. 0) then
-        write(*,'(1X,A)') "call vcoul_generator_zerovq0(...)"
+        write(6,'(1X,A)') "call vcoul_generator_zerovq0(...)"
      endif
      call vcoul_generator(pol%icutv, gvec, crys, pol%nmtx, pol%isrtx, pol%qpt(:, iq), vcoul)
      call timacc(4,2)
@@ -984,9 +984,9 @@ program EpsInv
   SAFE_DEALLOCATE_P(gvec%components)
   SAFE_DEALLOCATE(ekin)
 
-  if (vcoul_mc) then
-     call destroy_qran_mBZ() ! from vcoul_generator
-  endif
+  ! if (vcoul_mc) then
+  !    call destroy_qran_mBZ() ! from vcoul_generator
+  ! endif
 
 #ifdef MPI
   call MPI_BARRIER(MPI_COMM_WORLD, mpierr)

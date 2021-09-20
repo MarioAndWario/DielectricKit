@@ -130,7 +130,6 @@ subroutine SUBROUTINE_NAME_SCALAR(loc_id, dset_name, buf, errcode)
      ibuf = 0
      if (buf) ibuf = 1
      ibuf_(1) = ibuf
-     !> call H5LT_READ_WRITE(loc_id, dset_name, 0, dims_h5type, (/ibuf/), errcode)
      call H5LT_READ_WRITE(loc_id, dset_name, 0, dims_h5type, ibuf_, errcode)
 
      if (errcode .ne. 0) then
@@ -139,7 +138,6 @@ subroutine SUBROUTINE_NAME_SCALAR(loc_id, dset_name, buf, errcode)
 
 #else
      buf_(1) = buf
-     ! call H5LT_READ_WRITE(loc_id, dset_name, 0, dims_h5type, (/buf/), errcode)
      call H5LT_READ_WRITE(loc_id, dset_name, 0, dims_h5type, buf_, errcode)
      if (errcode .ne. 0) then
         call die("HDF5 error", only_root_writes=.true.)

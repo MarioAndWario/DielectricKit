@@ -55,7 +55,9 @@ subroutine NAME(_header_type)(sFileName, sheader, iflavor, kp, gvec, syms, crys)
   PUSH_SUB(NAME(_header_type))
 
   if (peinf%inode == 0) then
+     write(*,*) "CCC"
      call READ_WRITE(_info)(TRUNC(sFileName),iflavor)
+     write(*,*) "DDD"     
      call READ_WRITE(_kpoints)(TRUNC(sFileName),kp)
      call READ_WRITE(_gspace)(TRUNC(sFileName),gvec)
      call READ_WRITE(_symmetry)(TRUNC(sFileName),syms)
@@ -63,9 +65,7 @@ subroutine NAME(_header_type)(sFileName, sheader, iflavor, kp, gvec, syms, crys)
   endif
 
 #ifdef READ
-  ! ======
   gvec%nFFTgridpts = product(gvec%FFTgrid(1:3))
-  ! ------
 #ifdef MPI
 
   if (peinf%npes > 1) then
@@ -78,9 +78,7 @@ subroutine NAME(_header_type)(sFileName, sheader, iflavor, kp, gvec, syms, crys)
      call MPI_BCAST(crys%nat, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(gvec%ecutrho, 1, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(gvec%FFTgrid, 3, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     ! =====
      call MPI_BCAST(gvec%nFFTgridpts, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     ! -----
      call MPI_BCAST(crys%celvol, 1, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(crys%alat, 1, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(crys%avec, 9, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
@@ -90,10 +88,8 @@ subroutine NAME(_header_type)(sFileName, sheader, iflavor, kp, gvec, syms, crys)
      call MPI_BCAST(crys%bvec, 9, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(crys%bdot, 9, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(syms%mtrx(1,1,1), 3*3*48, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     ! ======
      call MPI_BCAST(syms%mtrx_reci(1,1,1), 3*3*48, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(syms%mtrx_cart(1,1,1), 3*3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
-     ! ======
      call MPI_BCAST(syms%tnp, 3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      if (wfnflag) then
         call MPI_BCAST(kp%nrk, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
@@ -149,7 +145,7 @@ subroutine READ_WRITE(_info)(sFileName, iflavor)
 #endif
 
   PUSH_SUB(READ_WRITE(_info))
-
+  write(*,*) "sFileName = ", sFileName
   call h5fopen_f(sFileName, H5F_FILE_ACCESS, hidFile, iError)
 #ifndef READ
   call HDF5_READ_WRITE(_int)(hidFile, '/mf_header/versionnumber', VER_WFN_HDF5, iError)

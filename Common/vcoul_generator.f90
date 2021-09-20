@@ -18,7 +18,7 @@ module vcoul_generator_m
   use global_m
   implicit none
   private :: length2
-  public :: vcoul_generator, destroy_qran, destroy_qran_mBZ
+  public :: vcoul_generator, destroy_qran !, destroy_qran_mBZ
   !! qran is fractional coordinates
   !! qran_shell_cart in cartesian coordinates
   real(DP), allocatable, private :: qran(:,:), random_vector_cart_mBZ(:,:)
@@ -172,18 +172,18 @@ contains
     return
   end subroutine destroy_qran
 
-  subroutine destroy_qran_mBZ()
-    PUSH_SUB(destroy_qran_mBZ)
-    ifirst = 2
-    ! if (peinf%inode .eq. 0) then
-    SAFE_DEALLOCATE(random_vector_cart_mBZ)
-    SAFE_DEALLOCATE(vcoul1)
-    ! endif
-    SAFE_DEALLOCATE(vcoul1_done)
-    call logit('Deallocated random numbers in mBZ.')
-    POP_SUB(destroy_qran_mBZ)
-    return
-  end subroutine destroy_qran_mBZ
+  ! subroutine destroy_qran_mBZ()
+  !   PUSH_SUB(destroy_qran_mBZ)
+  !   ifirst = 2
+  !   ! if (peinf%inode .eq. 0) then
+  !   SAFE_DEALLOCATE(random_vector_cart_mBZ)
+  !   SAFE_DEALLOCATE(vcoul1)
+  !   ! endif
+  !   SAFE_DEALLOCATE(vcoul1_done)
+  !   call logit('Deallocated random numbers in mBZ.')
+  !   POP_SUB(destroy_qran_mBZ)
+  !   return
+  ! end subroutine destroy_qran_mBZ
 
   !! Based on uniform random numbers between [0,1], generate uniform random points (in cartesian coordinates) within a spherical shell,
   !! defined by the inner radius r_inner and outer radius r_outer

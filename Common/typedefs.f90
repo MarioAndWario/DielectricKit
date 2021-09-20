@@ -11,12 +11,10 @@
 !==========================================================================
 
 module typedefs_m
-
+  
   use nrtype_m
-
   implicit none
-
-  public ! only types in this module
+  public
 
   !---------------------------
 

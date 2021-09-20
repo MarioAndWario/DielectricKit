@@ -85,11 +85,9 @@ default_goal: default
 # GNU make 3.80 and earlier don't have .DEFAULT_GOAL
 
 # all objects to be made from Common directory must appear here
-ALL_COMOBJ = scalapack.o inversion.o \
-      write_matrix.o vcoul_generator.o check_inversion.o  \
+ALL_COMOBJ = scalapack.o inversion.o write_matrix.o vcoul_generator.o check_inversion.o  \
       sort.o blas.o scalapack.o lapack.o misc.o input_utils.o \
-      symmetries.o hdf5_io.o wfn_io_hdf5.o epsread_hdf5.o epswrite_hdf5.o \
-      io_utils.o inread_common.o so32su2.o
+      symmetries.o hdf5_io.o wfn_io_hdf5.o epsread_hdf5.o epswrite_hdf5.o io_utils.o so32su2.o
 
 ALL_COMMON_OBJ = $(addprefix $(COMMON)/,$(ALL_COMOBJ))
 
@@ -109,7 +107,6 @@ $(COMMON)/peinfo.o $(COMMON)/peinfo_m.mod : $(COMMON)/nrtype_m.mod $(COMMON)/f_d
 $(COMMON)/scalapack_aux.o $(COMMON)/scalapack_aux_m.mod : $(COMMON)/push_pop_m.mod $(COMMON)/f_defs.h
 $(COMMON)/timing.o $(COMMON)/timing_m.mod : $(COMMON)/push_pop_m.mod $(COMMON)/nrtype_m.mod $(COMMON)/f_defs.h $(COMMON)/intrinsics_m.mod $(COMMON)/peinfo_m.mod
 $(COMMON)/input_utils.o $(COMMON)/input_utils_m.mod : $(COMMON)/blas_m.mod $(COMMON)/global_m.mod $(COMMON)/f_defs.h
-$(COMMON)/inread_common.o $(COMMON)/inread_common_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/blas.o $(COMMON)/blas_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h
 $(COMMON)/intrinsics.o $(COMMON)/intrinsics_m.mod : $(COMMON)/f_defs.h $(COMMON)/compiler.h
 $(COMMON)/lapack.o $(COMMON)/lapack_m.mod : $(COMMON)/global_m.mod $(COMMON)/f_defs.h

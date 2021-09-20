@@ -3,8 +3,9 @@ include $(PREFIX)/Common/common-rules.mk
 
 # object files from $(COMMON) directory
 COMOBJ = misc.o check_inversion.o inversion.o vcoul_generator.o \
-         minibzaverage.o symmetries.o input_utils.o sort.o blas.o \
-         io_utils.o epsread_hdf5.o hdf5_io.o so32su2.o wfn_io_hdf5.o epswrite_hdf5.o write_matrix.o scalapack.o
+          symmetries.o input_utils.o sort.o blas.o \
+          io_utils.o epsread_hdf5.o hdf5_io.o so32su2.o wfn_io_hdf5.o epswrite_hdf5.o write_matrix.o scalapack.o
+
 
 ifeq ($(findstring -DUSESCALAPACK,$(MATHFLAG)),-DUSESCALAPACK)
 

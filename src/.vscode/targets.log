@@ -1,0 +1,2944 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.2.1
+# Built for x86_64-suse-linux-gnu
+# Copyright (C) 1988-2016 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+ 
+
+# Make data base, printed on Wed Sep 22 15:07:25 2021
+
+# Variables
+
+# environment
+PE_FFTW_TARGET_x86_skylake = x86_skylake
+# 'override' directive
+GNUMAKEFLAGS := 
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+PE_TRILINOS_DEFAULT_GENCOMPS_GNU_x86_64 = 82 71
+# environment
+PE_GA_DEFAULT_VOLATILE_PRGENV = GNU
+# environment
+PE_MPICH_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/mpt/7.7.10/gni/mpich-@PRGENV@@PE_MPICH_DEFAULT_DIR_DEFAULT64@/@PE_MPICH_DEFAULT_GENCOMPS@/lib/pkgconfig
+# makefile (from '../arch.mk', line 23)
+MATHFLAG = -DUSESCALAPACK -DUNPACKED -DUSEFFTW3 -DHDF5 -DUSEELPA
+# makefile (from '../arch.mk', line 47)
+C_COMP = cc
+# environment
+PRGENVMODULES = PrgEnv-cray:PrgEnv-gnu:PrgEnv-intel:PrgEnv-pgi
+# environment
+PE_PKGCONFIG_DEFAULT_PRODUCTS = PE_TRILINOS:PE_TPSL_64:PE_TPSL:PE_PETSC:PE_PARALLEL_NETCDF:PE_NETCDF_HDF5PARALLEL:PE_NETCDF:PE_MPICH:PE_LIBSCI:PE_HDF5_PARALLEL:PE_HDF5:PE_GA:PE_FFTW2:PE_FFTW
+# environment
+PE_PKGCONFIG_PRODUCTS_DEFAULT = PE_PAPI
+# environment
+PE_NETCDF_HDF5PARALLEL_DEFAULT_GENCOMPILERS_GNU = 8.2 7.1
+# environment
+PE_PKGCONFIG_LIBS = hdf5_hl_parallel:hdf5_parallel:craype-hugepages:mpich:AtpSigHandler:cray-rca:libsci_mpi:libsci
+# default
+.SHELLFLAGS := -c
+# automatic
+?F = $(notdir $?)
+# environment
+PE_MPICH_DEFAULT_FIXED_PRGENV = INTEL
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_haswell = 190
+# environment
+PE_HDF5_PARALLEL_DEFAULT_GENCOMPS_GNU = 
+# environment
+VSCODE_AGENT_FOLDER = /global/homes/m/mwu/.vscode-server
+# environment
+PE_MPICH_DEFAULT_DIR_CRAY_DEFAULT64 = 64
+# environment
+DVS_VERSION = 0.9.0
+# environment
+TERM = xterm-color
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAY_sandybridge = 90
+# environment
+PE_LIBSCI_DEFAULT_VOLATILE_PRGENV = CRAY CRAYCLANG GNU INTEL
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_haswell = 8.2 7.1
+# environment
+ATP_IGNORE_SIGTERM = 1
+# environment
+PE_TRILINOS_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/trilinos/12.14.1.0/@PRGENV@/@PE_TRILINOS_DEFAULT_GENCOMPS@/@PE_TRILINOS_DEFAULT_TARGET@/lib/pkgconfig
+# environment
+COLOR_GREEN = \e[0;32m
+# environment
+VSCODE_LOG_NATIVE = false
+# environment
+MODULEPATH = /opt/cray/pe/craype-targets/default/modulefiles:/opt/cray/ari/modulefiles:/opt/cray/pe/modulefiles:/opt/cray/modulefiles:/opt/modulefiles:/global/common/software/nersc/cle7/modulefiles:/global/common/software/nersc/cle7/extra_modulefiles:/usr/common/ftg/modulefiles
+# environment
+PE_NETCDF_DEFAULT_GENCOMPS_GNU = 
+# environment
+PE_FFTW_OMP_REQUIRES = $(subst ,, )
+# environment
+PE_MPICH_GENCOMPS_CRAY = 90
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+PE_PARALLEL_NETCDF_DEFAULT_GENCOMPS_GNU = 
+# environment
+PE_MPICH_TARGET_VAR_nvidia20 = -lcudart
+# environment
+PE_TPSL_64_DEFAULT_VOLATILE_PRGENV = CRAY CRAY64 CRAYCLANG CRAYCLANG64 GNU GNU64 INTEL INTEL64
+# environment
+LIBSCI_VERSION = 19.06.1
+# environment
+PE_PETSC_DEFAULT_VOLATILE_PRGENV = CRAY CRAY64 CRAYCLANG CRAYCLANG64 GNU GNU64 INTEL INTEL64
+# makefile (from '../arch.mk', line 38)
+FOPTS = -O3 -xCORE-AVX2 -no-ipo -ip -align array64byte -heap-arrays 4096 -qopt-zmm-usage=high -fp-model fast=2 -complex-limited-range -assume byterecl -qopenmp
+# environment
+CRAY_RCA_INCLUDE_OPTS = -I/opt/cray/rca/2.2.20-7.0.1.1_4.70__g8e3fb5b.ari/include -I/opt/cray/krca/2.2.6-7.0.1.1_5.51__gb641b12.ari/include -I/opt/cray-hss-devel/9.0.0/include
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_haswell = 19.0
+# environment
+PE_HDF5_DEFAULT_FIXED_PRGENV = CRAY CRAYCLANG INTEL
+# default
+MAKE_VERSION := 4.2.1
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge = 9.0
+# environment
+PE_HDF5_PARALLEL_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/hdf5-parallel/1.10.5.2/@PRGENV@/@PE_HDF5_PARALLEL_DEFAULT_GENCOMPS@/lib/pkgconfig
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge = 9.0
+# makefile
+SHELL = /bin/sh
+# environment
+COM = mwu1@comet.sdsc.xsede.org
+# makefile (from '../Common/common-rules.mk', line 47)
+COMMON = $(PREFIX)/Common
+# environment
+PE_MPICH_DIR_CRAYCLANG_DEFAULT64 = 64
+# environment
+FFTW_VERSION = 3.3.8.4
+# environment
+PELOCAL_PRGENV = true
+# makefile (from '../Common/common-rules.mk', line 66)
+INSTALL_CMD = ln -sf $(PWD)/$@ $(PREFIX)/bin
+# environment
+ALT_LINKER = /global/common/cori/software/altd/2.0/bin/ld
+# environment
+CRAY_HDF5_DIR = /opt/cray/pe/hdf5-parallel/1.10.5.2
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
+# environment
+CSCRATCH = /global/cscratch1/sd/mwu
+# environment
+TZ = US/Pacific
+# environment
+PE_HDF5_PARALLEL_REQUIRED_PRODUCTS = PE_MPICH
+# environment
+INTEL_LICENSE_FILE = 28518@crayintel.licenses.nersc.gov:28518@intel.licenses.nersc.gov
+# environment
+PE_LIBSCI_OMP_REQUIRES = 
+# environment
+_ = /usr/bin/make
+# environment
+PE_NETCDF_DEFAULT_FIXED_PRGENV = CRAY CRAYCLANG INTEL
+# environment
+LIBRARY_PATH = /opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/lib/intel64:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64
+# environment
+PE_MPICH_GENCOMPILERS_GNU = 8.2 8.1 7.1
+# environment
+PE_FFTW_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/fftw/3.3.8.4/@PE_FFTW_DEFAULT_TARGET@/lib/pkgconfig
+# makefile
+CURDIR := /global/cscratch1/sd/mwu/EpsInv/src
+# environment
+PE_PARALLEL_NETCDF_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/parallel-netcdf/1.11.1.1/@PRGENV@/@PE_PARALLEL_NETCDF_DEFAULT_GENCOMPS@/lib/pkgconfig
+# environment
+XDG_CONFIG_DIRS = /etc/xdg
+# environment
+PE_LIBSCI_DEFAULT_OMP_REQUIRES_openmp = _mp
+# environment
+DVS_INCLUDE_OPTS = -I/opt/cray/dvs/2.12_2.2.167-7.0.1.1_17.9__ge473d3a2/include
+# makefile (from '../Common/common-rules.mk', line 68)
+F90_CMD_NOOPT = $(F90free) $(FTNINC) -c $(FNOOPTS) $(basename $<).p.f -o $(basename $<).o $(MOD_OPT)$(dir $<)
+# makefile (from '../arch.mk', line 59)
+HDF5_LDIR = $(HDF5_DIR)/lib
+# environment
+KSH_AUTOLOAD = 1
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAY_x86_64 = 90
+# environment
+LESSOPEN = lessopen.sh %s
+# environment
+ALTD_SELECT_USERS = 
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_sandybridge = 8.2 7.1
+# environment
+JRE_HOME = /usr/lib64/jvm/java
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_sandybridge = 8.2 7.1
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64 = 9.0
+# environment
+PE_CRAYCLANG_FIXED_PKGCONFIG_PATH = /opt/cray/pe/hdf5-parallel/1.10.5.2/CRAYCLANG/9.0/lib/pkgconfig
+# environment
+PE_FFTW_DEFAULT_TARGET_sandybridge = sandybridge
+# environment
+PE_PARALLEL_NETCDF_DEFAULT_FIXED_PRGENV = CRAY CRAYCLANG INTEL
+# environment
+COLOR_RED = \e[0;31m
+# environment
+NLSPATH = /opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/lib/intel64/locale/%l_%t/%N:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64/locale/%l_%t/%N
+# environment
+CRAY_RCA_POST_LINK_OPTS = -L/opt/cray/rca/2.2.20-7.0.1.1_4.70__g8e3fb5b.ari/lib64 -lrca
+# automatic
+@F = $(notdir $@)
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPILERS_INTEL_x86_64 = 16.0
+# makefile (from '../arch.mk', line 43)
+INCFLAG = -I
+# environment
+FFTW_INC = /opt/cray/pe/fftw/3.3.8.4/haswell/include
+# makefile (from '../arch.mk', line 45)
+C_PARAFLAG = -DPARA -DMPICH_IGNORE_CXX_SEEK
+# environment
+MINICOM = -c on
+# environment
+NKPOOL = 1
+# environment
+__INTEL_PRE_CFLAGS = -Qlocation,ld,/global/common/cori/software/altd/2.0/bin
+# environment
+PE_FFTW_DEFAULT_TARGET_mic_knl = mic_knl
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64 = 9.0
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_sandybridge = 19.0
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_sandybridge = 19.0
+# environment
+PE_HDF5_PARALLEL_VOLATILE_PRGENV = GNU
+# environment
+XDG_DATA_DIRS = /usr/share
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/server/remoteExtensionHostProcess
+# environment
+CRAY_XPMEM_INCLUDE_OPTS = -I/opt/cray/xpmem/2.2.20-7.0.1.1_4.26__g0475745.ari/include
+# environment
+PE_HDF5_DEFAULT_GENCOMPS_GNU = 
+# makefile (from '../Common/common-rules.mk', line 92)
+ALL_COMMON_OBJ = $(addprefix $(COMMON)/,$(ALL_COMOBJ))
+# environment
+ATP_POST_LINK_OPTS = -Wl,-L/opt/cray/pe/atp/2.1.3/libApp/ 
+# environment
+LIBGL_DEBUG = quiet
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/62525/bus
+# environment
+PE_HDF5_MODULE_NAME = cray-hdf5-parallel
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# makefile (from '../Common/common-rules.mk', line 78)
+F90_CPP = $(FCPP) -P $(INCLUDE) $(CPPOPT) $< > $(basename $<).p.f
+# environment
+SLATEC_DIR = /global/homes/m/mwu/softwares/SLATEC/slatec
+# environment
+INTEL_PATH = /opt/intel/compilers_and_libraries_2019.3.199
+# environment
+PE_FFTW_PKGCONFIG_VARIABLES = PE_FFTW_OMP_REQUIRES_@openmp@
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAY_x86_skylake = 90
+# environment
+PE_TRILINOS_DEFAULT_VOLATILE_PRGENV = CRAYCLANG GNU INTEL
+# environment
+PE_FFTW_TARGET_x86_cascadelake = x86_cascadelake
+# environment
+MACHTYPE = x86_64-suse-linux
+# makefile (from '../Common/common-rules.mk', line 176)
+RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64 = 9.0
+# environment
+SHMEM_ABORT_ON_ERROR = 1
+# environment
+PE_LIBSCI_GENCOMPS_CRAYCLANG_x86_64 = 90
+# makefile (from '../Common/common-rules.mk', line 96)
+GLOBALOBJS = $(addprefix $(COMMON)/,$(GLOBOBJ))
+# environment
+CRAY_UGNI_POST_LINK_OPTS = -L/opt/cray/ugni/6.0.14.0-7.0.1.1_7.59__ge78e5b0.ari/lib64
+# environment
+PE_PKG_CONFIG_PATH = /opt/cray/pe/valgrind4hpc/2.8.1/lib/pkgconfig:/opt/cray/pe/cti/1.0.9/lib/pkgconfig:/opt/cray/pe/cti/1.0.7/lib/pkgconfig:/opt/cray/pe/cti/2.8.1/lib/pkgconfig:/opt/cray/pe/atp/3.8.1/lib/pkgconfig
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell = 9.0
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+PE_MPICH_GENCOMPILERS_CRAYCLANG = 9.0
+# environment
+PE_MPICH_VOLATILE_PRGENV = GNU CRAYCLANG CRAY
+# environment
+PE_TPSL_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH:PE_LIBSCI
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_x86_64 = 8.2 7.1
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_x86_64 = 8.2 7.1
+# environment
+MAN_POSIXLY_CORRECT = 1
+# environment
+PE_FFTW_DEFAULT_TARGET_x86_64 = x86_64
+# environment
+USER = mwu
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake = 9.0
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake = 9.0
+# environment
+ALTD_WORKDIR = /global/cscratch1/altd/logs
+ 
+# environment
+RCLOCAL_PRGENV = true
+# environment
+VSCODE_CWD = /global/u2/m/mwu
+# environment
+PE_HUGEPAGES_PKGCONFIG_VARIABLES = PE_HUGEPAGES_TEXT_SEGMENT:PE_HUGEPAGES_PAGE_SIZE
+# makefile (from '../arch.mk', line 54)
+LAPACKLIB = $(MKLROOT)/lib/intel64/libmkl_scalapack_lp64.a -Wl,--start-group $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a $(MKLROOT)/lib/intel64/libmkl_core.a $(MKLROOT)/lib/intel64/libmkl_intel_thread.a $(MKLROOT)/lib/intel64/libmkl_blacs_intelmpi_lp64.a -Wl,--end-group -lpthread -lm -ldl
+# environment
+PE_PETSC_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH:PE_LIBSCI:PE_HDF5_PARALLEL:PE_TPSL
+# environment
+PE_TRILINOS_DEFAULT_GENCOMPS_INTEL_x86_64 = 190
+# environment
+PE_FFTW_DEFAULT_TARGET_broadwell = broadwell
+# environment
+CRAY_XPMEM_POST_LINK_OPTS = -L/opt/cray/xpmem/2.2.20-7.0.1.1_4.26__g0475745.ari/lib64
+# environment
+CSHRCREAD = true
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_x86_64 = 19.0
+# environment
+SSH_CONNECTION = 136.152.143.18 16038 128.55.209.23 22
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_x86_64 = 19.0
+# environment
+G_BROKEN_FILENAMES = 1
+# makefile (from '../arch.mk', line 28)
+TYPEFLAG = -DCPLX
+# environment
+MPICH_DIR = /opt/cray/pe/mpt/7.7.10/gni/mpich-intel/16.0
+# environment
+PE_NETCDF_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/netcdf/4.6.3.2/@PRGENV@/@PE_NETCDF_DEFAULT_GENCOMPS@/lib/pkgconfig
+# environment
+HDF5_ROOT = /opt/cray/pe/hdf5-parallel/1.10.5.2/INTEL/19.0
+# environment
+CRAY_LIBSCI_PREFIX_DIR = /opt/cray/pe/libsci/19.06.1/INTEL/16.0/x86_64
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_haswell = 8.2 7.1
+# environment
+COLOR_LIGHT_GREEN = \e[1;32m
+# environment
+PE_LIBSCI_GENCOMPILERS_CRAY_x86_64 = 9.0
+# environment
+ATP_CFLAGS_GNU_FORTRAN = -fno-backtrace
+# makefile (from '../arch.mk', line 41)
+FNOOPTS = $(FOPTS)
+# environment
+PE_FFTW2_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH
+# environment
+ALTD_PATH = /global/common/cori/software/altd/2.0
+# environment
+DMAPP_ABORT_ON_ERROR = 1
+# environment
+LESSKEY = /etc/lesskey.bin
+# environment
+LDMSD_PLUGIN_LIBPATH = /opt/ovis/lib64/ovis-ldms
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_x86_skylake = 8.2 7.1
+# environment
+LSCOLORS = ExFxCxDxBxegedabagacad
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_GNU_x86_skylake = 8.2 7.1
+# environment
+PE_FFTW_DEFAULT_TARGET_x86_skylake = x86_skylake
+# environment
+PE_FFTW_TARGET_mic_knl = mic_knl
+# environment
+PE_PAPI_DEFAULT_ACCEL_LIBS = 
+# environment
+PE_LIBSCI_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/libsci/19.06.1/@PRGENV@/@PE_LIBSCI_GENCOMPS@/@PE_LIBSCI_TARGET@/lib/pkgconfig
+# makefile (from '../Common/common-rules.mk', line 97)
+GLOBALMODS = $(GLOBALOBJS:.o=_m.mod)
+# makefile
+.DEFAULT_GOAL := default_goal
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_haswell = 19.0
+# makefile (from '../arch.mk', line 42)
+MOD_OPT = -module 
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_sandybridge = 9.0
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# makefile (from '../arch.mk', line 52)
+REMOVE = /bin/rm -f
+# environment
+PE_MPICH_CXX_PKGCONFIG_LIBS = mpichcxx
+# environment
+PE_PKGCONFIG_PRODUCTS = PE_FFTW:PE_HDF5_PARALLEL:PE_HUGEPAGES:PE_MPICH:PE_LIBSCI
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPS_CRAY_x86_64 = 90
+# environment
+DVS_MAXNODES = 1__
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_INTEL_x86_skylake = 19.0
+# makefile (from '../Common/common-rules.mk', line 95)
+GLOBOBJ = global.o typedefs.o nrtype.o push_pop.o message.o peinfo.o timing.o intrinsics.o scalapack_aux.o
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_x86_skylake = 19.0
+# environment
+CPATH = /opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/include
+# environment
+PE_HDF5_PARALLEL_GENCOMPILERS_GNU = 8.2 7.1
+# environment
+PE_FFTW_PKGCONFIG_LIBS = fftw3_mpi:libfftw3_threads:fftw3:fftw3f_mpi:libfftw3f_threads:fftw3f
+# environment
+LIBRARYMODULES = acml:alps:cray-dwarf:cray-fftw:cray-ga:cray-hdf5:cray-hdf5-parallel:cray-libsci:cray-libsci_acc:cray-mpich:cray-mpich-abi:cray-mpich2:cray-netcdf:cray-netcdf-hdf5parallel:cray-parallel-netcdf:cray-petsc:cray-petsc-complex:cray-shmem:cray-tpsl:cray-trilinos:cudatoolkit:fftw:ga:hdf5:hdf5-parallel:iobuf:libfast:netcdf:netcdf-hdf5parallel:ntk:onesided:papi:petsc:petsc-complex:pmi:tpsl:trilinos:xt-libsci:xt-mpich2:xt-mpt:xt-papi
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPILERS_GNU_x86_64 = 8.1 7.1
+# environment
+BASH_ENV = /global/homes/m/mwu/.bashrc
+# environment
+ALLINEA_QUEUE_DLL = /opt/cray/pe/mpt/7.7.10/gni/mpich-intel/16.0/lib/libtvmpich.so.3.0.1
+# makefile (from '../arch.mk', line 56)
+FFTWLIB = 
+# environment
+TARGETMODULES = craype-abudhabi:craype-abudhabi-cu:craype-accel-host:craype-accel-nvidia20:craype-accel-nvidia30:craype-accel-nvidia35:craype-barcelona:craype-broadwell:craype-haswell:craype-hugepages128K:craype-hugepages128M:craype-hugepages16M:craype-hugepages256M:craype-hugepages2M:craype-hugepages32M:craype-hugepages4M:craype-hugepages512K:craype-hugepages512M:craype-hugepages64M:craype-hugepages8M:craype-intel-knc:craype-interlagos:craype-interlagos-cu:craype-istanbul:craype-ivybridge:craype-mc12:craype-mc8:craype-mic-knl:craype-network-aries:craype-network-gemini:craype-network-infiniband:craype-network-none:craype-network-seastar:craype-sandybridge:craype-shanghai:craype-target-compute_node:craype-target-local_host:craype-target-native:craype-xeon:xtpe-barcelona:xtpe-interlagos:xtpe-interlagos-cu:xtpe-istanbul:xtpe-mc12:xtpe-mc8:xtpe-network-gemini:xtpe-network-seastar:xtpe-shanghai:xtpe-target-native:xtpe-xeon
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_haswell = 90
+# environment
+LIBXC_DIR = /global/homes/m/mwu/softwares/libxc_omp/libxc/intel-hsw-omp
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_haswell = 90
+# environment
+PE_PAPI_DEFAULT_ACCEL_LIBS_nvidia35 = ,-lcupti,-lcudart,-lcuda
+# makefile (from '../arch.mk', line 48)
+C_LINK = CC -Wl,--as-needed -liomp5 -Wl,--no-as-needed
+# environment
+PE_MPICH_DEFAULT_GENCOMPS_CRAY = 90
+# environment
+JAVA_BINDIR = /usr/lib64/jvm/java/bin
+# makefile (from 'Makefile', line 17)
+COMMONOBJS = $(addprefix $(COMMON)/,$(COMOBJ)) $(GLOBALOBJS)
+# makefile (from '../Common/common-rules.mk', line 159)
+AR = /usr/bin/ar
+# environment
+VSCODE_LOG_STACK = false
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_sandybridge = 8.2 7.1
+# environment
+VSCODE_IPC_HOOK_CLI = /run/user/62525/vscode-ipc-cc10fbfd-001f-49ed-912e-dbf9071ec4c8.sock
+# makefile (from '../arch.mk', line 50)
+C_DEBUGFLAG = 
+# makefile (from '../arch.mk', line 62)
+HDF5INCLUDE = $(HDF5_DIR)/include
+# environment
+PE_HDF5_PARALLEL_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
+# environment
+PE_LIBSCI_PKGCONFIG_LIBS = libsci_mpi:libsci
+# environment
+PE_NETCDF_HDF5PARALLEL_DEFAULT_GENCOMPS_GNU = 
+# environment
+CRAYPE_DIR = /opt/cray/pe/craype/2.6.2
+# environment
+HOSTNAME = cori01
+# environment
+CRAY_MPICH_BASEDIR = /opt/cray/pe/mpt/7.7.10/gni
+# environment
+CRAYPE_NETWORK_TARGET = aries
+# makefile (from '../Common/common-rules.mk', line 67)
+F90_CMD = $(F90free) $(FTNINC) -c $(FOPTS) $(basename $<).p.f -o $(basename $<).o $(MOD_OPT)$(dir $<)
+# environment
+LS_COLORS = no=00:fi=00:di=00;34:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;31:*.cmd=00;32:*.exe=00;32:*.gz=00;91:*.bz2=00;91:*.bz=00;91:*.tz=00;91:*.rpm=00;91:*.rar=00;91:*.zip=00;91:*.tgz=00;91:*.iso=00;90:*.cpio=00;31:*.o=92:*.c=32:*.cu=32:*.py=32:*.cpp=32:*.f=32:*.f90=32:*.F=32:*.F90=32:*.h=33:*.sh=33:*.t=33:*.pm=33:*.pl=33:*.cgi=33:*.pod=33:*.PL=33:*.js=33:*.php=33:*.off=00;9:*.bak=00;9:*.old=00;9:*.htm=94:*.html=94:*.css=94:*.avi=96:*.wmv=96:*.mpeg=96:*.mpg=96:*.mov=96:*.AVI=96:*.WMV=96:*.mkv=96:*.jpg=96:*.UPF=96:*.upf=96:*.jpeg=96:*.png=96:*.xcf=96:*.JPG=96:*.gif=96:*.svg=96:*.eps=00;96:*.pdf=00;96:*.PDF=00;96:*.ps=00;96:*.ai=00;91:*.doc=00;91:*.csv=95:*.dsv=95:*.db=95:*.sql=95:*.meta=95:*.xml=95:*.yaml=95:*.yml=95:*.conf=95:
+# environment
+PE_LIBSCI_DEFAULT_OMP_REQUIRES = 
+# environment
+MPICH_ABORT_ON_ERROR = 1
+# environment
+ALTD_SELECT_OFF_USERS = 
+# environment
+PE_INTEL_FIXED_PKGCONFIG_PATH = /opt/cray/pe/hdf5-parallel/1.10.5.2/INTEL/19.0/lib/pkgconfig:/opt/cray/pe/mpt/7.7.10/gni/mpich-INTEL/16.0/lib/pkgconfig
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_sandybridge = 19.0
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_haswell = 82 71
+# environment
+PE_LIBSCI_GENCOMPS_GNU_x86_64 = 81 71
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_GNU_haswell = 82 71
+# environment
+JDK_HOME = /usr/lib64/jvm/java
+# automatic
+%F = $(notdir $%)
+# environment
+CRAY_HDF5_PARALLEL_VERSION = 1.10.5.2
+# makefile (from '../arch.mk', line 72)
+TESTSCRIPT = sbatch cori2.scr
+# environment
+COLOR_LIGHT_RED = \e[1;31m
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAY_haswell = 9.0
+# environment
+PE_NETCDF_HDF5PARALLEL_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/netcdf-hdf5parallel/4.6.3.2/@PRGENV@/@PE_NETCDF_HDF5PARALLEL_DEFAULT_GENCOMPS@/lib/pkgconfig
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAY_haswell = 9.0
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_INTEL_haswell = 19.0
+# environment
+PE_HDF5_DEFAULT_VOLATILE_PRGENV = GNU
+# environment
+COLOR_LIGHT_BLUE = \e[1;34m
+# environment
+CRAY_LD_LIBRARY_PATH = /opt/cray/pe/fftw/3.3.8.4/haswell/lib:/opt/cray/pe/hdf5-parallel/1.10.5.2/INTEL/19.0/lib:/opt/cray/pe/mpt/7.7.10/gni/mpich-intel/16.0/lib:/opt/cray/rca/2.2.20-7.0.1.1_4.70__g8e3fb5b.ari/lib64:/opt/cray/alps/6.6.58-7.0.1.1_6.26__g437d88db.ari/lib64:/opt/cray/xpmem/2.2.20-7.0.1.1_4.26__g0475745.ari/lib64:/opt/cray/dmapp/7.1.1-7.0.1.1_4.68__g38cf134.ari/lib64:/opt/cray/pe/pmi/5.0.14/lib64:/opt/cray/ugni/6.0.14.0-7.0.1.1_7.59__ge78e5b0.ari/lib64:/opt/cray/udreg/2.3.2-7.0.1.1_3.57__g8175d3d.ari/lib64:/opt/cray/pe/libsci/19.06.1/INTEL/16.0/x86_64/lib
+# environment
+COLOR_GRAY = \e[0;30m
+# environment
+PE_NETCDF_HDF5PARALLEL_DEFAULT_FIXED_PRGENV = CRAY CRAYCLANG INTEL
+# makefile (from '../Common/common-rules.mk', line 23)
+CC_LINK_LIBS = -cxxlib
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_haswell = 190
+# environment
+PE_CRAYCLANG_DEFAULT_FIXED_PKGCONFIG_PATH = /opt/cray/pe/parallel-netcdf/1.11.1.1/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/netcdf-hdf5parallel/4.6.3.2/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/netcdf/4.6.3.2/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/hdf5-parallel/1.10.5.2/CRAYCLANG/9.0/lib/pkgconfig:/opt/cray/pe/hdf5/1.10.5.2/CRAYCLANG/9.0/lib/pkgconfig
+# environment
+COLOR_BLACK = \e[0;30m
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge = 90
+# environment
+HDF5_DIR = /opt/cray/pe/hdf5-parallel/1.10.5.2/INTEL/19.0
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge = 90
+# environment
+INTEL_MAJOR_VERSION = 19
+# makefile (from '../arch.mk', line 21)
+COMPFLAG = -DINTEL
+# makefile (from '../arch.mk', line 46)
+CC_COMP = CC
+# environment
+PE_FORTRAN_PKGCONFIG_LIBS = hdf5hl_fortran_parallel:hdf5_fortran_parallel:mpichf90
+# environment
+craype_already_loaded = 0
+# environment
+PWD = /global/cscratch1/sd/mwu/EpsInv/src
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_x86_64 = 8.2 7.1
+# environment
+PE_ENV = INTEL
+# makefile (from 'Makefile', line 20)
+OBJ_EPSINV = $(SRC_EPSINV:.f90=.o)
+# environment
+CRAY_PMI_POST_LINK_OPTS = -L/opt/cray/pe/pmi/5.0.14/lib64
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_skylake = 9.0
+# environment
+PE_HDF5_PARALLEL_DEFAULT_VOLATILE_PRGENV = GNU
+# default
+.LOADED := 
+# environment
+SCRATCH = /global/cscratch1/sd/mwu
+# environment
+PE_SMA_DEFAULT_PKGCONFIG_VARIABLES = PE_SMA_COMPFLAG_@prgenv@
+# environment
+ 
+CRAY_FFTW_PREFIX = /opt/cray/pe/fftw/3.3.8.4/haswell
+# environment
+PE_MPICH_ALTERNATE_LIBS_dpm = _dpm
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+CRAY_MPICH2_DIR = /opt/cray/pe/mpt/7.7.10/gni/mpich-intel/16.0
+# environment
+PKG_CONFIG_PATH = /opt/cray/rca/2.2.20-7.0.1.1_4.70__g8e3fb5b.ari/lib64/pkgconfig:/opt/cray/alps/6.6.58-7.0.1.1_6.26__g437d88db.ari/lib64/pkgconfig:/opt/cray/xpmem/2.2.20-7.0.1.1_4.26__g0475745.ari/lib64/pkgconfig:/opt/cray/gni-headers/5.0.12.0-7.0.1.1_6.44__g3b1768f.ari/lib64/pkgconfig:/opt/cray/dmapp/7.1.1-7.0.1.1_4.68__g38cf134.ari/lib64/pkgconfig:/opt/cray/pe/pmi/5.0.14/lib64/pkgconfig:/opt/cray/ugni/6.0.14.0-7.0.1.1_7.59__ge78e5b0.ari/lib64/pkgconfig:/opt/cray/udreg/2.3.2-7.0.1.1_3.57__g8175d3d.ari/lib64/pkgconfig:/opt/cray/pe/craype/2.6.2/pkg-config:/opt/cray/pe/iobuf/2.0.9/lib/pkgconfig:/opt/cray/pe/fftw/2.1.5.9/lib/pkgconfig:/opt/cray/pe/atp/3.8.1/lib/pkgconfig:/opt/cray/pe/atp/2.1.3/lib/pkgconfig
+# environment
+PE_SMA_DEFAULT_DIR_PGI_DEFAULT64 = 64
+# environment
+ATP_HOME = /opt/cray/pe/atp/2.1.3
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_x86_64 = 19.0
+# makefile (from '../Common/common-rules.mk', line 76)
+f90_CPP = $(FCPP) $(INCLUDE) $(CPPOPT) $< > $(basename $<).p.f
+# environment
+HUGETLB_FORCE_ELFMAP = yes+
+# environment
+HUGETLB_DEFAULT_PAGE_SIZE = 2M
+# environment
+PE_FFTW_DEFAULT_TARGET_x86_cascadelake = x86_cascadelake
+# environment
+LIBSCI_BASE_DIR = /opt/cray/pe/libsci/19.06.1
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_sandybridge = 82 71
+# makefile (from '../arch.mk', line 37)
+LINK = ftn -static-intel -static-libgcc -static-libstdc++  -Wl,--as-needed -liomp5 -Wl,--no-as-needed
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_GNU_sandybridge = 82 71
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_haswell = 190
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPS_CRAYCLANG_x86_64 = 90
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake = 90
+# environment
+HOME = /global/homes/m/mwu
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAY_sandybridge = 9.0
+# environment
+LD_LIBRARY_PATH = /opt/intel/compilers_and_libraries_2019.3.199/linux/compiler/lib/intel64:/opt/intel/compilers_and_libraries_2019.3.199/linux/mkl/lib/intel64:/opt/cray/job/2.2.4-7.0.1.1_3.53__g36b56f4.ari/lib64:/global/homes/m/mwu/softwares/LAMMPS/stable_7Aug2019/src/:/global/homes/m/mwu/softwares/LAMMPS/stable_7Aug2019/src/:/global/homes/m/mwu/softwares/LAMMPS/stable_7Aug2019/src/:/global/homes/m/mwu/softwares/LAMMPS/stable_7Aug2019/src/
+# makefile (from '../arch.mk', line 1)
+MAKEFILE_LIST :=  Makefile ../Common/common-rules.mk ../arch.mk
+# environment
+PE_MPICH_DEFAULT_VOLATILE_PRGENV = GNU CRAYCLANG CRAY
+# environment
+PE_NETCDF_DEFAULT_REQUIRED_PRODUCTS = PE_HDF5
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPS_INTEL_x86_64 = 160
+# environment
+LESSCLOSE = lessclose.sh %s %s
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_GNU_x86_skylake = 8.2 7.1
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAYCLANG_x86_64 = 90
+# environment
+PE_INTEL_DEFAULT_FIXED_PKGCONFIG_PATH = /opt/cray/pe/parallel-netcdf/1.11.1.1/INTEL/19.0/lib/pkgconfig:/opt/cray/pe/netcdf-hdf5parallel/4.6.3.2/INTEL/19.0/lib/pkgconfig:/opt/cray/pe/netcdf/4.6.3.2/INTEL/19.0/lib/pkgconfig:/opt/cray/pe/mpt/7.7.10/gni/mpich-INTEL/16.0/lib/pkgconfig:/opt/cray/pe/hdf5-parallel/1.10.5.2/INTEL/19.0/lib/pkgconfig:/opt/cray/pe/hdf5/1.10.5.2/INTEL/19.0/lib/pkgconfig:/opt/cray/pe/ga/5.3.0.10/INTEL/18.0/lib/pkgconfig
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_x86_64 = 90
+# environment
+ELPA_DIR = /global/homes/m/mwu/softwares/ELPA/elpa/intel-hsw-omp
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_sandybridge = 190
+# environment
+PE_LIBSCI_DEFAULT_PKGCONFIG_VARIABLES = PE_LIBSCI_DEFAULT_OMP_REQUIRES_@openmp@:PE_SCI_EXT_LIBPATH:PE_SCI_EXT_LIBNAME
+# environment
+LOGNAME = mwu
+# environment
+MORE = -sl
+# environment
+CRAY_SITE_LIST_DIR = /etc/opt/cray/pe/modules
+# environment
+PE_SMA_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/mpt/7.7.10/gni/sma@PE_SMA_DEFAULT_DIR_DEFAULT64@/lib64/pkgconfig
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+PE_FFTW_DEFAULT_TARGET_ivybridge = ivybridge
+# environment
+COLOR_CYAN = \e[0;36m
+# automatic
++F = $(notdir $+)
+# environment
+CRAY_PMI_INCLUDE_OPTS = -I/opt/cray/pe/pmi/5.0.14/include
+# environment
+CRAY_UGNI_INCLUDE_OPTS = -I/opt/cray/ugni/6.0.14.0-7.0.1.1_7.59__ge78e5b0.ari/include
+# environment
+SDK_HOME = /usr/lib64/jvm/java
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_INTEL_x86_skylake = 19.0
+# environment
+PE_FFTW_DEFAULT_TARGET_haswell = haswell
+# makefile (from 'Makefile', line 1)
+PREFIX = ..
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPS_GNU_x86_64 = 81 71
+# environment
+PE_SMA_DEFAULT_DIR_CRAY_DEFAULT64 = 64
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# environment
+__INTEL_PRE_FFLAGS = -Qlocation,ld,/global/common/cori/software/altd/2.0/bin
+# environment
+PE_GA_DEFAULT_GENCOMPILERS_GNU = 8.2 7.3
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+PE_LIBSCI_DEFAULT_GENCOMPILERS_CRAY_x86_64 = 9.0
+# environment
+PE_CRAY_FIXED_PKGCONFIG_PATH = /opt/cray/pe/hdf5-parallel/1.10.5.2/CRAY/9.0/lib/pkgconfig
+# environment
+XCURSOR_THEME = DMZ
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_haswell = 90
+# environment
+CRAY_LIBSCI_BASE_DIR = /opt/cray/pe/libsci/19.06.1
+# environment
+PE_FFTW_TARGET_share = share
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_x86_64 = 82 71
+# environment
+PE_HDF5_DEFAULT_GENCOMPILERS_GNU = 8.2 7.1
+# environment
+COLOR_YELLOW = \e[1;33m
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_GNU_x86_64 = 82 71
+# environment
+MAKELEVEL := 0
+# makefile (from '../Common/common-rules.mk', line 42)
+CPPOPT = $(TYPEFLAG) $(COMPFLAG) $(PARAFLAG) $(MATHFLAG) $(DEBUGFLAG)
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake = 90
+# environment
+PE_NETCDF_DEFAULT_VOLATILE_PRGENV = GNU
+# environment
+PE_ATP_PKGCONFIG_VARIABLES = ATP_CFLAGS_@prgenv@_@language@
+# environment
+HUGETLB_MORECORE_HEAPBASE = 10000000000
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAY_x86_64 = 9.0
+# environment
+PE_LIBSCI_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/libsci/19.06.1/@PRGENV@/@PE_LIBSCI_DEFAULT_GENCOMPS@/@PE_LIBSCI_DEFAULT_TARGET@/lib/pkgconfig
+# environment
+LOADEDMODULES = modules/3.2.11.4:altd/2.0:craype-network-aries:craype/2.6.2:cray-libsci/19.06.1:udreg/2.3.2-7.0.1.1_3.57__g8175d3d.ari:ugni/6.0.14.0-7.0.1.1_7.59__ge78e5b0.ari:pmi/5.0.14:dmapp/7.1.1-7.0.1.1_4.68__g38cf134.ari:gni-headers/5.0.12.0-7.0.1.1_6.44__g3b1768f.ari:xpmem/2.2.20-7.0.1.1_4.26__g0475745.ari:job/2.2.4-7.0.1.1_3.53__g36b56f4.ari:dvs/2.12_2.2.167-7.0.1.1_17.9__ge473d3a2:alps/6.6.58-7.0.1.1_6.26__g437d88db.ari:rca/2.2.20-7.0.1.1_4.70__g8e3fb5b.ari:atp/2.1.3:PrgEnv-intel/6.0.5:craype-haswell:cray-mpich/7.7.10:craype-hugepages2M:cray-hdf5-parallel/1.10.5.2:cray-fftw/3.3.8.4:python/3.8-anaconda-2020.11:intel/19.0.3.199
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAY_x86_64 = 9.0
+# environment
+PE_MPICH_DEFAULT_GENCOMPILERS_CRAYCLANG = 9.0
+# default
+MAKECMDGOALS := all
+# environment
+PATH = /global/u2/m/mwu/.vscode-server/bin/7f6ab5485bbc008386c4386d08766667e155244e/bin:/global/homes/m/mwu/softwares/BGW/BGW_spinor/MeanField/ESPRESSO:/global/homes/m/mwu/softwares/QE/QE6.4.1/QE6.4.1_dev/bin:/global/homes/m/mwu/softwares/VASP/5.4.4/vasp.5.4.4/bin:/global/homes/m/mwu/softwares/Wannier90/Wannier90_3.1.0_dev:/global/homes/m/mwu/bin/atools:/global/homes/m/mwu/softwares/BGW/BGW_spinor/bin:::/opt/intel/compilers_and_libraries_2019.3.199/linux/bin/intel64:/global/homes/m/mwu/.vscode-server/bin/7f6ab5485bbc008386c4386d08766667e155244e/bin:/global/homes/m/mwu/softwares/BGW/BGW_spinor/MeanField/ESPRESSO:/global/homes/m/mwu/softwares/QE/QE6.4.1/QE6.4.1_dev/bin:/global/homes/m/mwu/softwares/VASP/5.4.4/vasp.5.4.4/bin:/global/homes/m/mwu/softwares/Wannier90/Wannier90_3.1.0_dev:/global/homes/m/mwu/bin/atools:/global/homes/m/mwu/softwares/BGW/BGW_spinor/bin:::/global/homes/m/mwu/softwares/BGW/BGW_spinor/MeanField/ESPRESSO:/global/homes/m/mwu/softwares/QE/QE6.4.1/QE6.4.1_dev/bin:/global/homes/m/mwu/softwares/VASP/5.4.4/vasp.5.4.4/bin:/global/homes/m/mwu/softwares/Wannier90/Wannier90_3.1.0_dev:/global/homes/m/mwu/bin/atools:/global/homes/m/mwu/softwares/BGW/BGW_spinor/bin:::/global/homes/m/mwu/softwares/BGW/BGW_spinor/MeanField/ESPRESSO:/global/homes/m/mwu/softwares/QE/QE6.4.1/QE6.4.1_dev/bin:/global/homes/m/mwu/softwares/VASP/5.4.4/vasp.5.4.4/bin:/global/homes/m/mwu/softwares/Wannier90/Wannier90_3.1.0_dev:/global/homes/m/mwu/bin/atools:/global/homes/m/mwu/softwares/BGW/BGW_spinor/bin:::/usr/common/software/python/3.8-anaconda-2020.11/bin:/global/homes/m/mwu/.local/cori/3.8-anaconda-2020.11/bin:/opt/cray/pe/fftw/3.3.8.4/haswell/bin:/opt/cray/pe/hdf5-parallel/1.10.5.2/bin:/opt/cray/pe/hdf5/1.10.5.2/bin:/opt/cray/pe/mpt/7.7.10/gni/bin:/opt/cray/rca/2.2.20-7.0.1.1_4.70__g8e3fb5b.ari/bin:/opt/cray/alps/6.6.58-7.0.1.1_6.26__g437d88db.ari/sbin:/opt/cray/alps/default/bin:/opt/cray/job/2.2.4-7.0.1.1_3.53__g36b56f4.ari/bin:/opt/cray/pe/craype/2.6.2/bin:/global/common/cori/software/altd/2.0/bin:/usr/common/software/bin:/usr/common/nsg/bin:/opt/ovis/bin:/opt/ovis/sbin:/opt/cray/pe/modules/3.2.11.4/bin:/global/homes/m/mwu/bin:/usr/local/bin:/usr/bin:/bin:/usr/lib/mit/bin:/usr/lib/mit/sbin:/opt/cray/pe/bin:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/btools:/global/homes/m/mwu/bin/wtools:/global/u2/m/mwu/bin:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/vtools:/global/homes/m/mwu/bin/btools:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/btools:/global/homes/m/mwu/bin/wtools:/global/u2/m/mwu/bin:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/vtools:/global/homes/m/mwu/bin/btools:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/btools:/global/homes/m/mwu/bin/wtools:/global/u2/m/mwu/bin:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/vtools:/global/homes/m/mwu/bin/btools:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/btools:/global/homes/m/mwu/bin/wtools:/global/u2/m/mwu/bin:/global/homes/m/mwu/bin/qtools:/global/homes/m/mwu/bin/vtools:/global/homes/m/mwu/bin/btools
+# environment
+OSTYPE = linux
+# environment
+PYTHONUSERBASE = /global/homes/m/mwu/.local/cori/3.8-anaconda-2020.11
+# environment
+XKEYSYMDB = /usr/X11R6/lib/X11/XKeysymDB
+# environment
+COLOR_LIGHT_PURPLE = \e[1;35m
+# environment
+SHLVL = 5
+# environment
+ALTD_ON = 0
+# environment
+PE_NETCDF_HDF5PARALLEL_DEFAULT_VOLATILE_PRGENV = GNU
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_x86_64 = 190
+# makefile (from '../arch.mk', line 65)
+ELPALIB = ${ELPA_DIR}/lib/libelpa_openmp.a
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_sandybridge = 190
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_x86_64 = 190
+# environment
+PE_TPSL_64_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/tpsl/19.06.1/@PRGENV@64/@PE_TPSL_64_DEFAULT_GENCOMPS@/@PE_TPSL_64_DEFAULT_TARGET@/lib/pkgconfig
+# environment
+PE_MPICH_GENCOMPS_CRAYCLANG = 90
+# environment
+PE_PETSC_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/petsc/3.11.2.0/complex/@PRGENV@/@PE_PETSC_DEFAULT_GENCOMPS@/@PE_PETSC_DEFAULT_TARGET@/lib/pkgconfig
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_GNU_x86_64 = 82 71
+# environment
+CRAY_PRGENVINTEL = loaded
+# environment
+WINDOWMANAGER = /usr/bin/gnome
+# environment
+PE_PAPI_DEFAULT_ACCEL_FAMILY_LIBS_nvidia = ,-lcupti,-lcudart,-lcuda
+# environment
+PE_PARALLEL_NETCDF_DEFAULT_VOLATILE_PRGENV = GNU
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_GNU_haswell = 82 71
+# environment
+LESS_ADVANCED_PREPROCESSOR = no
+# environment
+JAVA_HOME = /usr/lib64/jvm/java
+# makefile (from '../Common/common-rules.mk', line 8)
+FLAVOR = .cplx
+# environment
+CRAY_MPICH_ROOTDIR = /opt/cray/pe/mpt/7.7.10
+# environment
+PE_FFTW_TARGET_ivybridge = ivybridge
+# environment
+OMP_NUM_THREADS = 1
+# environment
+XDG_SESSION_ID = 57812
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAY_haswell = 9.0
+# environment
+EDITOR = emacs
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_GNU_haswell = 8.2 7.1
+# environment
+PE_TRILINOS_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64 = 9.0
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_GNU_x86_skylake = 82 71
+# environment
+PE_MPICH_NV_LIBS_nvidia60 = -lcudart
+# environment
+MKLROOT = /opt/intel/compilers_and_libraries_2019.3.199/linux/mkl
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_GNU_x86_skylake = 82 71
+ 
+# environment
+MPICH_GNI_ROUTING_MODE = ADAPTIVE_3
+# makefile (from '../Common/common-rules.mk', line 51)
+INCLUDE = -I$(COMMON)
+# environment
+CRAYPE_VERSION = 2.6.2
+# environment
+PE_MPICH_DEFAULT_DIR_CRAYCLANG_DEFAULT64 = 64
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAY_x86_skylake = 9.0
+# environment
+PE_GA_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/ga/5.3.0.10/@PRGENV@/@PE_GA_DEFAULT_GENCOMPS@/lib/pkgconfig
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAY_x86_skylake = 9.0
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_sandybridge = 90
+# environment
+CFS = /global/cfs/cdirs
+# environment
+PE_MPICH_DEFAULT_GENCOMPILERS_GNU = 8.2 8.1 7.1
+# makefile (from '../Common/common-rules.mk', line 152)
+SPGLIB_HEADERS = $(addprefix $(SPGLIB)/, cell.h debug.h hall_symbol.h kpoint.h lattice.h mathfunc.h pointgroup.h primitive.h refinement.h site_symmetry.h sitesym_database.h spacegroup.h spg_database.h spglib.h symmetry.h)
+# makefile (from '../Common/common-rules.mk', line 45)
+C_CPPOPT = $(TYPEFLAG) $(COMPFLAG) $(C_PARAFLAG) $(C_DEBUGFLAG)
+# automatic
+<F = $(notdir $<)
+# environment
+PE_GA_DEFAULT_FIXED_PRGENV = CRAY INTEL
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAY_sandybridge = 90
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_INTEL_x86_skylake = 190
+# environment
+LESS = -M -I -R
+# environment
+PE_FFTW_REQUIRED_PRODUCTS = PE_MPICH
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_INTEL_x86_skylake = 190
+# environment
+TOOLMODULES = apprentice:apprentice2:atp:chapel:cray-lgdb:cray-snplauncher:craypat:craypkg-gen:ddt:gdb:iobuf:papi:perftools:perftools-lite:stat:totalview:xt-craypat:xt-lgdb:xt-papi:xt-totalview
+# environment
+CPU = x86_64
+# environment
+PE_HDF5_PARALLEL_GENCOMPS_GNU = 
+# environment
+PE_MPICH_NV_LIBS = 
+# environment
+LDAPTLS_REQCERT = never
+# environment
+FFTW_ROOT = /opt/cray/pe/fftw/3.3.8.4/haswell
+# environment
+PE_MPICH_NV_LIBS_nvidia20 = -lcudart
+# environment
+CRAY_MPICH_DIR = /opt/cray/pe/mpt/7.7.10/gni/mpich-intel/16.0
+# environment
+PE_HDF5_DIR = /opt/cray/pe/hdf5-parallel/1.10.5.2
+# environment
+PE_TRILINOS_DEFAULT_GENCOMPILERS_GNU_x86_64 = 8.2 7.1
+# environment
+PE_FFTW_TARGET_broadwell = broadwell
+# environment
+PE_MPICH_PKGCONFIG_VARIABLES = PE_MPICH_NV_LIBS_@accelerator@:PE_MPICH_ALTERNATE_LIBS_@multithreaded@:PE_MPICH_ALTERNATE_LIBS_@dpm@
+# default
+MAKE_COMMAND := make
+# environment
+CRAY_MPICH2_VER = 7.7.10
+# environment
+PE_PARALLEL_NETCDF_DEFAULT_GENCOMPILERS_GNU = 8.2 7.3
+# makefile (from '../Common/common-rules.mk', line 88)
+ALL_COMOBJ = scalapack.o inversion.o write_matrix.o vcoul_generator.o check_inversion.o sort.o blas.o scalapack.o lapack.o misc.o input_utils.o symmetries.o hdf5_io.o wfn_io_hdf5.o epsread_hdf5.o epswrite_hdf5.o io_utils.o so32su2.o
+# makefile (from '../arch.mk', line 70)
+SLATECLIB = $(SLATEC_DIR)/lib/libslatec.a
+# environment
+OLDPWD = /global/homes/m/mwu/.vscode-server/bin/7f6ab5485bbc008386c4386d08766667e155244e
+# makefile (from '../arch.mk', line 36)
+F90free = ftn -free
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_GNU_sandybridge = 82 71
+# environment
+PE_HDF5_PARALLEL_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/hdf5-parallel/1.10.5.2/@PRGENV@/@PE_HDF5_PARALLEL_GENCOMPS@/lib/pkgconfig
+# environment
+PE_LIBSCI_REQUIRED_PRODUCTS = PE_MPICH
+# default
+.VARIABLES := 
+# environment
+JAVA_ROOT = /usr/lib64/jvm/java
+# environment
+TMPDIR = /tmp
+# environment
+CVS_RSH = ssh
+# automatic
+*F = $(notdir $*)
+# environment
+PE_MPICH_GENCOMPS_GNU = 82 81 71
+# environment
+PE_MPICH_NV_LIBS_nvidia35 = -lcudart
+# environment
+PE_TRILINOS_DEFAULT_GENCOMPILERS_INTEL_x86_64 = 19.0
+# environment
+MANPATH = /opt/intel/compilers_and_libraries_2019.3.199/linux/man/common:/opt/cray/pe/fftw/3.3.8.4/share/man:/opt/cray/pe/mpt/7.7.10/gni/man/mpich:/opt/cray/pe/atp/2.1.3/man:/opt/cray/alps/6.6.58-7.0.1.1_6.26__g437d88db.ari/man:/opt/cray/job/2.2.4-7.0.1.1_3.53__g36b56f4.ari/man:/opt/cray/pe/pmi/5.0.14/man:/opt/cray/pe/libsci/19.06.1/man:/opt/cray/pe/man/csmlversion:/opt/cray/pe/craype/2.6.2/man:/usr/common/software/man:/usr/common/nsg/man:/opt/cray/pe/modules/3.2.11.4/share/man:/usr/local/man:/usr/share/man:/usr/man:/opt/cray/share/man:/opt/cray/pe/man:/opt/cray/share/man:/opt/cray/share/man
+# environment
+PE_HDF5_PARALLEL_DEFAULT_GENCOMPILERS_GNU = 8.2 7.1
+# environment
+PE_HDF5_PARALLEL_FIXED_PRGENV = CRAY CRAYCLANG INTEL
+# environment
+CRAY_DMAPP_INCLUDE_OPTS = -I/opt/cray/dmapp/7.1.1-7.0.1.1_4.68__g38cf134.ari/include -I/opt/cray/gni-headers/5.0.12.0-7.0.1.1_6.40__g3b1768f.ari/include
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAY_sandybridge = 9.0
+# environment
+FPATH = :/opt/cray/pe/modules/3.2.11.4/init/sh_funcs/no_redirect:/opt/cray/pe/modules/3.2.11.4/init/sh_funcs/no_redirect:/opt/cray/pe/modules/3.2.11.4/init/sh_funcs/no_redirect
+# environment
+PE_NETCDF_DEFAULT_GENCOMPILERS_GNU = 8.2 7.1
+# makefile (from 'Makefile', line 5)
+COMOBJ = misc.o check_inversion.o inversion.o vcoul_generator.o symmetries.o input_utils.o sort.o blas.o io_utils.o epsread_hdf5.o hdf5_io.o so32su2.o wfn_io_hdf5.o epswrite_hdf5.o write_matrix.o scalapack.o
+# environment
+PYTHONPATH = /opt/mods/lib/python3.6/site-packages:/opt/ovis/lib/python3.6/site-packages::::
+# environment
+PE_MPICH_GENCOMPILERS_CRAY = 9.0
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_x86_64 = 90
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_sandybridge = 190
+# makefile
+MAKEFLAGS = pqrR
+# environment
+CRAY_LIBSCI_DIR = /opt/cray/pe/libsci/19.06.1
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_CLIENT = 136.152.143.18 16038 22
+# environment
+MAIL = /var/spool/mail/mwu
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAY_haswell = 90
+# environment
+PE_MPICH_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/mpt/7.7.10/gni/mpich-@PRGENV@@PE_MPICH_DIR_DEFAULT64@/@PE_MPICH_GENCOMPS@/lib/pkgconfig
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAY_haswell = 90
+# makefile (from '../arch.mk', line 57)
+FFTWINCLUDE = $(MKLROOT)/include/fftw/
+# environment
+PE_PKGCONFIG__PRODUCTS = PE_ATP
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+PKG_CONFIG_PATH_DEFAULT = /opt/cray/pe/papi/5.7.0.2/lib64/pkgconfig
+# environment
+NERSC_HOST = cori
+# environment
+CRAY_UDREG_POST_LINK_OPTS = -L/opt/cray/udreg/2.3.2-7.0.1.1_3.57__g8175d3d.ari/lib64
+# environment
+PE_MPICH_FIXED_PRGENV = INTEL
+# makefile (from '../Common/common-rules.mk', line 150)
+SPGLIB_OBJ = $(SPGLIB_SRC:.c=.o)
+# environment
+MODULESHOME = /opt/cray/pe/modules/3.2.11.4
+# environment
+PE_MPICH_DIR_CRAY_DEFAULT64 = 64
+# environment
+PE_HDF5_PARALLEL_PKGCONFIG_LIBS = hdf5_hl_parallel:hdf5_parallel
+# environment
+COLOR_PURPLE = \e[0;35m
+# environment
+MPICH_MPIIO_DVS_MAXNODES = 28
+# environment
+PE_LIBSCI_VOLATILE_PRGENV = CRAY CRAYCLANG GNU INTEL
+# environment
+intel_already_loaded = 0
+# environment
+CRAY_CPU_TARGET = haswell
+# environment
+BROWSER = /global/u2/m/mwu/.vscode-server/bin/7f6ab5485bbc008386c4386d08766667e155244e/bin/helpers/browser.sh
+# environment
+INTEL_MINOR_VERSION = 19
+# environment
+PE_FFTW_TARGET_haswell = haswell
+# environment
+COLOR_WHITE = \e[1;37m
+# makefile (from '../arch.mk', line 35)
+FCPP = /usr/bin/cpp -C -nostdinc
+# environment
+CRAY_DMAPP_POST_LINK_OPTS = -L/opt/cray/dmapp/7.1.1-7.0.1.1_4.68__g38cf134.ari/lib64
+# environment
+PE_HDF5_PARALLEL_FORTRAN_PKGCONFIG_LIBS = hdf5hl_fortran_parallel:hdf5_fortran_parallel
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAYCLANG_x86_skylake = 90
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAY_x86_64 = 9.0
+# makefile (from '../arch.mk', line 64)
+ELPAINCLUDE = ${ELPA_DIR}/include/elpa_openmp-2017.11.001/modules -I${ELPA_DIR}/include/elpa_openmp-2017.11.001/elpa
+# makefile (from '../Common/common-rules.mk', line 147)
+SPGLIB_SRC = $(addprefix $(SPGLIB)/, cell.c debug.c hall_symbol.c kpoint.c lattice.c mathfunc.c pointgroup.c primitive.c refinement.c site_symmetry.c sitesym_database.c spacegroup.c spg_database.c spglib.c symmetry.c spglib_f.c spglib_f_meta.c)
+# environment
+HUGETLB_ELFMAP = W
+# environment
+PE_TPSL_DEFAULT_VOLATILE_PRGENV = CRAY CRAY64 CRAYCLANG CRAYCLANG64 GNU GNU64 INTEL INTEL64
+# environment
+LS_OPTIONS = -N --color=none -T 0
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_x86_64 = 9.0
+# environment
+COLORTERM = 1
+# environment
+PE_FFTW_OMP_REQUIRES_openmp = _mp
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+PE_NETCDF_HDF5PARALLEL_DEFAULT_REQUIRED_PRODUCTS = PE_HDF5_PARALLEL
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_x86_64 = 190
+ 
+# environment
+PE_MPICH_PKGCONFIG_LIBS = mpich
+# environment
+COLOR_LIGHT_CYAN = \e[1;36m
+# default
+MAKEFILES := 
+# environment
+PE_TPSL_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/tpsl/19.06.1/@PRGENV@/@PE_TPSL_DEFAULT_GENCOMPS@/@PE_TPSL_DEFAULT_TARGET@/lib/pkgconfig
+# makefile (from '../Common/common-rules.mk', line 48)
+SPGLIB = $(PREFIX)/spglib-1.0.9
+# environment
+CRAY_ALPS_INCLUDE_OPTS = -I/opt/cray/alps/6.6.58-7.0.1.1_6.26__g437d88db.ari/include
+# environment
+PE_LIBSCI_MODULE_NAME = cray-libsci/19.06.1
+# environment
+PE_LIBSCI_GENCOMPS_CRAY_x86_64 = 90
+# environment
+XTPE_NETWORK_TARGET = aries
+# environment
+MODULE_VERSION_STACK = 3.2.11.4
+# environment
+PE_CRAY_DEFAULT_FIXED_PKGCONFIG_PATH = /opt/cray/pe/parallel-netcdf/1.11.1.1/CRAY/9.0/lib/pkgconfig:/opt/cray/pe/netcdf-hdf5parallel/4.6.3.2/CRAY/9.0/lib/pkgconfig:/opt/cray/pe/netcdf/4.6.3.2/CRAY/9.0/lib/pkgconfig:/opt/cray/pe/hdf5-parallel/1.10.5.2/CRAY/9.0/lib/pkgconfig:/opt/cray/pe/hdf5/1.10.5.2/CRAY/9.0/lib/pkgconfig:/opt/cray/pe/ga/5.3.0.10/CRAY/8.6/lib/pkgconfig
+# environment
+PE_MPICH_FORTRAN_PKGCONFIG_LIBS = mpichf90
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAY_sandybridge = 90
+# environment
+HUGETLB_MORECORE = yes
+# environment
+FFTW_DIR = /opt/cray/pe/fftw/3.3.8.4/haswell/lib
+# environment
+_LMFILES_ = /opt/cray/pe/modulefiles/modules/3.2.11.4:/global/common/software/nersc/cle7/extra_modulefiles/altd/2.0:/opt/cray/pe/craype-targets/default/modulefiles/craype-network-aries:/opt/cray/pe/modulefiles/craype/2.6.2:/opt/cray/pe/modulefiles/cray-libsci/19.06.1:/opt/cray/ari/modulefiles/udreg/2.3.2-7.0.1.1_3.57__g8175d3d.ari:/opt/cray/ari/modulefiles/ugni/6.0.14.0-7.0.1.1_7.59__ge78e5b0.ari:/opt/cray/pe/modulefiles/pmi/5.0.14:/opt/cray/ari/modulefiles/dmapp/7.1.1-7.0.1.1_4.68__g38cf134.ari:/opt/cray/ari/modulefiles/gni-headers/5.0.12.0-7.0.1.1_6.44__g3b1768f.ari:/opt/cray/ari/modulefiles/xpmem/2.2.20-7.0.1.1_4.26__g0475745.ari:/opt/cray/ari/modulefiles/job/2.2.4-7.0.1.1_3.53__g36b56f4.ari:/opt/cray/ari/modulefiles/dvs/2.12_2.2.167-7.0.1.1_17.9__ge473d3a2:/opt/cray/ari/modulefiles/alps/6.6.58-7.0.1.1_6.26__g437d88db.ari:/opt/cray/ari/modulefiles/rca/2.2.20-7.0.1.1_4.70__g8e3fb5b.ari:/opt/cray/pe/modulefiles/atp/2.1.3:/opt/cray/pe/modulefiles/PrgEnv-intel/6.0.5:/opt/cray/pe/craype-targets/default/modulefiles/craype-haswell:/opt/cray/pe/modulefiles/cray-mpich/7.7.10:/opt/cray/pe/craype-targets/default/modulefiles/craype-hugepages2M:/opt/cray/pe/modulefiles/cray-hdf5-parallel/1.10.5.2:/opt/cray/pe/modulefiles/cray-fftw/3.3.8.4:/global/common/software/nersc/cle7/extra_modulefiles/python/3.8-anaconda-2020.11:/opt/modulefiles/intel/19.0.3.199
+# environment
+LIBGL_ALWAYS_INDIRECT = 1
+# makefile (from '../Common/common-rules.mk', line 64)
+MAKE_CLEAN = -$(REMOVE) *.o *.p.f *~ core *__genmod.f90 *.a
+# makefile (from 'Makefile', line 19)
+SRC_EPSINV = EpsInv.f90
+# environment
+CSHEDIT = emacs
+# environment
+COLOR_BROWN = \e[0;33m
+# environment
+PE_MPICH_TARGET_VAR_nvidia35 = -lcudart
+# environment
+PE_SMA_DEFAULT_COMPFLAG = 
+# environment
+ZAP_LIBPATH = /opt/ovis/lib64/ovis-ldms
+# environment
+PE_LIBSCI_OMP_REQUIRES_openmp = _mp
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PYTHON_DIR = /usr/common/software/python/3.8-anaconda-2020.11
+# environment
+PE_TPSL_DEFAULT_GENCOMPILERS_CRAY_x86_skylake = 9.0
+# environment
+MODULE_VERSION = 3.2.11.4
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAY_sandybridge = 9.0
+# environment
+PAGER = less
+# environment
+PE_LIBSCI_GENCOMPILERS_CRAYCLANG_x86_64 = 9.0
+# environment
+LC_ALL = C
+# environment
+PE_FFTW_TARGET_sandybridge = sandybridge
+# environment
+COLOR_LIGHT_GRAY = \e[0;37m
+# environment
+PE_PAPI_DEFAULT_ACCELL_FAMILY_LIBS = 
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_INTEL_x86_skylake = 190
+# environment
+PE_PAPI_DEFAULT_PKGCONFIG_VARIABLES = PE_PAPI_ACCEL_LIBS_@accelerator@ PE_PAPI_ACCEL_FAMILY_LIBS_@accelerator_family@
+# environment
+PE_GA_DEFAULT_GENCOMPS_GNU = 82 73
+# environment
+CRAY_UDREG_INCLUDE_OPTS = -I/opt/cray/udreg/2.3.2-7.0.1.1_3.57__g8175d3d.ari/include
+# environment
+PE_FFTW_DEFAULT_TARGET_share = share
+# environment
+CRAY_PE_MODULES = cray-hdf5-parallel
+# environment
+ALTD_SELECT_ON = 0
+# environment
+PROFILEREAD = true
+# environment
+CRAY_ALPS_POST_LINK_OPTS = -L/opt/cray/alps/6.6.58-7.0.1.1_6.26__g437d88db.ari/lib64
+# environment
+HOSTTYPE = x86_64
+# environment
+USERMODULES = PrgEnv-cray:PrgEnv-gnu:PrgEnv-intel:PrgEnv-pathscale:PrgEnv-pgi:acml:alps:apprentice:apprentice2:atp:blcr:cce:chapel:cray-ccdb:cray-fftw:cray-ga:cray-hdf5:cray-hdf5-parallel:cray-lgdb:cray-libsci:cray-libsci_acc:cray-mpich:cray-mpich-compat:cray-mpich2:cray-netcdf:cray-netcdf-hdf5parallel:cray-parallel-netcdf:cray-petsc:cray-petsc-complex:cray-shmem:cray-snplauncher:cray-tpsl:cray-trilinos:craypat:craype:craypkg-gen:cudatoolkit:ddt:fftw:ga:gcc:hdf5:hdf5-parallel:intel:iobuf:java:lgdb:libfast:libsci_acc:mpich1:netcdf:netcdf-hdf5parallel:netcdf-nofsync:netcdf-nofsync-hdf5parallel:ntk:onesided:papi:parallel-netcdf:pathscale:perftools:perftools-lite:petsc:petsc-complex:pgi:pmi:stat:totalview:tpsl:trilinos:xt-asyncpe:xt-craypat:xt-lgdb:xt-libsci:xt-mpich2:xt-mpt:xt-papi:xt-shmem:xt-totalview
+# automatic
+^F = $(notdir $^)
+# environment
+CRAY_HDF5_PARALLEL_PREFIX = /opt/cray/pe/hdf5-parallel/1.10.5.2/INTEL/19.0
+# environment
+PE_SMA_DEFAULT_COMPFLAG_GNU = -fcray-pointer
+# environment
+HISTSIZE = 1000
+# environment
+PE_HDF5_PARALLEL_BASEDIR = /opt/cray/pe/hdf5-parallel/1.10.5.2
+# environment
+PE_CXX_PKGCONFIG_LIBS = mpichcxx
+# environment
+PE_TRILINOS_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH:PE_HDF5_PARALLEL:PE_NETCDF_HDF5PARALLEL:PE_LIBSCI:PE_TPSL
+# environment
+FROM_HEADER = 
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAY_x86_64 = 90
+# default
+SUFFIXES := 
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAY_x86_64 = 90
+# environment
+PE_MPICH_DEFAULT_GENCOMPS_CRAYCLANG = 90
+# environment
+PE_LIBSCI_GENCOMPILERS_GNU_x86_64 = 8.1 7.1
+# makefile (from '../arch.mk', line 60)
+HDF5LIB = -L$(HDF5_LDIR) -lhdf5hl_fortran -lhdf5_hl -lhdf5_fortran -lhdf5 -lz -ldl
+# environment
+XNLSPATH = /usr/share/X11/nls
+# environment
+PE_FFTW_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH
+# environment
+PE_HDF5_DEFAULT_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/hdf5/1.10.5.2/@PRGENV@/@PE_HDF5_DEFAULT_GENCOMPS@/lib/pkgconfig
+# environment
+PE_PRODUCT_LIST = CRAYPE_HASWELL:CRAY_RCA:CRAY_ALPS:DVS:CRAY_XPMEM:CRAY_DMAPP:CRAY_PMI:CRAY_UGNI:CRAY_UDREG:CRAY_LIBSCI:CRAYPE:INTEL:HUGETLB2M
+# environment
+PE_FFTW_VOLATILE_PKGCONFIG_PATH = /opt/cray/pe/fftw/3.3.8.4/@PE_FFTW_TARGET@/lib/pkgconfig
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# environment
+PE_MPICH_MODULE_NAME = cray-mpich
+# environment
+VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH = /global/u2/m/mwu/.vscode-server/bin/7f6ab5485bbc008386c4386d08766667e155244e/remote/node_modules
+# environment
+ATP_CFLAGS = 
+# environment
+PE_FFTW_TARGET_x86_64 = x86_64
+# environment
+PE_LIBSCI_GENCOMPILERS_INTEL_x86_64 = 16.0
+# environment
+CRAY_FFTW_VERSION = 3.3.8.4
+# environment
+PKGCONFIG_ENABLED = 1
+# default
+.RECIPEPREFIX := 
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_CRAY_haswell = 90
+# environment
+COLOR_BLUE = \e[0;34m
+# environment
+CRAY_GNI_HEADERS_INCLUDE_OPTS = -I/opt/cray/gni-headers/5.0.12.0-7.0.1.1_6.44__g3b1768f.ari/include
+# environment
+PE_TRILINOS_DEFAULT_GENCOMPS_CRAYCLANG_x86_64 = 90
+# environment
+GPG_TTY = not a tty
+# environment
+INTEL_VERSION = 19.0.3.199
+# default
+MAKE_HOST := x86_64-suse-linux-gnu
+# makefile (from '../arch.mk', line 49)
+C_OPTS = -O3 -xCORE-AVX2 -no-ipo -ip -qopt-zmm-usage=high -fp-model fast=2 -complex-limited-range -fno-alias -ansi-alias -qopenmp
+# environment
+XDG_RUNTIME_DIR = /run/user/62525
+# environment
+CLICOLOR = 1
+# environment
+HUGETLB_VERBOSE = 0
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPS_CRAY_x86_skylake = 90
+# environment
+PE_LIBSCI_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH
+# environment
+PE_PETSC_DEFAULT_GENCOMPS_CRAY_x86_skylake = 90
+# environment
+LANG = C
+# makefile (from '../Common/common-rules.mk', line 58)
+FTNINC = $(INCFLAG) $(COMMON) $(INCFLAG) $(INCFLAG) $(HDF5INCLUDE) $(INCFLAG) $(ELPAINCLUDE)
+# environment
+PE_TPSL_DEFAULT_GENCOMPS_GNU_x86_skylake = 82 71
+# makefile (from '../Common/common-rules.mk', line 69)
+F90_ASM_CMD = $(F90free) $(FTNINC) -S $(FOPTS) $(basename $@).p.f -o $(basename $@).s $(MOD_OPT)$(dir $<)
+# environment
+PE_MPICH_DEFAULT_GENCOMPS_GNU = 82 81 71
+# makefile (from 'Makefile', line 23)
+LIBS = $(SCALAPACKLIB) $(LAPACKLIB) $(SLATECLIB) $(HDF5LIB)
+# environment
+PE_MPICH_ALTERNATE_LIBS_multithreaded = _mt
+# environment
+QT_SYSTEM_DIR = /usr/share/desktop-data
+# makefile (from '../arch.mk', line 22)
+PARAFLAG = -DMPI -DOMP
+# environment
+PE_HDF5_PARALLEL_DEFAULT_FIXED_PRGENV = CRAY CRAYCLANG INTEL
+# environment
+PE_LIBSCI_PKGCONFIG_VARIABLES = PE_LIBSCI_OMP_REQUIRES_@openmp@:PE_SCI_EXT_LIBPATH:PE_SCI_EXT_LIBNAME
+# environment
+VSCODE_EXTHOST_WILL_SEND_SOCKET = true
+# environment
+PE_TPSL_64_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell = 9.0
+# environment
+CRAY_LIBSCI_VERSION = 19.06.1
+# environment
+COLOR_NC = \e[0m
+# environment
+PE_PETSC_DEFAULT_GENCOMPILERS_CRAYCLANG_haswell = 9.0
+# environment
+PE_MPICH_DEFAULT_GENCOMPILERS_CRAY = 9.0
+# environment
+PE_TPSL_64_DEFAULT_REQUIRED_PRODUCTS = PE_MPICH:PE_LIBSCI
+# environment
+ATP_MRNET_COMM_PATH = /opt/cray/pe/atp/2.1.3/libexec/atp_mrnet_commnode_wrapper
+# environment
+ALTD_VERBOSE = 0
+# environment
+define BASH_FUNC_module%%
+() {  eval `/opt/cray/pe/modules/3.2.11.4/bin/modulecmd bash $*`
+}
+endef
+# environment
+HOST = cori01
+# environment
+PE_LIBSCI_GENCOMPS_INTEL_x86_64 = 160
+# variable set hash-table stats:
+# Load=594/1024=58%, Rehash=0, Collisions=388/978=40%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 1894158166, inode 144216047900215258): 7 files, no impossibilities.
+# ../spglib-1.0.9 (device 1894158166, inode 144216047900216103): 57 files, no impossibilities.
+# ../Common (device 1894158166, inode 144216047900215164): 95 files, no impossibilities.
+
+# 159 files, no impossibilities in 3 directories.
+
+# Implicit Rules
+
+%.o %_m.mod: %.f90
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+%.o %_m.mod: %.F90 %_inc.f90
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+%.s: %.p.f
+#  recipe to execute (from '../Common/common-rules.mk', line 198):
+	$(F90_ASM_CMD)
+
+%.p.f: %.f90
+#  recipe to execute (from '../Common/common-rules.mk', line 202):
+	$(f90_CPP)
+
+%.p.f: %.F90 %_inc.f90
+#  recipe to execute (from '../Common/common-rules.mk', line 204):
+	$(F90_CPP)
+
+%.o: %.cpp
+#  recipe to execute (from '../Common/common-rules.mk', line 207):
+	$(CC_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+%.o: %.cc
+#  recipe to execute (from '../Common/common-rules.mk', line 210):
+	$(CC_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+ 
+
+%.o: %.c
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# 8 implicit rules, 0 (0.0%) terminal.
+
+# Files
+
+clean-wfnutils:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-keepmod:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../spglib-1.0.9/primitive.o: ../spglib-1.0.9/primitive.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/primitive'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+../Common/message.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/hdf5_io_inc.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 18:01:35
+#  File has been updated.
+#  Successfully updated.
+
+../spglib-1.0.9/spglib.o: ../spglib-1.0.9/spglib.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/spglib'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+../Common/nrtype_m.mod: ../Common/nrtype.f90 ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/nrtype'
+#  Also makes: ../Common/nrtype.o
+#  Last modified 2021-09-20 00:10:42
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+clean-common:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/inversion_m.mod: ../Common/lapack_m.mod ../Common/scalapack_m.mod ../Common/undef.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/vcoul_generator_m.mod:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/input_utils.o: ../Common/input_utils.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/blas_m.mod ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/input_utils'
+#  Also makes: ../Common/input_utils_m.mod
+#  Last modified 2021-09-20 00:10:47
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../Common/sort.o: ../Common/sort.F90 ../Common/sort_inc.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/sort'
+#  Also makes: ../Common/sort_m.mod
+#  Last modified 2021-09-20 00:10:46
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+cleanall-bin:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../spglib-1.0.9/debug.o: ../spglib-1.0.9/debug.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/debug'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+../Common/so32su2_m.mod: ../Common/so32su2.f90 ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/lattice.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+voro:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/cell.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../Common/scalapack.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+pre:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/hall_symbol.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/wfn_io_hdf5.o: ../Common/wfn_io_hdf5.F90 ../Common/wfn_io_hdf5_inc.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/hdf5_io_m.mod ../Common/global_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/wfn_io_hdf5'
+#  Also makes: ../Common/wfn_io_hdf5_m.mod
+#  Last modified 2021-09-20 00:10:49
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+all-j:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+all: EpsInv
+#  Phony target (prerequisite of .PHONY).
+#  Command line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/34=0%
+
+common: ../Common/scalapack.o ../Common/inversion.o ../Common/write_matrix.o ../Common/vcoul_generator.o ../Common/check_inversion.o ../Common/sort.o ../Common/blas.o ../Common/scalapack.o ../Common/lapack.o ../Common/misc.o ../Common/input_utils.o ../Common/symmetries.o ../Common/hdf5_io.o ../Common/wfn_io_hdf5.o ../Common/epsread_hdf5.o ../Common/epswrite_hdf5.o ../Common/io_utils.o ../Common/so32su2.o ../Common/global.o ../Common/typedefs.o ../Common/nrtype.o ../Common/push_pop.o ../Common/message.o ../Common/peinfo.o ../Common/timing.o ../Common/intrinsics.o ../Common/scalapack_aux.o
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/peinfo_m.mod: ../Common/peinfo.f90 ../Common/nrtype_m.mod ../Common/f_defs.h ../Common/intrinsics_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/peinfo'
+#  Also makes: ../Common/peinfo.o
+ 
+#  Last modified 2021-09-20 00:10:43
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+.PHONY: donkey list default all all-j all-flavors tools common library spglib kgrid check check-save manual voro pre install default_goal clean clean-flavored clean-common clean-epsilon clean-sigma clean-bse clean-spglib clean-manual cleanall cleanall-bin cleanall-common utilities clean-utilities cleanall-utilities cleanall-spglib clean-keepmod clean-keepmod-common clean-keepmod-epsilon clean-keepmod-sigma clean-keepmod-bse clean-keepmod-plotxct clean-keepmod-nonlinearoptics clean-keepmod-meanfield clean-keepmod-sapo clean-keepmod-epm clean-keepmod-siesta2bgw clean-keepmod-bgw2para clean-keepmod-kgrid clean-keepmod-cumexp clean-keepmod-utilities clean-cpp clean-wfnutils
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/message.o: ../Common/message.f90 ../Common/peinfo_m.mod ../Common/nrtype_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/message'
+#  Also makes: ../Common/message_m.mod
+#  Last modified 2021-09-20 00:10:43
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+EpsInv_m.mod:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../spglib-1.0.9/spglib_f_meta.o: ../spglib-1.0.9/spglib_f_meta.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/spglib_f_meta'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+../Common/nrtype.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 17:25:00
+#  File has been updated.
+#  Successfully updated.
+
+../Common/epsread_hdf5_m.mod: ../Common/global_m.mod ../Common/hdf5_io_m.mod
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/timing_m.mod: ../Common/timing.f90 ../Common/push_pop_m.mod ../Common/nrtype_m.mod ../Common/f_defs.h ../Common/intrinsics_m.mod ../Common/peinfo_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/timing'
+#  Also makes: ../Common/timing.o
+#  Last modified 2021-09-20 00:10:44
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+clean-keepmod-common:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/inversion.F90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+../Common/check_inversion_m.mod: ../Common/global_m.mod
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean-bse:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/compiler.h:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+check-save:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../arch.mk:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-20 00:10:24
+#  File has been updated.
+#  Successfully updated.
+
+../Common/scalapack.o: ../Common/scalapack.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/scalapack'
+#  Also makes: ../Common/scalapack_m.mod
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../Common/so32su2.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 11:40:57
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/pointgroup.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+clean-keepmod-cumexp:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/write_matrix_m.mod: ../Common/global_m.mod ../Common/scalapack_m.mod ../Common/io_utils_m.mod ../Common/f_defs.h ../Common/hdf5_io_m.mod
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean-keepmod-epsilon:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-cpp:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/sitesym_database.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/hall_symbol.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+cleanall-common:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/wfn_io_hdf5_inc.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-19 12:58:35
+#  File has been updated.
+#  Successfully updated.
+
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../Common/peinfo.f90:
+#  Implicit rule search has been done.
+ 
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-22 15:07:22
+#  File has been updated.
+#  Successfully updated.
+
+clean-keepmod-plotxct:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/sort_inc.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+../spglib-1.0.9/spacegroup.o: ../spglib-1.0.9/spacegroup.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/spacegroup'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+EpsInv.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-22 15:00:26
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/refinement.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/spg_database.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/nrtype.o: ../Common/nrtype.f90 ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/nrtype'
+#  Also makes: ../Common/nrtype_m.mod
+#  Last modified 2021-09-20 00:10:42
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/spglib_f.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/inversion.o: ../Common/inversion.F90 ../Common/inversion_inc.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/lapack_m.mod ../Common/scalapack_m.mod ../Common/undef.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/inversion'
+#  Also makes: ../Common/inversion_m.mod
+#  Last modified 2021-09-20 00:10:47
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+# Not a target:
+../Common/epsread_hdf5.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 17:56:12
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/timing.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+clean-flavored:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 15):
+	$(MAKE_CLEAN) *.mod
+
+../Common/io_utils_m.mod: ../Common/io_utils.f90 ../Common/global_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/io_utils'
+#  Also makes: ../Common/io_utils.o
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../Common/check_inversion.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+../Common/so32su2.o: ../Common/so32su2.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/so32su2.f90 ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/so32su2'
+#  Also makes: ../Common/so32su2_m.mod
+#  Last modified 2021-09-20 00:10:47
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../Common/blas_m.mod: ../Common/blas.f90 ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/blas'
+#  Also makes: ../Common/blas.o
+#  Last modified 2021-09-20 00:10:46
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/primitive.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/typedefs_m.mod: ../Common/typedefs.f90 ../Common/nrtype_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/typedefs'
+#  Also makes: ../Common/typedefs.o
+#  Last modified 2021-09-20 00:10:43
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/spglib.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/pointgroup.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../Common/write_matrix.f90:
+#  Implicit rule search has been done.
+ 
+#  Last modified 2021-09-18 11:24:25
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/sitesym_database.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+EpsInv.cplx.x: ../Common/misc.o ../Common/check_inversion.o ../Common/inversion.o ../Common/vcoul_generator.o ../Common/symmetries.o ../Common/input_utils.o ../Common/sort.o ../Common/blas.o ../Common/io_utils.o ../Common/epsread_hdf5.o ../Common/hdf5_io.o ../Common/so32su2.o ../Common/wfn_io_hdf5.o ../Common/epswrite_hdf5.o ../Common/write_matrix.o ../Common/scalapack.o ../Common/global.o ../Common/typedefs.o ../Common/nrtype.o ../Common/push_pop.o ../Common/message.o ../Common/peinfo.o ../Common/timing.o ../Common/intrinsics.o ../Common/scalapack_aux.o ../spglib-1.0.9/libsymspg.a EpsInv.o ../Common/scalapack.o ../Common/lapack.o ../spglib-1.0.9/libsymspg.a
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/34=0%
+#  recipe to execute (from 'Makefile', line 29):
+	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
+
+../Common/peinfo.o: ../Common/peinfo.f90 ../Common/nrtype_m.mod ../Common/f_defs.h ../Common/intrinsics_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/peinfo'
+#  Also makes: ../Common/peinfo_m.mod
+#  Last modified 2021-09-20 00:10:43
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../spglib-1.0.9/mathfunc.o: ../spglib-1.0.9/mathfunc.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/mathfunc'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+../Common/scalapack_aux_m.mod: ../Common/scalapack_aux.f90 ../Common/push_pop_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/scalapack_aux'
+#  Also makes: ../Common/scalapack_aux.o
+#  Last modified 2021-09-20 00:10:44
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/site_symmetry.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/misc_m.mod: ../Common/misc.f90 ../Common/blas_m.mod ../Common/global_m.mod ../Common/f_defs.h ../Common/scalapack_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/misc'
+#  Also makes: ../Common/misc.o
+#  Last modified 2021-09-20 00:10:47
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/debug.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+clean-keepmod-kgrid:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+EpsInv.o: EpsInv.f90
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: 'EpsInv'
+#  Also makes: EpsInv_m.mod
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := EpsInv.o
+# automatic
+# % := 
+# automatic
+# * := EpsInv
+# automatic
+# + := EpsInv.f90
+# automatic
+# | := 
+# automatic
+# < := EpsInv.f90
+# automatic
+# ^ := EpsInv.f90
+# automatic
+# ? := EpsInv.f90
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=9/48=19%
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+EpsInv: EpsInv.cplx.x
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/34=0%
+
+../spglib-1.0.9/symmetry.o: ../spglib-1.0.9/symmetry.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/symmetry'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+../spglib-1.0.9/site_symmetry.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/spg_database.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean-keepmod-meanfield:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/global.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 11:32:21
+#  File has been updated.
+#  Successfully updated.
+
+../spglib-1.0.9/kpoint.o: ../spglib-1.0.9/kpoint.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/kpoint'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+../Common/epsread_hdf5.o: ../Common/epsread_hdf5.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/hdf5_io_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/epsread_hdf5'
+#  Also makes: ../Common/epsread_hdf5_m.mod
+#  Last modified 2021-09-20 00:10:48
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../Common/wfn_io_hdf5_m.mod: ../Common/wfn_io_hdf5.F90 ../Common/wfn_io_hdf5_inc.f90 ../Common/hdf5_io_m.mod ../Common/global_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/wfn_io_hdf5'
+#  Also makes: ../Common/wfn_io_hdf5.o
+#  Last modified 2021-09-20 00:10:48
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+library:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/timing.o: ../Common/timing.f90 ../Common/push_pop_m.mod ../Common/nrtype_m.mod ../Common/f_defs.h ../Common/intrinsics_m.mod ../Common/peinfo_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/timing'
+#  Also makes: ../Common/timing_m.mod
+#  Last modified 2021-09-20 00:10:44
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/refinement.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+default: EpsInv
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+ 
+#  File has not been updated.
+
+../Common/check_inversion.o: ../Common/check_inversion.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/check_inversion'
+#  Also makes: ../Common/check_inversion_m.mod
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../Common/lapack_m.mod: ../Common/lapack.f90 ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/lapack'
+#  Also makes: ../Common/lapack.o
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+clean-keepmod-nonlinearoptics:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/io_utils.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/scalapack_aux.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/wfn_io_hdf5.F90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 11:14:26
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/blas.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/primitive.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../Common/typedefs.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 17:26:23
+#  File has been updated.
+#  Successfully updated.
+
+../Common/hdf5_io_m.mod: ../Common/hdf5_io.F90 ../Common/hdf5_io_inc.f90 ../Common/global_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/hdf5_io'
+#  Also makes: ../Common/hdf5_io.o
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+../Common/write_matrix.o: ../Common/write_matrix.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/scalapack_m.mod ../Common/global_m.mod ../Common/scalapack_m.mod ../Common/io_utils_m.mod ../Common/f_defs.h ../Common/hdf5_io_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/write_matrix'
+#  Also makes: ../Common/write_matrix_m.mod
+#  Last modified 2021-09-20 00:10:48
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/spglib.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+kgrid:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-keepmod-epm:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../spglib-1.0.9/refinement.o: ../spglib-1.0.9/refinement.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/refinement'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+all-flavors:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-keepmod-bse:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-spglib:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 143):
+	cd $(SPGLIB) && $(MAKE) clean
+
+# Not a target:
+../Common/inversion_inc.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+default_goal: default
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-manual:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/epswrite_hdf5_m.mod: ../Common/global_m.mod ../Common/hdf5_io_m.mod ../Common/wfn_io_hdf5_m.mod
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../Common/misc.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 10:41:26
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/debug.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/symmetries_m.mod: ../Common/global_m.mod ../Common/misc_m.mod ../Common/sort_m.mod
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../spglib-1.0.9/lattice.o: ../spglib-1.0.9/lattice.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/lattice'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+../spglib-1.0.9/cell.o: ../spglib-1.0.9/cell.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/cell'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../Common/undef.h:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+../Common/push_pop_m.mod: ../Common/push_pop.f90 ../Common/peinfo_m.mod ../Common/message_m.mod ../Common/nrtype_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/push_pop'
+#  Also makes: ../Common/push_pop.o
+#  Last modified 2021-09-20 00:10:44
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../Common/io_utils.o: ../Common/io_utils.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/io_utils'
+#  Also makes: ../Common/io_utils_m.mod
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+spglib: ../spglib-1.0.9/libsymspg.a
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/f_defs.h:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/lapack.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+../Common/blas.o: ../Common/blas.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/blas'
+#  Also makes: ../Common/blas_m.mod
+#  Last modified 2021-09-20 00:10:46
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+clean-utilities:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-keepmod-bgw2para:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/spacegroup.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/typedefs.o: ../Common/typedefs.f90 ../Common/nrtype_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/typedefs'
+#  Also makes: ../Common/typedefs_m.mod
+ 
+#  Last modified 2021-09-20 00:10:43
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+utilities:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/hdf5_io.F90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+clean-keepmod-siesta2bgw:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/spglib_f_meta.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 218):
+	$(MAKE_CLEAN) *.mod *.x
+
+../Common/scalapack_aux.o: ../Common/scalapack_aux.f90 ../Common/push_pop_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/scalapack_aux'
+#  Also makes: ../Common/scalapack_aux_m.mod
+#  Last modified 2021-09-20 00:10:44
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+clean-keepmod-sapo:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/misc.o: ../Common/misc.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/blas_m.mod ../Common/global_m.mod ../Common/f_defs.h ../Common/scalapack_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/misc'
+#  Also makes: ../Common/misc_m.mod
+#  Last modified 2021-09-20 00:10:48
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../Common/global_m.mod: ../Common/global.f90 ../Common/scalapack_aux_m.mod ../Common/nrtype_m.mod ../Common/timing_m.mod ../Common/typedefs_m.mod ../Common/peinfo_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/f_defs.h ../Common/compiler.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/global'
+#  Also makes: ../Common/global.o
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../Common/epswrite_hdf5.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 18:00:58
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/symmetries.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 11:26:13
+#  File has been updated.
+#  Successfully updated.
+
+list:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/common-rules.mk:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 17:55:34
+#  File has been updated.
+#  Successfully updated.
+
+SPGLIB_OBJ: ../spglib-1.0.9/cell.h ../spglib-1.0.9/debug.h ../spglib-1.0.9/hall_symbol.h ../spglib-1.0.9/kpoint.h ../spglib-1.0.9/lattice.h ../spglib-1.0.9/mathfunc.h ../spglib-1.0.9/pointgroup.h ../spglib-1.0.9/primitive.h ../spglib-1.0.9/refinement.h ../spglib-1.0.9/site_symmetry.h ../spglib-1.0.9/sitesym_database.h ../spglib-1.0.9/spacegroup.h ../spglib-1.0.9/spg_database.h ../spglib-1.0.9/spglib.h ../spglib-1.0.9/symmetry.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../spglib-1.0.9/hall_symbol.o: ../spglib-1.0.9/hall_symbol.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/hall_symbol'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+../spglib-1.0.9/mathfunc.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/push_pop.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 16:06:22
+#  File has been updated.
+#  Successfully updated.
+
+cleanall-spglib:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 145):
+	cd $(SPGLIB) && $(MAKE) cleanall
+
+../Common/lapack.o: ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../Common/vcoul_generator.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-19 13:36:57
+#  File has been updated.
+#  Successfully updated.
+
+../Common/input_utils_m.mod: ../Common/blas_m.mod ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/sort_m.mod: ../Common/sort.F90 ../Common/sort_inc.f90 ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/sort'
+#  Also makes: ../Common/sort.o
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/symmetry.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/spacegroup.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/hdf5_io.o: ../Common/hdf5_io.F90 ../Common/hdf5_io_inc.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/hdf5_io'
+#  Also makes: ../Common/hdf5_io_m.mod
+#  Last modified 2021-09-20 00:10:46
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 190):
+	$(RM_MOD_CMD)
+	$(F90_CPP)
+	$(F90_CMD)
+	$(MODLINK)
+
+# Not a target:
+../spglib-1.0.9/kpoint.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/intrinsics_m.mod: ../Common/intrinsics.f90 ../Common/f_defs.h ../Common/compiler.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/intrinsics'
+#  Also makes: ../Common/intrinsics.o
+#  Last modified 2021-09-20 00:10:42
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../Common/epswrite_hdf5.o: ../Common/epswrite_hdf5.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/hdf5_io_m.mod ../Common/wfn_io_hdf5_m.mod
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/epswrite_hdf5'
+#  Also makes: ../Common/epswrite_hdf5_m.mod
+#  Last modified 2021-09-20 00:10:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+cleanall-utilities:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../spglib-1.0.9/libsymspg.a: ../spglib-1.0.9/cell.o ../spglib-1.0.9/debug.o ../spglib-1.0.9/hall_symbol.o ../spglib-1.0.9/kpoint.o ../spglib-1.0.9/lattice.o ../spglib-1.0.9/mathfunc.o ../spglib-1.0.9/pointgroup.o ../spglib-1.0.9/primitive.o ../spglib-1.0.9/refinement.o ../spglib-1.0.9/site_symmetry.o ../spglib-1.0.9/sitesym_database.o ../spglib-1.0.9/spacegroup.o ../spglib-1.0.9/spg_database.o ../spglib-1.0.9/spglib.o ../spglib-1.0.9/symmetry.o ../spglib-1.0.9/spglib_f.o ../spglib-1.0.9/spglib_f_meta.o
+#  Implicit rule search has not been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 162):
+	$(AR) ru $@ $^
+
+../Common/symmetries.o: ../Common/symmetries.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h ../Common/global_m.mod ../Common/misc_m.mod ../Common/sort_m.mod
+ 
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/symmetries'
+#  Also makes: ../Common/symmetries_m.mod
+#  Last modified 2021-09-20 00:10:48
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+clean-sigma:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/message_m.mod: ../Common/message.f90 ../Common/peinfo_m.mod ../Common/nrtype_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/message'
+#  Also makes: ../Common/message.o
+#  Last modified 2021-09-20 00:10:43
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../spglib-1.0.9/pointgroup.o: ../spglib-1.0.9/pointgroup.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/pointgroup'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+../Common/push_pop.o: ../Common/push_pop.f90 ../Common/peinfo_m.mod ../Common/message_m.mod ../Common/nrtype_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/push_pop'
+#  Also makes: ../Common/push_pop_m.mod
+#  Last modified 2021-09-20 00:10:44
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+cleanall:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+check:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../spglib-1.0.9/sitesym_database.o: ../spglib-1.0.9/sitesym_database.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/sitesym_database'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+../spglib-1.0.9/mathfunc.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../Common/vcoul_generator.o: ../Common/vcoul_generator.f90 ../Common/global_m.mod ../Common/typedefs_m.mod ../Common/nrtype_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/peinfo_m.mod ../Common/timing_m.mod ../Common/intrinsics_m.mod ../Common/scalapack_aux_m.mod ../Common/f_defs.h ../Common/compiler.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/vcoul_generator'
+#  Also makes: ../Common/vcoul_generator_m.mod
+#  Last modified 2021-09-20 00:10:46
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# Not a target:
+../Common/input_utils.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-18 18:03:47
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../Common/sort.F90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:39
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/symmetry.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+../spglib-1.0.9/lattice.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+../spglib-1.0.9/cell.c:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+
+../Common/scalapack_m.mod: ../Common/scalapack.f90 ../Common/global_m.mod ../Common/f_defs.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/scalapack'
+#  Also makes: ../Common/scalapack.o
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+../spglib-1.0.9/site_symmetry.o: ../spglib-1.0.9/site_symmetry.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/site_symmetry'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+# Not a target:
+../spglib-1.0.9/kpoint.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+../spglib-1.0.9/spg_database.o: ../spglib-1.0.9/spg_database.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/spg_database'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+tools:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../spglib-1.0.9/spglib_f.o: ../spglib-1.0.9/spglib_f.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../spglib-1.0.9/spglib_f'
+#  Last modified 2021-09-17 14:35:50
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 215):
+	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
+
+donkey:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 221):
+	@$(PREFIX)/LOGO/print_logo.sh $(FLAVOR) && sleep 1
+
+clean-keepmod-utilities:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean-epsilon:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+# Not a target:
+../Common/intrinsics.f90:
+#  Implicit rule search has been done.
+#  Last modified 2021-09-17 14:30:38
+#  File has been updated.
+#  Successfully updated.
+
+clean-keepmod-sigma:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/global.o: ../Common/global.f90 ../Common/scalapack_aux_m.mod ../Common/nrtype_m.mod ../Common/timing_m.mod ../Common/typedefs_m.mod ../Common/peinfo_m.mod ../Common/push_pop_m.mod ../Common/message_m.mod ../Common/f_defs.h ../Common/compiler.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/global'
+#  Also makes: ../Common/global_m.mod
+#  Last modified 2021-09-20 00:10:45
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+manual:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+install:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+../Common/intrinsics.o: ../Common/intrinsics.f90 ../Common/f_defs.h ../Common/compiler.h
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: '../Common/intrinsics'
+#  Also makes: ../Common/intrinsics_m.mod
+#  Last modified 2021-09-20 00:10:42
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from '../Common/common-rules.mk', line 181):
+	$(RM_MOD_CMD)
+	$(f90_CPP)
+	$(F90_CMD)
+	$(RM_P_F_CMD)
+	$(MODLINK)
+
+# files hash-table stats:
+# Load=197/1024=19%, Rehash=0, Collisions=83/824=10%
+# VPATH Search Paths
+ 
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 2 (1) / strings = 476 / storage = 9366 B / avg = 19 B
+# current buf: size = 8162 B / used = 1210 B / count = 41 / avg = 29 B
+# other used: total = 8156 B / count = 435 / avg = 18 B
+# other free: total = 6 B / max = 6 B / min = 6 B / avg = 6 B
+
+# strcache performance: lookups = 904 / hit rate = 47%
+# hash-table stats:
+# Load=476/8192=6%, Rehash=0, Collisions=50/904=6%
+# Finished Make data base on Wed Sep 22 15:07:25 2021
+
+ 

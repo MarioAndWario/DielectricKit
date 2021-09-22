@@ -1,4 +1,5 @@
-$(if $(wildcard $(PREFIX)/arch.mk),,$(error Error: Please create arch.mk from config/ directory for machine-dependent configuration))
+#$(if $(wildcard $(PREFIX)/arch.mk),,$(error Error: Please create arch.mk from config/ directory for machine-dependent configuration))
+PREFIX =.
 include $(PREFIX)/arch.mk
 
 # it is ok not to be present for some targets such as 'clean' and 'all-flavors'

@@ -55,9 +55,7 @@ subroutine NAME(_header_type)(sFileName, sheader, iflavor, kp, gvec, syms, crys)
   PUSH_SUB(NAME(_header_type))
 
   if (peinf%inode == 0) then
-     write(*,*) "CCC"
      call READ_WRITE(_info)(TRUNC(sFileName),iflavor)
-     write(*,*) "DDD"     
      call READ_WRITE(_kpoints)(TRUNC(sFileName),kp)
      call READ_WRITE(_gspace)(TRUNC(sFileName),gvec)
      call READ_WRITE(_symmetry)(TRUNC(sFileName),syms)

@@ -1,0 +1,33 @@
+HDF5-DIAG: Error detected in HDF5 (1.10.5) MPI-process 0:
+  #000: ../../src/H5F.c line 509 in H5Fopen(): unable to open file
+    major: File accessibilty
+    minor: Unable to open file
+  #001: ../../src/H5Fint.c line 1567 in H5F_open(): unable to lock the file; consider setting HDF5_USE_FILE_LOCKING
+    major: File accessibilty
+    minor: Unable to open file
+  #002: ../../src/H5FD.c line 1640 in H5FD_lock(): driver lock request failed
+    major: Virtual File Layer
+    minor: Can't update object
+  #003: ../../src/H5FDsec2.c line 959 in H5FD_sec2_lock(): unable to lock file, errno = 524, error message = 'Unknown error 524'
+    major: File accessibilty
+    minor: Bad file ID accessed
+HDF5-DIAG: Error detected in HDF5 (1.10.5) MPI-process 0:
+  #000: ../../src/H5L.c line 790 in H5Lexists(): not a location
+    major: Invalid arguments to routine
+    minor: Inappropriate type
+  #001: ../../src/H5Gloc.c line 246 in H5G_loc(): invalid object ID
+    major: Invalid arguments to routine
+    minor: Bad value
+HDF5-DIAG: Error detected in HDF5 (1.10.5) MPI-process 0:
+  #000: ../../src/H5D.c line 282 in H5Dopen2(): not a location
+    major: Invalid arguments to routine
+    minor: Inappropriate type
+  #001: ../../src/H5Gloc.c line 246 in H5G_loc(): invalid object ID
+    major: Invalid arguments to routine
+    minor: Bad value
+ 
+ERROR: HDF5 error
+ 
+999
+srun: error: nid01272: task 0: Exited with exit code 231
+srun: launch/slurm: _step_signal: Terminating StepId=47263007.0

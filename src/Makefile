@@ -1,7 +1,4 @@
-#PREFIX=..
-#include $(PREFIX)/Common/common-rules.mk
 include ../arch.mk
-#include ./common-rules.mk
 
 ifeq ($(findstring -DUSESCALAPACK,$(MATHFLAG)),-DUSESCALAPACK)
   ifneq ($(findstring -DMPI,$(PARAFLAG)),-DMPI)
@@ -19,13 +16,8 @@ COMMONOBJS = misc.o check_inversion.o inversion.o vcoul_generator.o \
 GLOBALOBJS = global.o intrinsics.o nrtype.o typedefs.o peinfo.o message.o push_pop.o scalapack_aux.o timing.o 
 GLOBALMODS = $(GLOBALOBJS:.o=_m.mod)
 
-#COMMONOBJS = $(addprefix ,$(COMOBJ)) $(GLOBALOBJS)
-SRC_EPSINV = EpsInv.f90
-OBJ_EPSINV = $(SRC_EPSINV:.f90=.o)
-
 # External libs
 LIBS = $(SCALAPACKLIB) $(LAPACKLIB) $(HDF5LIB) # $(SLATECLIB) 
-
 SPGLIB = ../spglib-1.0.9
 
 #Default values for the C++ library, stored in $(CC_LINK_LIBS), when linking
@@ -79,7 +71,7 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 
 default: EpsInv
 EpsInv: EpsInv.x
-EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a $(OBJ_EPSINV)
+EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a EpsInv.o
 	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
 
 # Dependence
@@ -111,6 +103,7 @@ write_matrix.o write_matrix_m.mod : global_m.mod scalapack_m.mod io_utils_m.mod 
 wfn_io_hdf5.o wfn_io_hdf5_m.mod : global_m.mod hdf5_io_m.mod f_defs.h
 epsread_hdf5.o epsread_hdf5_m.mod : global_m.mod hdf5_io_m.mod f_defs.h
 epswrite_hdf5.o epswrite_hdf5_m.mod : global_m.mod hdf5_io_m.mod wfn_io_hdf5_m.mod f_defs.h
+EpsInv.o: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a 
 
 # Space group library
 spglib: $(SPGLIB)/libsymspg.a

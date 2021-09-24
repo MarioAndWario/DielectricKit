@@ -10,11 +10,7 @@
 
 #include "f_defs.h"
 
-#ifdef HDF5
 #define AUTO_VER(x) VER_ ## x ## _HDF5
-#else
-#define AUTO_VER(x) VER_ ## x ## _FORT
-#endif
 
 module nrtype_m
 

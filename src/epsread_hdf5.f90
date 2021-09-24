@@ -12,7 +12,6 @@
 !!=========================================================================
 
 module epsread_hdf5_m
-#ifdef HDF5
   use global_m
   use hdf5
   use hdf5_io_m
@@ -165,6 +164,4 @@ contains
 
     POP_SUB(read_eps_freqgrid_hdf5)
   end subroutine read_eps_freqgrid_hdf5
-
-#endif
 end module epsread_hdf5_m

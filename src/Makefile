@@ -54,7 +54,6 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 # Remove all implicit suffix rules
 .SUFFIXES:
 
-# $(MODLINK)
 %.o %_m.mod : %.f90
 	$(f90_CPP)
 	$(F90_CMD)
@@ -71,47 +70,35 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 
 default: EpsInv
 EpsInv: EpsInv.x
-EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a EpsInv.o
+EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a EpsInv.o 
 	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
 
 # Dependence
-f_defs.h :
-$(COMMONOBJS) : $(GLOBALMODS) f_defs.h compiler.h
+$(COMMONOBJS) : $(GLOBALMODS) f_defs.h
 
-intrinsics.o intrinsics_m.mod : f_defs.h #compiler.h
-nrtype.o nrtype_m.mod : f_defs.h
-typedefs.o typedefs_m.mod : nrtype_m.mod f_defs.h
-peinfo.o peinfo_m.mod : nrtype_m.mod intrinsics_m.mod f_defs.h
-message.o message_m.mod : peinfo_m.mod nrtype_m.mod f_defs.h
-push_pop.o push_pop_m.mod : peinfo_m.mod message_m.mod nrtype_m.mod f_defs.h
-scalapack_aux.o scalapack_aux_m.mod : push_pop_m.mod f_defs.h
-timing.o timing_m.mod : push_pop_m.mod nrtype_m.mod intrinsics_m.mod peinfo_m.mod f_defs.h
-global.o global_m.mod: intrinsics_m.mod scalapack_aux_m.mod nrtype_m.mod timing_m.mod typedefs_m.mod peinfo_m.mod push_pop_m.mod message_m.mod f_defs.h #compiler.h
-so32su2.o so32su2_m.mod : global_m.mod f_defs.h
-blas.o blas_m.mod : global_m.mod f_defs.h
-lapack.o lapack_m.mod : global_m.mod f_defs.h
-scalapack.o scalapack_m.mod : global_m.mod f_defs.h
-sort.o sort_m.mod : global_m.mod f_defs.h
-hdf5_io.o hdf5_io_m.mod : global_m.mod
-io_utils.o io_utils_m.mod : global_m.mod f_defs.h
-check_inversion.o check_inversion_m.mod : global_m.mod f_defs.h
-input_utils.o input_utils_m.mod : global_m.mod blas_m.mod f_defs.h
-misc.o misc_m.mod : global_m.mod blas_m.mod scalapack_m.mod f_defs.h
-symmetries.o symmetries_m.mod : global_m.mod misc_m.mod sort_m.mod f_defs.h
-inversion.o inversion_m.mod: global_m.mod lapack_m.mod scalapack_m.mod #undef.h
-write_matrix.o write_matrix_m.mod : global_m.mod scalapack_m.mod io_utils_m.mod hdf5_io_m.mod f_defs.h
-wfn_io_hdf5.o wfn_io_hdf5_m.mod : global_m.mod hdf5_io_m.mod f_defs.h
-epsread_hdf5.o epsread_hdf5_m.mod : global_m.mod hdf5_io_m.mod f_defs.h
-epswrite_hdf5.o epswrite_hdf5_m.mod : global_m.mod hdf5_io_m.mod wfn_io_hdf5_m.mod f_defs.h
+# Basic modules
+typedefs.o typedefs_m.mod : nrtype_m.mod
+peinfo.o peinfo_m.mod : nrtype_m.mod intrinsics_m.mod 
+message.o message_m.mod : peinfo_m.mod nrtype_m.mod
+push_pop.o push_pop_m.mod : peinfo_m.mod message_m.mod nrtype_m.mod
+scalapack_aux.o scalapack_aux_m.mod : push_pop_m.mod
+timing.o timing_m.mod : push_pop_m.mod nrtype_m.mod intrinsics_m.mod peinfo_m.mod
+global.o global_m.mod: intrinsics_m.mod scalapack_aux_m.mod nrtype_m.mod timing_m.mod typedefs_m.mod peinfo_m.mod push_pop_m.mod message_m.mod
+
+# Utilitarian modules
+input_utils.o input_utils_m.mod : blas_m.mod
+misc.o misc_m.mod : blas_m.mod scalapack_m.mod
+symmetries.o symmetries_m.mod : misc_m.mod sort_m.mod
+inversion.o inversion_m.mod: lapack_m.mod scalapack_m.mod
+write_matrix.o write_matrix_m.mod : scalapack_m.mod io_utils_m.mod hdf5_io_m.mod
+wfn_io_hdf5.o wfn_io_hdf5_m.mod : hdf5_io_m.mod
+epsread_hdf5.o epsread_hdf5_m.mod : hdf5_io_m.mod
+epswrite_hdf5.o epswrite_hdf5_m.mod : hdf5_io_m.mod wfn_io_hdf5_m.mod
+
+# Main object
 EpsInv.o: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a 
 
 # Space group library
-spglib: $(SPGLIB)/libsymspg.a
-clean-spglib:
-	cd $(SPGLIB) && $(MAKE) clean
-cleanall-spglib:
-	cd $(SPGLIB) && $(MAKE) cleanall
-
 SPGLIB_SRC = $(addprefix $(SPGLIB)/, cell.c debug.c hall_symbol.c kpoint.c lattice.c mathfunc.c pointgroup.c primitive.c \
 refinement.c site_symmetry.c sitesym_database.c spacegroup.c spg_database.c \
 spglib.c symmetry.c spglib_f.c spglib_f_meta.c)
@@ -121,15 +108,22 @@ SPGLIB_HEADERS = $(addprefix $(SPGLIB)/, cell.h debug.h hall_symbol.h kpoint.h l
 pointgroup.h primitive.h refinement.h site_symmetry.h sitesym_database.h \
 spacegroup.h spg_database.h spglib.h symmetry.h)
 
+spglib: $(SPGLIB)/libsymspg.a
+clean-spglib:
+	cd $(SPGLIB) && $(MAKE) clean
+cleanall-spglib:
+	cd $(SPGLIB) && $(MAKE) cleanall
+
 SPGLIB_OBJ : $(SPGLIB_HEADERS)
 
 ifndef AR
 AR = /usr/bin/ar
 endif
+
 $(SPGLIB)/libsymspg.a : $(SPGLIB_OBJ)
 	$(AR) ru $@ $^
 
 clean:
 	rm -f *.o *.p.f *~ core *__genmod.f90 *.a *.mod *.x
 
-.PHONY: all default clean
+.PHONY: all default clean spglib clean-spglib cleanall-spglib

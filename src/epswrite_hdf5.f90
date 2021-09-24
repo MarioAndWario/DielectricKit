@@ -11,7 +11,6 @@
 #include "f_defs.h"
 
 module epswrite_hdf5_m
-#ifdef HDF5
   use h5lt
   use hdf5
   use global_m
@@ -177,5 +176,4 @@ contains
     SAFE_DEALLOCATE(qpt_done)
     POP_SUB(eps_hdf5_setup_2)
   end subroutine eps_hdf5_setup
-#endif
 end module epswrite_hdf5_m

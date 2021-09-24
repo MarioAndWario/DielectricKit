@@ -16,9 +16,7 @@
 
 module write_matrix_m
   use global_m
-#ifdef HDF5
   use hdf5
-#endif
   use hdf5_io_m
   use scalapack_m
   use io_utils_m
@@ -26,9 +24,7 @@ module write_matrix_m
   private
   public :: write_matrix_ser_hdf, write_matrix_f_ser_hdf
   public :: write_gvec_indices_hdf, write_pol_fftgrid_hdf
-#ifdef USESCALAPACK
   public :: write_matrix_d_par_hdf, write_matrix_f_par_hdf
-#endif
 contains
 
   !> Collect nc_write columns of the chimat matrix and output to chimat.h5 using ROOT
@@ -373,9 +369,6 @@ contains
   end subroutine write_matrix_f_ser_hdf
 
   !===================================================================================
-
-#ifdef HDF5
-#ifdef USESCALAPACK
   
   !> Use nbr&nbc instead of nbl
   subroutine write_matrix_d_par_hdf(scal, matrix, nmtx_max, iq, is, name)
@@ -841,8 +834,6 @@ contains
     return
   end subroutine write_matrix_f_par_hdf
 
-#endif
-
   subroutine write_gvec_indices_hdf(ng, gind_eps2rho, gind_rho2eps, ekin, iq, name)
     integer, intent(in) :: ng
     integer, intent(in) :: gind_eps2rho(:) !< (ng)
@@ -912,7 +903,5 @@ contains
 
     POP_SUB(write_pol_fftgrid_hdf)
   end subroutine write_pol_fftgrid_hdf
-
-#endif
 
 end module write_matrix_m

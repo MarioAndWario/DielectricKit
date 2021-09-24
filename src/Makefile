@@ -18,7 +18,7 @@ GLOBALMODS = $(GLOBALOBJS:.o=_m.mod)
 
 # External libs
 LIBS = $(SCALAPACKLIB) $(LAPACKLIB) $(HDF5LIB) # $(SLATECLIB) 
-SPGLIB = ../spglib-1.0.9
+SPGLIB = ./spglib-1.0.9
 
 #Default values for the C++ library, stored in $(CC_LINK_LIBS), when linking
 #C++ code with Fortran linker. NOTE: we don`t have a default value for xlf!
@@ -111,8 +111,6 @@ spacegroup.h spg_database.h spglib.h symmetry.h)
 spglib: $(SPGLIB)/libsymspg.a
 clean-spglib:
 	cd $(SPGLIB) && $(MAKE) clean
-cleanall-spglib:
-	cd $(SPGLIB) && $(MAKE) cleanall
 
 SPGLIB_OBJ : $(SPGLIB_HEADERS)
 
@@ -125,5 +123,6 @@ $(SPGLIB)/libsymspg.a : $(SPGLIB_OBJ)
 
 clean:
 	rm -f *.o *.p.f *~ core *__genmod.f90 *.a *.mod *.x
+	cd $(SPGLIB) && $(MAKE) clean
 
 .PHONY: all default clean spglib clean-spglib cleanall-spglib

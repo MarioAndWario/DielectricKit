@@ -26,19 +26,6 @@
 !!
 !!     Return the size of the SCALAR type, for memory estimation.
 !!
-!! 13. voigt()            Originally By (gsm)     Last Modified 1/31/2011 (gsm)
-!!
-!!     Returns Voigt function (convolution of Gaussian and Lorentzian).
-!!     Based on the rational approximation to the complex error function
-!!     from A. K. Hui, B. H. Armstrong and A. A. Wray,
-!!     "Rapid computation of the Voigt and complex error functions,"
-!!     Journal of Quantitative Spectroscopy and Radiative Transfer,
-!!     Volume 19, Issue 5, Pages 509 - 516, Year 1978.
-!!
-!! 15. bse_index()         Originally by DAS   4/19/12
-!!
-!!    Defines the mapping of k-point, conduction band, valence band, and spin
-!!    into a single index (traditionally called 'ikcvs'), as used in BSE codes.
 !!
 !!===================================================================
 
@@ -51,8 +38,7 @@ module misc_m
   implicit none
   private
   public ::   checknorm, get_volume, findvector, procmem, sizeof_scalar, &
-       get_gumk3, get_gumk4, M33INV, &
-       output_header, generate_full_WS_BZ
+       get_gumk3, get_gumk4, M33INV, output_header, generate_full_WS_BZ
 contains
 
   subroutine checknorm(filename, iband, ik, nspin, wfn, ispin, tol)

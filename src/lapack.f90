@@ -92,8 +92,8 @@ module lapack_m
        DOUBLE PRECISION   RWORK( * ), W( * )
        COMPLEX*16         A( LDA, * ), WORK( * )
      end SUBROUTINE ZHEEVD
-  end interface  
-  
+  end interface
+
   !> Computes selected eigenvalues and, optionally, eigenvectors of a Hermitian matrix.
   interface
      SUBROUTINE HEEVX(A, W, UPLO, Z, VL, VU, IL, IU, M, IFAIL, ABSTOL, INFO )

@@ -27,12 +27,18 @@ contains
     gvec%nFFTgridpts = product(gvec%FFTgrid(1:3))
     SAFE_ALLOCATE(gvec%index_vec, (gvec%nFFTgridpts))
     gvec%index_vec(:) = 0
+
     do ig = 1, gvec%ng
        !! if a mean-field code does not use the appropriate convention, this could happen.
-       if (any(2 * gvec%components(1:3, ig) >= gvec%FFTgrid(1:3) .or. 2 * gvec%components(1:3, ig) < -gvec%FFTgrid(1:3))) then
+       if (any(2 * gvec%components(1:3, ig) >= gvec%FFTgrid(1:3) .or. &
+            2 * gvec%components(1:3, ig) < -gvec%FFTgrid(1:3))) then
           call die("gvectors must be in the interval [-FFTgrid/2, FFTgrid/2)")
        endif
-       iadd = ((gvec%components(1,ig)+gvec%FFTgrid(1)/2)*gvec%FFTgrid(2)+gvec%components(2,ig)+ gvec%FFTgrid(2)/2)*gvec%FFTgrid(3)+gvec%components(3,ig)+gvec%FFTgrid(3)/2+1
+
+       iadd = ((gvec%components(1, ig) + gvec%FFTgrid(1) / 2) * gvec%FFTgrid(2) &
+            + gvec%components(2, ig) + gvec%FFTgrid(2) / 2) * gvec%FFTgrid(3) &
+            + gvec%components(3, ig) + gvec%FFTgrid(3) / 2 + 1
+       
        gvec%index_vec(iadd) = ig
     enddo
 

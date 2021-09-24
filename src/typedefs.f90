@@ -11,7 +11,7 @@
 !==========================================================================
 
 module typedefs_m
-  
+
   use nrtype_m
   implicit none
   public
@@ -86,9 +86,9 @@ module typedefs_m
   type grid_relation
      integer, pointer :: rindex(:)
      integer, pointer :: symsindex(:)
-     integer, pointer :: gumk(:,:)     
+     integer, pointer :: gumk(:,:)
   end type grid_relation
-  
+
   !-----------------------------------
 
   type gspace
@@ -109,7 +109,7 @@ module typedefs_m
      logical :: low_mem
      integer :: eqp_start, eqp_end
      integer :: freq_dep        !> frequency dependence of the inverse dielectric matrix
-                                !> 0: static calculation 2: full frequency 3: two imaginary frequencies     
+     !> 0: static calculation 2: full frequency 3: two imaginary frequencies
      integer :: freq_dep_method !< full frequency calculation. 0: Adler-Wiser; 1: Shishkin and Kresse 2006
      integer :: nFreq           !< number of frequencies used in full frequency calculation
      integer :: nfreq_imag, nfreq_real      !< number of imaginary freqs for CD (also 1 for GN GPP)
@@ -119,7 +119,7 @@ module typedefs_m
      integer :: nBrdning
      real(DP) :: Brdning_stepsize
      real(DP), pointer :: dFreqGrid(:) !< Grid of Frequencies for Full Frequency
-     real(DP) :: dFreqCutoff     
+     real(DP) :: dFreqCutoff
      real(DP) :: delta_freq_imag !> first non-zero imaginary frequency
 
      integer :: nSFreq    !< number of frequencies used in spectral function
@@ -146,7 +146,7 @@ module typedefs_m
      logical :: non_uniform !< do non-uniform sampling using Voronoi decomposition of BZ
      integer :: gcomm
      logical :: min_fftgrid   !< use the smallest possible fftbox
-     integer :: os_opt_ffts       !< optimizes calculation/reuse of FFTs (real-space WFNs)     
+     integer :: os_opt_ffts       !< optimizes calculation/reuse of FFTs (real-space WFNs)
      logical :: os_hdf5           !< use parallel IO?
      logical :: restart        !< are we restarting the calculation? Only ok with HDF5
      integer :: stop_after_qpt !< pretend the calculation was prematurely killed after this qpt (-1=don`t kill)
@@ -174,11 +174,11 @@ module typedefs_m
      real(DP) :: efermi_input
      logical :: rfermi
      real(DP) :: ecuts    !< energy cutoff of screened coulomb interaction in Ry
-                          !> Reference regarding retarded/advanced functions: Catalin`s thesis, Eq. (1.44)
+     !> Reference regarding retarded/advanced functions: Catalin`s thesis, Eq. (1.44)
      complex(DPC), allocatable :: chiRDyn(:,:,:,:) !< Retarded polarizability
-     complex(DPC), allocatable :: chiTDyn(:,:,:,:) !< Spectral function of polarizability    
-     real(DP), pointer :: edenDyn(:,:,:,:) !< Dynamic energy denominator     
-     real(DP), pointer :: edenDyn2(:,:,:) !< Dynamic energy denominator     
+     complex(DPC), allocatable :: chiTDyn(:,:,:,:) !< Spectral function of polarizability
+     real(DP), pointer :: edenDyn(:,:,:,:) !< Dynamic energy denominator
+     real(DP), pointer :: edenDyn2(:,:,:) !< Dynamic energy denominator
      logical :: degeneracy_check_override
      real(DP) :: lin_denominator !< energy threshold below which to activate lin_denominator
      real(DP) :: de_min, de_max

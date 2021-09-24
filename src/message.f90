@@ -23,13 +23,13 @@ module message_m
   private
 
   public ::              &
-    die,                 &
-    alloc_check,         &
-    write_memory_usage,  &
-    open_file,           &
-    close_file,          &
-    TRUNC,               &
-    operator(+)
+       die,                 &
+       alloc_check,         &
+       write_memory_usage,  &
+       open_file,           &
+       close_file,          &
+       TRUNC,               &
+       operator(+)
 
   !> these names are as short as practical to avoid lines being too long
   integer, public :: alc  !< allocation status for safe(de)allocate
@@ -38,9 +38,9 @@ module message_m
   logical, parameter :: reportsizeexact = .false.
 
   interface operator (+)
-    module procedure cat
+     module procedure cat
   end interface operator (+)
-  
+
 contains
 
   !> remove trailing and leading whitespace from a string
@@ -60,7 +60,7 @@ contains
 
     character(len=len(str1) + len(str2)) :: cat
     cat = str1//str2
-    
+
   end function cat
 
   !-----------------------------------------------------------
@@ -74,10 +74,10 @@ contains
     should_write = .true.
     should_write_prefix = peinf%npes > 1
     if(present(only_root_writes)) then
-      if(only_root_writes) then
-        should_write = peinf%inode == 0
-        should_write_prefix = .false.
-      endif
+       if(only_root_writes) then
+          should_write = peinf%inode == 0
+          should_write_prefix = .false.
+       endif
     endif
 
     ! There is no good reason why unit 6 would not be open, but ifort 11 -O3 will crash on FLUSH(6)
@@ -86,7 +86,7 @@ contains
     ! are going to inquire, we may as well use the result to decide whether to flush.
     inquire(unit = 6, opened = is_open)
     if(is_open) then
-      FLUSH(6)
+       FLUSH(6)
     endif
     ! FHJ: FLUSH is not really reliable because the OS might cache the stdout.
     ! Sleeping for 1s is the best solution I found to make the output clean,
@@ -96,7 +96,7 @@ contains
     ! write the error message. If the root doesn`t get here, we all print the
     ! error messsage anyways and die.
     if (.not.should_write) then
-      MYSLEEP(60)
+       MYSLEEP(60)
     endif
     write(0,*)
     if(should_write_prefix) write(0, '(a, i6, a)', advance='no') "From proc ", peinf%inode, ": "
@@ -108,9 +108,9 @@ contains
     ! for calling check_FFT_size from MeanField/EPM/epm2bgw and MeanField/Utilities/wfnreduce
     if (peinf%npes .gt. 1) then
 #ifdef MPI
-      ! we return error code -1
-      call MPI_Abort(MPI_COMM_WORLD, -1, mpierr)
-      call MPI_Finalize(mpierr)
+       ! we return error code -1
+       call MPI_Abort(MPI_COMM_WORLD, -1, mpierr)
+       call MPI_Finalize(mpierr)
 #endif
     endif
     ! return an error code so the system knows this run has failed
@@ -130,7 +130,7 @@ contains
     character(len=*), intent(in) :: file
     integer, intent(in) :: line
     logical, intent(in) :: flag
-    
+
     real(DP) :: sizekb,sizemb,sizegb
     character(len=16) :: prefix
     character(len=32) :: sizestr
@@ -139,54 +139,54 @@ contains
     sizemb = sizekb / dble(1024)
     sizegb = sizemb / dble(1024)
     if (sizekb.le.1.0d1.or.reportsizeexact) then
-      write(sizestr,'(i20,1x,"bytes")')size
+       write(sizestr,'(i20,1x,"bytes")')size
     elseif (sizemb.le.1.0d1) then
-      write(sizestr,'(f20.3,1x,"KB")')sizekb
+       write(sizestr,'(f20.3,1x,"KB")')sizekb
     elseif (sizegb.le.1.0d1) then
-      write(sizestr,'(f20.3,1x,"MB")')sizemb
+       write(sizestr,'(f20.3,1x,"MB")')sizemb
     else
-      write(sizestr,'(f20.3,1x,"GB")')sizegb
+       write(sizestr,'(f20.3,1x,"GB")')sizegb
     endif
-    
+
     if (flag) then
-      prefix = "Allocation"
-      peinf%mymem = peinf%mymem + size
-      peinf%mymaxmem = max(peinf%mymaxmem, peinf%mymem)
+       prefix = "Allocation"
+       peinf%mymem = peinf%mymem + size
+       peinf%mymaxmem = max(peinf%mymaxmem, peinf%mymem)
     else
-      prefix = "Deallocation"
-      peinf%mymem = peinf%mymem - size
+       prefix = "Deallocation"
+       peinf%mymem = peinf%mymem - size
     endif
 
     if (peinf%verb_debug .and. sizemb>100 .and. peinf%inode==0) then
-      write(0,347) trim(prefix), trim(name), TRUNC(sizestr), &
-        trim(file), line
+       write(0,347) trim(prefix), trim(name), TRUNC(sizestr), &
+            trim(file), line
     endif
 
     if(size .lt. 0 .and. peinf%inode .eq. 0) then
-      write(0,345) trim(prefix), trim(name), TRUNC(sizestr), &
-        trim(file), line
+       write(0,345) trim(prefix), trim(name), TRUNC(sizestr), &
+            trim(file), line
     endif
 
     if(status .eq. 0) return
-    
+
     write(0,346) trim(prefix), trim(name), peinf%inode, &
-      trim(file), line
+         trim(file), line
     write(0,348) status, TRUNC(sizestr)
     FLUSH(0)
 
     call die('Allocation failure.')
-        
+
 345 format(1x,"WARNING:",1x,a,1x,"of array",1x,a,1x, &
-      "of size",1x,a,/,3x,"in file",1x,a,1x,"at line",i5, &
-      1x,"may fail.",/)
+         "of size",1x,a,/,3x,"in file",1x,a,1x,"at line",i5, &
+         1x,"may fail.",/)
 346 format(1x,"ERROR:",1x,a,1x,"of array",1x,a,1x, &
-      "on processor",i5,/,3x,"in file",1x,a,1x, &
-      "at line",i5,1x,"failed.")
+         "on processor",i5,/,3x,"in file",1x,a,1x, &
+         "at line",i5,1x,"failed.")
 347 format(1x,"NOTICE:",1x,a,1x,"of array",1x,a,1x, &
-      "of size",1x,a,/,3x,"in file",1x,a,1x,"at line",i5, &
-      1x,"occurring.",/)
+         "of size",1x,a,/,3x,"in file",1x,a,1x,"at line",i5, &
+         1x,"occurring.",/)
 348 format(3x,"Allocation status =",i4,",",1x,"Array size =",1x,a)
-    
+
   end subroutine alloc_check
 
 
@@ -214,12 +214,12 @@ contains
     call MPI_Reduce(maxmemarray, minresult, 1, MPI_2DOUBLE_PRECISION, MPI_MINLOC,  0, MPI_COMM_WORLD, mpierr)
 
     if(peinf%inode == 0) then
-      write(iunit,'(a,f14.4,a,i6)') 'Maximum memory currently allocated (MB): ', &
-        mymemresult(1) / (1024d0)**2, ' on processor ', nint(mymemresult(2))
-      write(iunit,'(a,f14.4,a,i6)') 'Maximum memory high-water-mark     (MB): ', &
-        maxresult(1)   / (1024d0)**2, ' on processor ', nint(maxresult(2))
-      write(iunit,'(a,f14.4,a,i6)') 'Minimum memory high-water-mark     (MB): ', &
-        minresult(1)   / (1024d0)**2, ' on processor ', nint(minresult(2))
+       write(iunit,'(a,f14.4,a,i6)') 'Maximum memory currently allocated (MB): ', &
+            mymemresult(1) / (1024d0)**2, ' on processor ', nint(mymemresult(2))
+       write(iunit,'(a,f14.4,a,i6)') 'Maximum memory high-water-mark     (MB): ', &
+            maxresult(1)   / (1024d0)**2, ' on processor ', nint(maxresult(2))
+       write(iunit,'(a,f14.4,a,i6)') 'Minimum memory high-water-mark     (MB): ', &
+            minresult(1)   / (1024d0)**2, ' on processor ', nint(minresult(2))
     endif
 #else
     write(iunit,'(a,f14.4)') 'Currently allocated    (MB): ', peinf%mymem    / (1024d0)**2
@@ -261,36 +261,36 @@ contains
     ! these issues would be caught below too, but we can give more helpful messages than just an error code
     inquire(unit = unit, opened = is_open, name = name)
     if(is_open) then
-      write(string,'(3a,i6,3a)') "Cannot open file '", TRUNC(file), "' on unit ", unit, &
-        ": unit already open for file '", TRUNC(name), "'."
-      call die(string)
+       write(string,'(3a,i6,3a)') "Cannot open file '", TRUNC(file), "' on unit ", unit, &
+            ": unit already open for file '", TRUNC(name), "'."
+       call die(string)
     endif
 
-    if((trim(status) == 'old' .or. trim(status) == 'OLD') .and. .not. present(iostat)) then 
-      inquire(file = TRUNC(file), exist = does_exist, opened = is_open, number = unit_other)
-      if(.not. does_exist) call die("Cannot open file '" // TRUNC(file) // "' for reading: does not exist.")
-      if(is_open) then
-        write(unit_str,*)       unit
-        write(unit_other_str,*) unit_other
-        call die("Cannot open file '" // TRUNC(file) // "' for reading on unit " // TRUNC(unit_str) &
-          // ": already opened on unit " // TRUNC(unit_other_str) // ".")
-      endif
+    if((trim(status) == 'old' .or. trim(status) == 'OLD') .and. .not. present(iostat)) then
+       inquire(file = TRUNC(file), exist = does_exist, opened = is_open, number = unit_other)
+       if(.not. does_exist) call die("Cannot open file '" // TRUNC(file) // "' for reading: does not exist.")
+       if(is_open) then
+          write(unit_str,*)       unit
+          write(unit_other_str,*) unit_other
+          call die("Cannot open file '" // TRUNC(file) // "' for reading on unit " // TRUNC(unit_str) &
+               // ": already opened on unit " // TRUNC(unit_other_str) // ".")
+       endif
 
-! From the Fortran 95 standard, Section 9.3.4:
-! 
-!    If a file is already connected to a unit, execution of an OPEN
-!    statement on that file and a different unit is not permitted.
-! 
-! From the Fortran 77 Standard, Section 12.3.2:
-! 
-!    A unit must not be connected to more than one file at the same time,
-!    and a file must not be connected to more than one unit at the same time.
+       ! From the Fortran 95 standard, Section 9.3.4:
+       !
+       !    If a file is already connected to a unit, execution of an OPEN
+       !    statement on that file and a different unit is not permitted.
+       !
+       ! From the Fortran 77 Standard, Section 12.3.2:
+       !
+       !    A unit must not be connected to more than one file at the same time,
+       !    and a file must not be connected to more than one unit at the same time.
 
     endif
 
-    if((trim(status) == 'new' .or. trim(status) == 'NEW') .and. .not. present(iostat)) then 
-      inquire(file = TRUNC(file), exist = does_exist)
-      if(does_exist) call die("Cannot open file '" // TRUNC(file) // "' for writing as 'new': already exists.")
+    if((trim(status) == 'new' .or. trim(status) == 'NEW') .and. .not. present(iostat)) then
+       inquire(file = TRUNC(file), exist = does_exist)
+       if(does_exist) call die("Cannot open file '" // TRUNC(file) // "' for writing as 'new': already exists.")
     endif
 
     form_   = 'formatted'
@@ -301,10 +301,10 @@ contains
     ! passing the optionals to 'open' if not given to this routine does not work!
     open(unit=unit, file = TRUNC(file), form=trim(form_), position=trim(position_), status=trim(status), iostat=ierr)
     if(present(iostat)) then
-      iostat = ierr
+       iostat = ierr
     else if(ierr /= 0) then
-      write(string,'(5a,i4)') "Failed to open file '", TRUNC(file), "' as status ", trim(status), " with error ", ierr
-      call die(string)
+       write(string,'(5a,i4)') "Failed to open file '", TRUNC(file), "' as status ", trim(status), " with error ", ierr
+       call die(string)
     endif
 
     return
@@ -330,23 +330,23 @@ contains
     ! these issues would be caught below too, but we can give more helpful messages than just an error code
     inquire(unit = unit, opened = is_open, iostat = ierr)
     if(ierr /= 0) then
-      write(string,'(a,i6,a,i4)') "inquire in close_file failed for unit ", unit, " with error ", ierr
-      call die(string)
+       write(string,'(a,i6,a,i4)') "inquire in close_file failed for unit ", unit, " with error ", ierr
+       call die(string)
     endif
     if(.not. is_open) then
-      write(string,'(a,i6,a)') "Cannot close unit ", unit, ": not open."
-      call die(string)
+       write(string,'(a,i6,a)') "Cannot close unit ", unit, ": not open."
+       call die(string)
     endif
 
     status = 'keep'
     if(present(delete)) then
-      if(delete) status = 'delete'
+       if(delete) status = 'delete'
     endif
 
     close(unit=unit, status=trim(status), iostat=ierr)
     if(ierr /= 0) then
-      write(string,'(a,i6,a,i4)') "Failed to close unit ", unit, " with error ", ierr
-      call die(string)
+       write(string,'(a,i6,a,i4)') "Failed to close unit ", unit, " with error ", ierr
+       call die(string)
     endif
 
     return

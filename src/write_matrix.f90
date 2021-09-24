@@ -1,14 +1,10 @@
 !=================================================================================
 !
-! Module write_matrix_m
+! Module:
 !
-! (1) write_matrix_d()          Originally by JRD       Last Modified 5/1/2008 (JRD)
+! write_matrix_m          Originally by JRD       Last Modified 5/1/2008 (JRD)
 !
 ! This program writes a distributed matrix like chimat or epsmat to file.
-!
-! (2) write_matrix_f()          Originally by JRD       Last Modified 2/5/2009 (CHP)
-!
-! Modification of write_matrix_d for full-frequency.
 !
 !=================================================================================
 
@@ -22,9 +18,9 @@ module write_matrix_m
   use io_utils_m
   implicit none
   private
-  public :: write_matrix_ser_hdf, write_matrix_f_ser_hdf
-  public :: write_gvec_indices_hdf, write_pol_fftgrid_hdf
-  public :: write_matrix_d_par_hdf, write_matrix_f_par_hdf
+  public :: write_matrix_ser_hdf, write_matrix_f_ser_hdf, &
+       write_gvec_indices_hdf, write_pol_fftgrid_hdf, &
+       write_matrix_d_par_hdf, write_matrix_f_par_hdf
 contains
 
   !> Collect nc_write columns of the chimat matrix and output to chimat.h5 using ROOT
@@ -49,7 +45,7 @@ contains
     real(DP), allocatable :: temp_r(:,:,:)
     integer :: nc_write_, icol_start !, alloc_stat
     type(progress_info) :: prog_info
-    PUSH_SUB(write_matrix_ser_hdf)    
+    PUSH_SUB(write_matrix_ser_hdf)
 
     !> scal%nbr = ICEIL(nmtx_max, scal%nprow)
     !> scal%nbc = ICEIL(nmtx_max, scal%npcol)
@@ -115,7 +111,6 @@ contains
 
     !> ROOT outputs [nmtx_max, nc_write_] elements to file
     if (myprow .ne. -1) then
-       ! write(*,*) "AAA peinf%inode = ", peinf%inode
        !> Open file for serial HDF5 write
        call h5fopen_f(TRUNC(filename), H5F_ACC_RDWR_F, file_id, error)
        if (error .ne. 0) then
@@ -131,7 +126,7 @@ contains
        endif
     endif
 
-    call progress_init(prog_info, 'Output to '//TRUNC(filename), 'column-blocks', (nmtx_max+nc_write-1)/nc_write)    
+    call progress_init(prog_info, 'Output to '//TRUNC(filename), 'column-blocks', (nmtx_max+nc_write-1)/nc_write)
 
     !> All procs in the context of scal%icntxt should communicate with ROOT
     if (scal%myprow .ne. -1) then
@@ -217,7 +212,7 @@ contains
     SCALAR, allocatable :: temp_c(:,:)
     real(DP), allocatable :: temp_r(:,:,:)
     integer :: nc_write_, icol_start, ifreq
-    type(progress_info) :: prog_info    
+    type(progress_info) :: prog_info
     PUSH_SUB(write_matrix_f_ser_hdf)
 
     !> scal%nbr = ICEIL(nmtx_max, scal%nprow)
@@ -300,8 +295,8 @@ contains
        endif
     endif
 
-    call progress_init(prog_info, 'Output to '//TRUNC(filename), 'column-blocks', nfreq*((nmtx_max+nc_write-1)/nc_write))    
-    
+    call progress_init(prog_info, 'Output to '//TRUNC(filename), 'column-blocks', nfreq*((nmtx_max+nc_write-1)/nc_write))
+
     !> All procs in the context of scal%icntxt should communicate with ROOT
     if (scal%myprow .ne. -1) then
        do ifreq = 1, nfreq
@@ -369,7 +364,7 @@ contains
   end subroutine write_matrix_f_ser_hdf
 
   !===================================================================================
-  
+
   !> Use nbr&nbc instead of nbl
   subroutine write_matrix_d_par_hdf(scal, matrix, nmtx_max, iq, is, name)
     type(scalapack), intent(in) :: scal

@@ -4,14 +4,14 @@
 !
 ! (1) vcoul_generator()     Originally by JRD, modifed by Meng Wu
 !
-!     Generates the (Truncated) Coulomb Interaction for all G at a particular
-!     q.  Outputs what would be 8Pi/q^2 if not for truncation.
+!     Generates the Coulomb Interaction for all G at a particular
+!     q: 8*Pi/(q+G)^2
 !
 !==============================================================================
 
 #include "f_defs.h"
 
-!! Truncation flag. The current supported options are:
+!! Coulomb truncation flag. The current supported options are:
 !! 0: No truncation (for 3D systems)
 !! 6: Slab truncation (for 2D systems)
 module vcoul_generator_m
@@ -171,19 +171,6 @@ contains
     POP_SUB(destroy_qran)
     return
   end subroutine destroy_qran
-
-  ! subroutine destroy_qran_mBZ()
-  !   PUSH_SUB(destroy_qran_mBZ)
-  !   ifirst = 2
-  !   ! if (peinf%inode .eq. 0) then
-  !   SAFE_DEALLOCATE(random_vector_cart_mBZ)
-  !   SAFE_DEALLOCATE(vcoul1)
-  !   ! endif
-  !   SAFE_DEALLOCATE(vcoul1_done)
-  !   call logit('Deallocated random numbers in mBZ.')
-  !   POP_SUB(destroy_qran_mBZ)
-  !   return
-  ! end subroutine destroy_qran_mBZ
 
   !! Based on uniform random numbers between [0,1], generate uniform random points (in cartesian coordinates) within a spherical shell,
   !! defined by the inner radius r_inner and outer radius r_outer

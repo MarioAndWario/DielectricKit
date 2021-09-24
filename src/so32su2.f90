@@ -1,8 +1,11 @@
-! ==============================================
-! Find one of the U(2) matrix for a O(3) rotation: proper or improper
-! Author : Meng Wu
-! Date : 20151019
-! Version : Beta
+!===============================================================================
+!
+! Module:
+!
+! so32su2        By Meng Wu
+!
+! Find one of the U(2) matrix corresponding to a O(3) rotation
+!
 ! ==============================================
 
 #include "f_defs.h"

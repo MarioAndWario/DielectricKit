@@ -1,25 +1,30 @@
 #include "f_defs.h"
 
-!! -------------------------------------------
-!! EpsInv() by Meng Wu, wu1meng2@berkeley.edu
-!!
-!! DESCRIPTION:
-!!
-!! EpsInv.x calculates inverse dielectric response function $\epsilon^{-1}_{G_1 G_2}(q, \omega)$
-!! with input of irreducible polarizability $\chi^{\star}_{G_1 G_2}(q, \omega)$
-!! by inverting $\delta_{G_1 G_2} - v_{G_1}(q) chi^{\star}_{G_1 G_2}(q, \omega)$
-!!
-!! FEATURES:
-!! 1. MPI / OpenMP parallelism
-!! 1. HDF5 parallel I/O
-!! 2. Fast Fourier transform (FFT)
-!!
-!! USAGE:
-!!
-!! 1. For q1 on a uniform grid: EpsInv.x chimat.h5
-!! 2. For q0 on a shifted grid: EpsInv.x chi0mat.h5
-!!
-!! --------------------------------------------
+!=====================================================================
+!
+! Routines:
+!
+! (1) EpsInv (main)      by Meng Wu (2021)
+!
+! DESCRIPTION:
+!
+! EpsInv.x calculates inverse dielectric response function $\epsilon^{-1}_{G_1 G_2}(q, \omega)$
+! with input of irreducible polarizability $\chi^{\star}_{G_1 G_2}(q, \omega)$
+! by inverting $\delta_{G_1 G_2} - v_{G_1}(q) chi^{\star}_{G_1 G_2}(q, \omega)$
+!
+! FEATURES:
+!
+! 1. MPI / OpenMP parallelism
+! 2. HDF5 parallel I/O
+! 3. Fast Fourier transform (FFT)
+! 4. Matrix invertion with LAPACK or SCALAPACK
+!
+! USAGE:
+!
+! 1. For q1 on a uniform grid: EpsInv.x chimat.h5
+! 2. For q0 on a shifted grid: EpsInv.x chi0mat.h5
+!
+!=====================================================================
 
 program EpsInv
   use global_m
@@ -93,7 +98,6 @@ program EpsInv
   integer :: spacegroup_, i
   character :: symbol_*21, temp_char*20
   real(DP), allocatable :: apos_frac(:,:)
-  logical :: vcoul_mc = .false., identity_eps = .false.
   real(DP) :: q_(3), qlen2_, ekinx_min
 
   info = MPI_INFO_NULL
@@ -105,41 +109,14 @@ program EpsInv
   filename_chi_hdf5 = "chimat.h5"
   if (peinf%inode .eq. 0) then
      if ((command_argument_count() .eq. 0)) then
-        write(*,'(1x,a)') "usage: EpsInv.x chi[0]mat.h5"
+        write(6,'(1x,a)') "usage: EpsInv.x chi[0]mat.h5"
         call h5close_f(error)
 #ifdef MPI
         call MPI_FINALIZE(mpierr)
 #endif
         stop
      endif
-     call get_command_argument(1, filename_chi_hdf5)   !first, read in the two values
-     if (command_argument_count() .ge. 2) then
-        call get_command_argument(2, temp_char)   !first, read in the two values
-        if (TRIM(temp_char) .eq. "mc") then
-           vcoul_mc = .true.
-        else
-           vcoul_mc = .false.
-        endif
-
-        if (TRIM(temp_char) .eq. "identity_eps") then
-           identity_eps = .true.
-        else
-           identity_eps = .false.
-        endif
-     else
-        vcoul_mc = .false.
-        identity_eps = .false.
-     endif
-
-     if (vcoul_mc) then
-        write(6,'(1X,A)') "Use mc-averaged vcoul."
-     else
-        write(6,'(1X,A)') "Do not use mc-averaged vcoul."
-     endif
-
-     if (identity_eps) then
-        write(6,'(1X,A)') "Build epsmat.h5 as an identity matrix."
-     endif
+     call get_command_argument(1, filename_chi_hdf5)
 
      if (TRIM(filename_chi_hdf5) .eq. "chimat.h5") then
         is_q1 = .true.
@@ -158,8 +135,6 @@ program EpsInv
   if (peinf%npes > 1) then
      call MPI_BCAST( filename_chi_hdf5, 50, MPI_CHARACTER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST( is_q1, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, mpierr)
-     call MPI_BCAST( vcoul_mc, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, mpierr)
-     call MPI_BCAST( identity_eps, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, mpierr)
   endif
 
   call timacc(2,1)
@@ -167,16 +142,7 @@ program EpsInv
   sheader = 'CHI'
   iflavor = 0
   call read_hdf5_header_type(TRUNC(filename_chi_hdf5), sheader, iflavor, kp, gvec, syms, crys)
-
   SAFE_ALLOCATE(apos_frac, (3, crys%nat))
-  ! !! Cartesian coordinates in units of alat*Bohr
-  ! write(*,'(A)') "Atoms apos:"
-  ! do i = 1, crys%nat
-  !    write(*,'(A,I5,A,I5,A,3F12.9,A)') "Atom #", i, " Z = ", crys%atyp(i), " f = (", crys%apos(:,i), " )"
-  ! enddo
-
-  !! DOT[inverse(crys%avec), apos_cart_alat] = apos_frac
-  !! inverse(crys%avec) = tranpose(crys%bvec)
   apos_frac = MATMUL(TRANSPOSE(crys%bvec), crys%apos)
 
   !! Use SPGlib to get the crystal symmetry
@@ -209,32 +175,34 @@ program EpsInv
   SAFE_DEALLOCATE(apos_frac)
 
   !! https://homepage.univie.ac.at/michael.leitner/lattice/pearson/ctype.html#cftype
-  !! Determine FCC = face-center cubic
+  !! FCC
   if ((spacegroup_ .eq. 216) .or. (spacegroup_ .eq. 225) .or. (spacegroup_ .eq. 227)) then
      celltype = 1
+     !! BCC     
   elseif (spacegroup_ .eq. 229) then
-     celltype = 2 !! BCC, r_outer is defined by H=[-0.5,0.5,0.5], r_inner is defined by N=[0,0.5,0]
+     celltype = 2 
+     !! simple cubic     
   elseif (spacegroup_ .eq. 221) then
-     celltype = 3 !! simple cubic
-     !! Determine hexagonal + triangular cell
-     !! https://en.wikipedia.org/wiki/Hexagonal_crystal_family
+     celltype = 3 
+     !! Hexagonal + triangular cell
   elseif ((spacegroup_ .ge. 143) .and. (spacegroup_ .le. 194)) then
      celltype = 4
+     !! Other
   else
      celltype = 0
   endif
 
   if (peinf%inode .eq. 0) then
      if (celltype .eq. 1) then
-        write(*,'(1X,A)') "FCC structure"
+        write(6,'(1X,A)') "FCC structure"
      elseif (celltype .eq. 2) then
-        write(*,'(1X,A)') "BCC structure"
+        write(6,'(1X,A)') "BCC structure"
      elseif (celltype .eq. 3) then
-        write(*,'(1X,A)') "Simple cubic structure"
+        write(6,'(1X,A)') "Simple cubic structure"
      elseif (celltype .eq. 4) then
-        write(*,'(1X,A)') "Triangular structure"
+        write(6,'(1X,A)') "Triangular structure"
      else
-        write(*,'(1X,A)') "Other structure"
+        write(6,'(1X,A)') "Other structure"
      endif
   endif
 
@@ -266,10 +234,11 @@ program EpsInv
      if ((pol%freq_dep .eq. 0) .and. (pol%nfreq .gt. 1)) then
         call die("EpsInv: GPP epsmat with > 1 frequencies.", only_root_writes=.true.)
      endif
-     !! if FF but with 1 frequency
+
      if ((pol%freq_dep .ne. 0) .and. (pol%nfreq .le. 1)) then
         call die("EpsInv: FF epsmat with <= 1 frequencies.", only_root_writes=.true.)
      endif
+
      if ((pol%freq_dep .ne. 0) .and. (SCALARSIZE .eq. 1)) then
         call die("EpsInv: FF not compatible with complex-flavor.", only_root_writes=.true.)
      endif
@@ -288,38 +257,38 @@ program EpsInv
 
      call read_eps_params_hdf5(TRUNC(filename_chi_hdf5), pol)
      if (pol%timeordered) then
-        write(*,'(1X,A)') "Time-ordered <=> varepsilon is non-zero for real-axis frequencies"
+        write(6,'(1X,A)') "Time-ordered <=> varepsilon is non-zero for real-axis frequencies"
         if (pol%nfreq_real .gt. 0) then
-           write(*,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
+           write(6,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
            do ifreq = 1, pol%nfreq_real
               !! pol%dFreqBrd(ifreq) is frequency-dependent varepsilon in this case
-              write(*,'(1X,A,I5,A,F12.5,A,F12.5,A)') "#", ifreq, " omega = (", pol%dFreqGrid(ifreq), " ) eV varepsilon = ", DIMAG(pol%dFreqBrd(ifreq)), " eV"
+              write(6,'(1X,A,I5,A,F12.5,A,F12.5,A)') "#", ifreq, " omega = (", pol%dFreqGrid(ifreq), " ) eV varepsilon = ", DIMAG(pol%dFreqBrd(ifreq)), " eV"
            enddo
         endif
 
         if (pol%nfreq_imag .gt. 0) then
-           write(*,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
+           write(6,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
            do ifreq = pol%nfreq_real+1, pol%nfreq
-              write(*,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV varepsilon = 0 eV"
+              write(6,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV varepsilon = 0 eV"
            enddo
         endif
      else
-        write(*,'(1X,A)') "Retarded <==> varepsilon = 0 eV"
+        write(6,'(1X,A)') "Retarded <==> varepsilon = 0 eV"
         if (pol%nfreq_real .gt. 0) then
-           write(*,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
+           write(6,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
            do ifreq = 1, pol%nfreq_real
-              write(*,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
+              write(6,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
            enddo
         endif
 
         if (pol%nfreq_imag .gt. 0) then
-           write(*,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
+           write(6,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
            do ifreq = pol%nfreq_real+1, pol%nfreq
-              write(*,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
+              write(6,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
            enddo
         endif
      endif
-     write(*,'(1X,A)')
+     write(6,'(1X,A)')
 
      !! Coulomb truncation schemes
      if (peinf%inode .eq. 0) then
@@ -438,13 +407,10 @@ program EpsInv
   scal%mypcol = -1
   call blacs_get(-1, 0, scal%icntxt)
   !! proc grid is row-major
-  !! suppose we have 4 procs in total, within a 2x2 proc grid,
-  !! The proc grid looks like:
-  !! [0, 1]
-  !! [2, 3]
   !! The data grid is column-major.
   call blacs_gridinit(scal%icntxt, 'r', scal%nprow, scal%npcol)
   call blacs_gridinfo(scal%icntxt, scal%nprow, scal%npcol, scal%myprow, scal%mypcol)
+
   !! Number of G1 owned by this proc, could be 0
   scal%npr = NUMROC(pol%nmtx, scal%nbr, scal%myprow, 0, scal%nprow)
   !! Number of G2 owned by this proc, could be 0
@@ -456,11 +422,11 @@ program EpsInv
   npc_max = NUMROC(pol%nmtx, scal%nbc, 0, 0, scal%npcol)
   peinf%nckpe = npr_max * npc_max
   if (peinf%inode .eq. 0) then
-     write(*,'(A)')
-     write(*,'(1X,A,I8,A,I8)') "Process grid : ", scal%nprow ," x ", scal%npcol
-     write(*,'(1X,A,I8,A,I8)') "Blocksize of (ik, ikp) : ", scal%nbr, " x ", scal%nbc
-     write(*,'(1X,A,I8,A,I8,A,I8)') "Max. number of (ik, ikp) on a proc : ", npr_max, " x ", npc_max, " = ", peinf%nckpe
-     write(*,'(A)')
+     write(6,'(A)')
+     write(6,'(1X,A,I8,A,I8)') "Process grid : ", scal%nprow ," x ", scal%npcol
+     write(6,'(1X,A,I8,A,I8)') "Blocksize of (ik, ikp) : ", scal%nbr, " x ", scal%nbc
+     write(6,'(1X,A,I8,A,I8,A,I8)') "Max. number of (ik, ikp) on a proc : ", npr_max, " x ", npc_max, " = ", peinf%nckpe
+     write(6,'(A)')
   endif
 
   fact = 4.0D0 / (DBLE(nfq) * crys%celvol * DBLE(kp%nspin*kp%nspinor))
@@ -513,9 +479,6 @@ program EpsInv
   endif
 
   SAFE_ALLOCATE(zmat_1d_block, (pol%nmtx, MAX(npc, 1)))
-
-  !! ----------------------------------------------
-
   SAFE_ALLOCATE(pol%isrtx, (gvec%ng))
   SAFE_ALLOCATE(pol%isrtxi, (gvec%ng))
   SAFE_ALLOCATE(ekin,  (gvec%ng))
@@ -597,7 +560,7 @@ program EpsInv
      call h5pclose_f(plist_id, error)
      CALL h5pcreate_f(H5P_DATASET_XFER_F, plist_id, error)
      CALL h5pset_dxpl_mpio_f(plist_id, H5FD_MPIO_COLLECTIVE_F, error)
-     
+
      !! pol%nmtx = MAXVAL(pol%nmtx_of_q) here
      if (npc > 0) then
         count_mat(:) = (/ SCALARSIZE, pol%nmtx, npc, pol%nfreq, kp%nspin, 1 /)
@@ -639,16 +602,9 @@ program EpsInv
         endif
      endif
 
-     if (.not. identity_eps) then
-        call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, dmat_1d_block, count_mat, error, mem_space_id = memspace, file_space_id = filespace, xfer_prp=plist_id)
-        if (error .ne. 0) then
-           call die("HDF5 error", only_root_writes=.true.)
-        endif
-     else
-        if (peinf%inode .eq. 0) then
-           write(*,'(1X,A)') "Skip reading mats/matrix."
-           write(*,'(1X,A)')
-        endif
+     call h5dread_f(dset_id, H5T_NATIVE_DOUBLE, dmat_1d_block, count_mat, error, mem_space_id = memspace, file_space_id = filespace, xfer_prp=plist_id)
+     if (error .ne. 0) then
+        call die("HDF5 error", only_root_writes=.true.)
      endif
 
      call h5sclose_f(memspace, error)
@@ -713,7 +669,8 @@ program EpsInv
      call timacc(5,1)
 
      !! Construct eps
-     !! GPP
+     
+     !! Generalized plasmon-pole (GPP)
      if (pol%freq_dep .eq. 0) then
         !$OMP PARALLEL DO collapse(2) private(target_myprow, target_mypcol, ig1_loc, ig2_loc)
         do ig2 = 1, pol%nmtx
@@ -731,7 +688,7 @@ program EpsInv
            enddo
         enddo
         !$OMP END PARALLEL DO
-        !! <- FF ->
+        !! Full-frequency (FF)
      else
         SAFE_ALLOCATE(vcoul_temp, (scal%npr))
         eps_temp = (0.0D0, 0.0D0)
@@ -765,10 +722,8 @@ program EpsInv
      endif
 
      if (pol%freq_dep .eq. 0) then
-        ! SAFE_DEALLOCATE_P(pol%chi)
         SAFE_DEALLOCATE(pol%chi)
      else
-        ! SAFE_DEALLOCATE_P(pol%chiRDyn)
         SAFE_DEALLOCATE(pol%chiRDyn)
      endif
 
@@ -803,10 +758,10 @@ program EpsInv
      endif
 
      if (peinf%inode .eq. 0) then
-        !! Genealized plasmon-pole model (GPP): only static frequency, omega = 0
+        !! GPP: only static frequency, omega = 0
         if (pol%freq_dep .eq. 0) then
            write(6,'(1X,A,I6,A,2F15.8,A,I5)') 'q-pt ', iq, ': Epsinv(G=0,Gp=0) = ', eps(pol%isrtxi(1), pol%isrtxi(1)), " isrtxi(1) = ", pol%isrtxi(1)
-           !! Full frequency (FF)
+           !! FF
         else
            do ifreq = 1, pol%nfreq
               write(6,'(1X,A,I6,A,I6,A,2F15.8,A,I5)') 'q-pt ', iq, " ifreq ", ifreq, ': Epsinv(G=0,Gp=0) = ', epsRDyn(pol%isrtxi(1), pol%isrtxi(1), ifreq), " isrtxi(1) = ", pol%isrtxi(1)
@@ -983,10 +938,6 @@ program EpsInv
   SAFE_DEALLOCATE_P(pol%dFreqBrd)
   SAFE_DEALLOCATE_P(gvec%components)
   SAFE_DEALLOCATE(ekin)
-
-  ! if (vcoul_mc) then
-  !    call destroy_qran_mBZ() ! from vcoul_generator
-  ! endif
 
 #ifdef MPI
   call MPI_BARRIER(MPI_COMM_WORLD, mpierr)

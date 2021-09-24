@@ -109,9 +109,6 @@ contains
     call write_hdf5_header_type(trim(name), sheader, SCALARSIZE, kp, gvec, syms, crys)
     call write_hdf5_gvectors(trim(name), gvec%ng, gvec%components)
     call h5fopen_f(trim(name), H5F_ACC_RDWR_F, file_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
 
     call hdf5_create_group(file_id, 'eps_header', error)
     call hdf5_create_group(file_id, 'eps_header/params', error)
@@ -175,5 +172,7 @@ contains
     SAFE_DEALLOCATE(nmtx)
     SAFE_DEALLOCATE(qpt_done)
     POP_SUB(eps_hdf5_setup_2)
+
   end subroutine eps_hdf5_setup
+  
 end module epswrite_hdf5_m

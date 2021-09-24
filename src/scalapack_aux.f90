@@ -20,15 +20,15 @@ module scalapack_aux_m
   private
 
   public ::      &
-    numroc,           &
-    indxl2g,          &
-    indxg2l,          &
-    indxg2p
+       numroc,           &
+       indxl2g,          &
+       indxg2l,          &
+       indxg2p
 
 
 contains
 
-! -- ScaLAPACK tools routine (version 1.7) --
+  ! -- ScaLAPACK tools routine (version 1.7) --
 
   INTEGER FUNCTION NUMROC( N, NB, IPROC, ISRCPROC, NPROCS )
     integer, intent(in) :: N, NB, IPROC, ISRCPROC, NPROCS
@@ -39,9 +39,9 @@ contains
     NUMROC = (NBLOCKS/NPROCS) * NB
     EXTRABLKS = MOD( NBLOCKS, NPROCS )
     IF( MYDIST.LT.EXTRABLKS ) THEN
-      NUMROC = NUMROC + NB
+       NUMROC = NUMROC + NB
     ELSE IF( MYDIST.EQ.EXTRABLKS ) THEN
-      NUMROC = NUMROC + MOD( N, NB )
+       NUMROC = NUMROC + MOD( N, NB )
     END IF
 
   END FUNCTION NUMROC
@@ -50,7 +50,7 @@ contains
     integer, intent(in) :: INDXLOC, IPROC, ISRCPROC, NB, NPROCS
 
     INDXL2G = NPROCS*NB*((INDXLOC-1)/NB) + MOD(INDXLOC-1,NB) + &
-      MOD(NPROCS+IPROC-ISRCPROC, NPROCS)*NB + 1
+         MOD(NPROCS+IPROC-ISRCPROC, NPROCS)*NB + 1
 
   END FUNCTION INDXL2G
 
@@ -67,5 +67,5 @@ contains
     INDXG2P = MOD( ISRCPROC + (INDXGLOB - 1) / NB, NPROCS )
 
   END FUNCTION INDXG2P
-  
+
 end module scalapack_aux_m

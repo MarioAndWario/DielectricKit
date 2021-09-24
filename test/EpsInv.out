@@ -1,76 +1,127 @@
-
- BerkeleyGW trunk revision 7003
- EpsInv code, Complex version, run on 19-Sep-2021 at 13:06:56 -0700
-
-                                                                 ..o.          
-                                                                .oxxo.         
-                                                               .oxxxxo...      
-                                                               oxxxxxxo.       
-                                                              .oxxxxxxx.       
-                                                              .ooooooxxo..     
-                                                              .oooooooxo..     
-                                                              .oooooxxo...     
-                                                       .........oxooo......    
-                                                 ............................  
-                                             ................................. 
-                                          .................................... 
-           .          ..oo. ....  .................................oooxxxxxxxo.
-     .............oxxxx@ox@@@x@x.....................o...........ooooooooooxx. 
-    .o.........oox@x.oo........xxx@@............ooxxxxo..........ooooxxxxxoxo  
-    .x........x@xxo...............o@xxo........oxxx@@@xoooooooooooooooxxxo...  
-    .o......ox@@o..................oox@o.....ooxxx@xoooxxxxxxxoooooooooooo.... 
-    o..ooooo@@xoooo....ooo...........x@o.....ooxxxxo   .oxxxxxxxxxxooooooo.... 
-    . .oooo@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@....ooooox.     .oxx@@@@@xxoo........ 
-      .ooooxxxxxxxooooooxooooooooooooooxo...oooooxx.        ..ox@xxxoo.........
-      .ooooooxxxx@xoooooooooooooxxoooooooooooxxxxx.            .oxxooooooooxxo.
-     .oooooxxxxx@@@xxxxxxxxxxxxxxxxxxxxxxxxoxxxxo.                .oxxxxxxxxo. 
-   ....oooxxxxx@@@xo..oxxx@@@@@@xxxxoxxoooooooxx.                  .oxxxoo..   
-  .....ooxxxx@@xo.       ........    .ooooooooxxo                              
-  ..oooxxxx@@@o                       .oooooooxoo.                             
-  ....oxooxxxxx.                       .ooo..oooo.                             
-  .....o.ooxxxxxo.                     .oooooooxo.                             
- ......ooooxxxxxxo.                     .ooooooxoo..                           
-........ooxxxxxxxo..                     .o....oxoo...                         
-.......ooooxxxxxxxo.                     ........oooo.                         
-.ooooooo..ooxxxxoooo.                    .........ooo...                       
-..oxo...ooooxxxoooo..                    .ooo......oooo...                     
-  .ooooo....o.                            .oxxxoo....ooo....                   
-    .oooooo...                              ...ooooo...ooo..                   
-       ...                                     .oo.......                      
-                                               ....ooo...                      
-                      __              __                                       
- ______              [  |            [  |                 ._____  _          _ 
-|_   _ \              | |  _          | |                /  ___ \| |        | |
-  | |_) | .---.  _. _.| | / |  .---.  | | .---.  _    _ / /    \_|\ \  /\  / / 
-  |  __'./ /__\\[ /`\_| '' <  / /__\\ | |/ /__\\| \  | | |   _____ \ \/  \/ /  
- _| |__| | \__. | |   | |`\ \ | \___. | || \___. \ \/ / \ \.___| |  \  /\  /   
-|_______/ \.__./[_]  [__|  \_] \.__./[___]\.__./  \  /   \.____./    \/  \/    
-                                                  / /                          
-                                                 /_/                           
---------------------------------------------------------------------------------
- Please cite the following papers when using results from BerkeleyGW:
-
- Jack Deslippe, Georgy Samsonidze, David A. Strubbe, Manish Jain, Marvin L.
- Cohen, and Steven G. Louie, "BerkeleyGW: A Massively Parallel Computer Package
- for the Calculation of the Quasiparticle and Optical Properties of Materials
- and Nanostructures," Comput. Phys. Commun. 183, 1269 (2012)
-
- Mark S. Hybertsen and Steven G. Louie, "Electron correlation in semiconductors
- and insulators: Band gaps and quasiparticle energies," Phys. Rev. B 34, 5390
- (1986)
-
- Michael Rohlfing and Steven G. Louie, "Electron-hole excitations and optical
- spectra from first principles," Phys. Rev. B 62, 4927 (2000)
---------------------------------------------------------------------------------
-
- Running MPI version (parallel)
- Running with 1 MPI task(s)
- Using OpenMP. Number of threads per MPI task: 1
-
- Compilation flags:
- - Compiler: INTEL
- - Para. flags: MPI, OMP
- - Math  flags: USESCALAPACK, UNPACKED, USEFFTW3, HDF5, USEELPA
- - Debug flags: 
-
  Do not use mc-averaged vcoul.
+ sFileName = chimat.h5
+Atoms:
+Atom #    1 Z =    14 f = ( 0.000000000 0.000000000 0.000000000 )
+Atom #    2 Z =    14 f = ( 0.250000000 0.250000000 0.250000000 )
+ Lattice vectors = [a1, a2, a3] :
+     0.70710678      0.00000000      0.70710678
+     0.70710678      0.70710678      0.00000000
+     0.00000000      0.70710678      0.70710678
+ Reciprocal vectors = [b1, b2, b3] :
+     0.70710678     -0.70710678      0.70710678
+     0.70710678      0.70710678     -0.70710678
+    -0.70710678      0.70710678      0.70710678
+ bdot = [b1, b2, b3]^T \cdot [b1, b2, b3] :
+     1.12482146     -0.37494049     -0.37494049
+    -0.37494049      1.12482146     -0.37494049
+    -0.37494049     -0.37494049      1.12482146
+cell_symmetry_ =          0
+ntran_ =         48
+spacegroup_ =        227
+symbol_ = Fd-3m                
+-----------------------
+ FCC structure
+ For q1 vectors:
+ Reciprocal-space information:
+ - Q-grid :   2    2    2  with    8 qpoints in full BZ.
+ - G-cutoff of eps read from chimat.h5 :      5.000 Ryd.
+ Time-ordered <=> varepsilon is non-zero for real-axis frequencies
+ Real-axis frequencies: nfreq_real =          1
+ #    1 omega = (     0.00000 ) eV varepsilon =      0.00000 eV
+
+ We are using no truncation
+
+ More job parameters:
+ - Number of valence bands: 4
+ - Number of valence bands to skip: 0
+ - Number of conduction bands: 4
+ - Number of conduction bands to skip: 0
+ - Number of spins: 1
+ - FFTgrid =         17        17        17
+ - Max. number of G1/G2 vectors for one q: 59
+
+ Initializing epsmat.h5
+ sFileName = epsmat.h5
+
+ Process grid :        4 x        8
+ Blocksize of (ik, ikp) :       14 x       14
+ Max. number of (ik, ikp) on a proc :       17 x       14 =      238
+
+ ======================================================================
+     1 /    3      q =         0.0000000000        0.0000000000        0.0000000000
+ ======================================================================
+
+ |q| =      0.00000000 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 59
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      1:    Eps(G=0,Gp=0) =      1.00000000     0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      1: Epsinv(G=0,Gp=0) =      1.00000000     0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     2 /    3      q =         0.0000000000        0.0000000000        0.5000000000
+ ======================================================================
+
+ |q| =      0.53028800 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 52
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      2:    Eps(G=0,Gp=0) =      2.73192606     0.00000000 isrtxi(1) =     2
+
+ Inverting epsilon matrix
+ q-pt      2: Epsinv(G=0,Gp=0) =      0.45872969     0.00000000 isrtxi(1) =     2
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     3 /    3      q =         0.0000000000        0.5000000000        0.5000000000
+ ======================================================================
+
+ |q| =      0.61232384 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 48
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      3:    Eps(G=0,Gp=0) =      2.83084288     0.00000000 isrtxi(1) =     2
+
+ Inverting epsilon matrix
+ q-pt      3: Epsinv(G=0,Gp=0) =      0.38574410    -0.00000000 isrtxi(1) =     2
+
+ Outputing epsmat.h5
+
+ 
+                             CPU (s)        WALL (s)          #
+ 
+ INIT:           (min.)        0.010           0.095          1
+                 (PE 0)        0.010           0.095
+                 (max.)        0.100           0.095
+ READ CHI:       (min.)        0.010           0.047          3
+                 (PE 0)        0.010           0.047
+                 (max.)        0.050           0.058
+ CALC VCOUL:     (min.)       -0.000           0.000          3
+                 (PE 0)       -0.000           0.000
+                 (max.)        0.010           0.001
+ GET EPS:        (min.)       -0.000           0.000          3
+                 (PE 0)       -0.000           0.000
+                 (max.)        0.010           0.000
+ INVERT EPS:     (min.)        0.020           0.078          3
+                 (PE 0)        0.070           0.078
+                 (max.)        0.090           0.078
+ OUTPUT:         (min.)        0.000           0.028          3
+                 (PE 0)        0.010           0.033
+                 (max.)        0.030           0.033
+ TOTAL:          (min.)        0.100           0.303          1
+                 (PE 0)        0.100           0.303
+                 (max.)        0.280           0.303

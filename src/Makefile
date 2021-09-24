@@ -1,4 +1,4 @@
-include ../arch.mk
+include arch.mk
 
 ifeq ($(findstring -DUSESCALAPACK,$(MATHFLAG)),-DUSESCALAPACK)
   ifneq ($(findstring -DMPI,$(PARAFLAG)),-DMPI)

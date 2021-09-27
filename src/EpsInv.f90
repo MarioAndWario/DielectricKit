@@ -178,12 +178,12 @@ program EpsInv
   !! FCC
   if ((spacegroup_ .eq. 216) .or. (spacegroup_ .eq. 225) .or. (spacegroup_ .eq. 227)) then
      celltype = 1
-     !! BCC     
+     !! BCC
   elseif (spacegroup_ .eq. 229) then
-     celltype = 2 
-     !! simple cubic     
+     celltype = 2
+     !! simple cubic
   elseif (spacegroup_ .eq. 221) then
-     celltype = 3 
+     celltype = 3
      !! Hexagonal + triangular cell
   elseif ((spacegroup_ .ge. 143) .and. (spacegroup_ .le. 194)) then
      celltype = 4
@@ -313,13 +313,13 @@ program EpsInv
      endif
      !! pol%matrix_type = 0 means we will output a epsmat file
      pol%matrix_type = 0
-     write(6,'(/1X,A)') 'More job parameters:'
-     write(6,'(1X,A,I0)') '- Number of valence bands: ', pol%nvb
-     write(6,'(1X,A,I0)') '- Number of valence bands to skip: ', pol%skip_nvb
-     write(6,'(1X,A,I0)') '- Number of conduction bands: ', pol%ncb
-     write(6,'(1X,A,I0)') '- Number of conduction bands to skip: ', pol%skip_ncb
+     ! write(6,'(/1X,A)') 'More job parameters:'
+     ! write(6,'(1X,A,I0)') '- Number of valence bands: ', pol%nvb
+     ! write(6,'(1X,A,I0)') '- Number of valence bands to skip: ', pol%skip_nvb
+     ! write(6,'(1X,A,I0)') '- Number of conduction bands: ', pol%ncb
+     ! write(6,'(1X,A,I0)') '- Number of conduction bands to skip: ', pol%skip_ncb
      write(6,'(1X,A,I0)') '- Number of spins: ', kp%nspin
-     write(6,'(1X,A,3I10)') "- FFTgrid = ", pol%FFTgrid
+     ! write(6,'(1X,A,3I10)') "- FFTgrid = ", pol%FFTgrid
      write(6,'(1X,A,I0)') '- Max. number of G1/G2 vectors for one q: ', pol%nmtx
      write(6,'()')
   endif
@@ -333,11 +333,11 @@ program EpsInv
      call MPI_BCAST(pol%nq0, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%nq1, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%nband, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     call MPI_BCAST(pol%nvb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     call MPI_BCAST(pol%ncb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+     ! call MPI_BCAST(pol%nvb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+     ! call MPI_BCAST(pol%ncb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%nmtx, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     call MPI_BCAST(pol%skip_nvb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     call MPI_BCAST(pol%skip_ncb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+     ! call MPI_BCAST(pol%skip_nvb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+     ! call MPI_BCAST(pol%skip_ncb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%matrix_flavor, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%matrix_type, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%nmatrix, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
@@ -348,7 +348,7 @@ program EpsInv
      call MPI_BCAST(pol%subsample, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%subspace, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%timeordered, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, mpierr)
-     call MPI_BCAST(pol%FFTgrid, 3, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+     ! call MPI_BCAST(pol%FFTgrid, 3, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%qgrid, 3, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%ecuts, 1, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%efermi, 1, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
@@ -369,9 +369,9 @@ program EpsInv
   SAFE_ALLOCATE(pol%qpt, (3, pol%nq))
   SAFE_ALLOCATE(pol%nmtx_of_q, (pol%nq))
   call read_eps_qgrid_hdf5(pol%nq, pol%qpt, pol%nmtx_of_q, TRUNC(filename_chi_hdf5))
-  if (pol%nmtx .ne. MAXVAL(pol%nmtx_of_q)) then
-     call die("pol%nmtx error.", only_root_writes=.true.)
-  endif
+  ! if (pol%nmtx .ne. MAXVAL(pol%nmtx_of_q)) then
+  !    call die("pol%nmtx error.", only_root_writes=.true.)
+  ! endif
 
   !! Setup eps[0]mat.h5 file
   if (is_q1) then
@@ -385,9 +385,9 @@ program EpsInv
   if (peinf%inode .eq. 0) then
      call eps_hdf5_setup(kp, gvec, syms, crys, pol, TRUNC(filename_eps_hdf5), restart = pol%restart)
   endif
-
+  
+  !! Scalapack setup
   !! 2D block-cyclic distribution of chimat
-  !! scalapack setup
   !! Find a grid such that nprow * npcol = peinf%npes
   nprow_ = CEILING(SQRT(DBLE(peinf%npes) + 1.0D-6))
   do iprow = nprow_, 1, -1
@@ -669,7 +669,7 @@ program EpsInv
      call timacc(5,1)
 
      !! Construct eps
-     
+
      !! Generalized plasmon-pole (GPP)
      if (pol%freq_dep .eq. 0) then
         !$OMP PARALLEL DO collapse(2) private(target_myprow, target_mypcol, ig1_loc, ig2_loc)

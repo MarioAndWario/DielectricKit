@@ -686,25 +686,25 @@ contains
        enddo
     enddo
 
-    write(ascunit,'(A)') "---------------------------------------"
-    write(ascunit,'(A, I5)') "syms%mtrx_reci(1:3,1:3,1:48) "
-    do isym=1,syms%ntran
-       write(ascunit,'("#", I5, ":")') isym
-       do ii=1,3
-          temp_i3(:) = syms%mtrx_reci(ii, 1:3, isym)
-          WRITE (ascunit,'(I8,1X,I8,1X,I8)') temp_i3(:)
-       enddo
-    enddo
+    ! write(ascunit,'(A)') "---------------------------------------"
+    ! write(ascunit,'(A, I5)') "syms%mtrx_reci(1:3,1:3,1:48) "
+    ! do isym=1,syms%ntran
+    !    write(ascunit,'("#", I5, ":")') isym
+    !    do ii=1,3
+    !       temp_i3(:) = syms%mtrx_reci(ii, 1:3, isym)
+    !       WRITE (ascunit,'(I8,1X,I8,1X,I8)') temp_i3(:)
+    !    enddo
+    ! enddo
 
-    write(ascunit,'(A)') "---------------------------------------"
-    write(ascunit,'(A, I5)') "syms%mtrx_cart(1:3,1:3,1:48) "
-    do isym=1,syms%ntran
-       write(ascunit,'("#", I5, ":")') isym
-       do ii=1,3
-          temp_r3(:) = syms%mtrx_cart(ii, 1:3, isym)
-          WRITE (ascunit,'(F12.5,1X,F12.5,1X,F12.5)') temp_r3(:)
-       enddo
-    enddo
+    ! write(ascunit,'(A)') "---------------------------------------"
+    ! write(ascunit,'(A, I5)') "syms%mtrx_cart(1:3,1:3,1:48) "
+    ! do isym=1,syms%ntran
+    !    write(ascunit,'("#", I5, ":")') isym
+    !    do ii=1,3
+    !       temp_r3(:) = syms%mtrx_cart(ii, 1:3, isym)
+    !       WRITE (ascunit,'(F12.5,1X,F12.5,1X,F12.5)') temp_r3(:)
+    !    enddo
+    ! enddo
 
     write(ascunit,'(A)') "---------------------------------------"
     write(ascunit,'(A, I5)') "   isym   syms%tnp(1:3,isym) "

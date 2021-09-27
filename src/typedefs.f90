@@ -61,8 +61,8 @@ module typedefs_m
   type symmetry
      integer :: ntran         !< number of operations in full group
      integer :: mtrx(3,3,48)  !< symmetry matrix
-     integer :: mtrx_reci(3,3,48) ! < symmetry matrix in basis of reciprocal space lattice vectors, b1, b2, b3
-     real(DP) :: mtrx_cart(3,3,48) ! < symmetry matrix in cartesian coordinates
+     ! integer :: mtrx_reci(3,3,48) ! < symmetry matrix in basis of reciprocal space lattice vectors, b1, b2, b3
+     ! real(DP) :: mtrx_cart(3,3,48) ! < symmetry matrix in cartesian coordinates
      real(DP) :: tnp(3,48)    !< fractional translations
      integer :: kgzero(3,48)  !< Umklapp vectors for subgroup symmetry operations
      integer :: cell_symmetry !< 0 = cubic, 1 = hexagonal

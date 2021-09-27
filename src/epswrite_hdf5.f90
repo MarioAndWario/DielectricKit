@@ -135,7 +135,7 @@ contains
     call hdf5_write_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
     call hdf5_write_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
     call hdf5_write_logical(file_id, 'eps_header/params/correcthead', .false., error)    
-    call hdf5_write_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)
+    ! call hdf5_write_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)
    
     call hdf5_write_double(file_id, 'eps_header/params/efermi', pol%efermi/ryd, error)
     call hdf5_write_int(file_id, 'eps_header/params/intraband_flag', pol%intraband_flag, error)

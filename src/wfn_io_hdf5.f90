@@ -70,8 +70,8 @@ contains
        call MPI_BCAST(crys%bvec, 9, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
        call MPI_BCAST(crys%bdot, 9, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
        call MPI_BCAST(syms%mtrx(1,1,1), 3*3*48, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-       call MPI_BCAST(syms%mtrx_reci(1,1,1), 3*3*48, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-       call MPI_BCAST(syms%mtrx_cart(1,1,1), 3*3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
+       ! call MPI_BCAST(syms%mtrx_reci(1,1,1), 3*3*48, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+       ! call MPI_BCAST(syms%mtrx_cart(1,1,1), 3*3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
        call MPI_BCAST(syms%tnp, 3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
        if (wfnflag) then
           call MPI_BCAST(kp%nrk, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
@@ -174,8 +174,8 @@ contains
     call hdf5_read_int(hidFile, '/mf_header/symmetry/ntran', syms%ntran, iError)
     call hdf5_read_int(hidFile, '/mf_header/symmetry/cell_symmetry', syms%cell_symmetry, iError)
     call hdf5_read_int_array(hidFile, '/mf_header/symmetry/mtrx', (/3, 3, 48/), syms%mtrx, iError)
-    call hdf5_read_int_array(hidFile, '/mf_header/symmetry/mtrx_reci', (/3, 3, 48/), syms%mtrx_reci, iError)
-    call hdf5_read_double_array(hidFile, '/mf_header/symmetry/mtrx_cart', (/3, 3, 48/), syms%mtrx_cart, iError)
+    ! call hdf5_read_int_array(hidFile, '/mf_header/symmetry/mtrx_reci', (/3, 3, 48/), syms%mtrx_reci, iError)
+    ! call hdf5_read_double_array(hidFile, '/mf_header/symmetry/mtrx_cart', (/3, 3, 48/), syms%mtrx_cart, iError)
     call hdf5_read_double_array(hidFile, '/mf_header/symmetry/tnp', (/3, 48/), syms%tnp, iError)
     call h5fclose_f(hidFile, iError)
 
@@ -429,8 +429,8 @@ contains
     call hdf5_write_int(hidFile, '/mf_header/symmetry/ntran', syms%ntran, iError)
     call hdf5_write_int(hidFile, '/mf_header/symmetry/cell_symmetry', syms%cell_symmetry, iError)
     call hdf5_write_int_array(hidFile, '/mf_header/symmetry/mtrx', (/3, 3, 48/), syms%mtrx, iError)
-    call hdf5_write_int_array(hidFile, '/mf_header/symmetry/mtrx_reci', (/3, 3, 48/), syms%mtrx_reci, iError)
-    call hdf5_write_double_array(hidFile, '/mf_header/symmetry/mtrx_cart', (/3, 3, 48/), syms%mtrx_cart, iError)
+    ! call hdf5_write_int_array(hidFile, '/mf_header/symmetry/mtrx_reci', (/3, 3, 48/), syms%mtrx_reci, iError)
+    ! call hdf5_write_double_array(hidFile, '/mf_header/symmetry/mtrx_cart', (/3, 3, 48/), syms%mtrx_cart, iError)
     call hdf5_write_double_array(hidFile, '/mf_header/symmetry/tnp', (/3, 48/), syms%tnp, iError)
     call h5fclose_f(hidFile, iError)
 

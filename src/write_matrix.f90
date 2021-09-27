@@ -19,8 +19,7 @@ module write_matrix_m
   implicit none
   private
   public :: write_matrix_ser_hdf, write_matrix_f_ser_hdf, &
-       write_gvec_indices_hdf, write_pol_fftgrid_hdf, &
-       write_matrix_d_par_hdf, write_matrix_f_par_hdf
+       write_gvec_indices_hdf, write_matrix_d_par_hdf, write_matrix_f_par_hdf !, write_pol_fftgrid_hdf
 contains
 
   !> Collect nc_write columns of the chimat matrix and output to chimat.h5 using ROOT
@@ -876,27 +875,27 @@ contains
     POP_SUB(write_gvec_indices_hdf)
   end subroutine write_gvec_indices_hdf
 
-  subroutine write_pol_fftgrid_hdf(pol, name)
-    type (polarizability), intent(in) :: pol
-    character(len=*), intent(in) :: name
-    integer(HID_T) :: file_id
-    integer :: error
-    PUSH_SUB(write_pol_fftgrid_hdf)
+  ! subroutine write_pol_fftgrid_hdf(pol, name)
+  !   type (polarizability), intent(in) :: pol
+  !   character(len=*), intent(in) :: name
+  !   integer(HID_T) :: file_id
+  !   integer :: error
+  !   PUSH_SUB(write_pol_fftgrid_hdf)
 
-    call h5fopen_f(trim(name), H5F_ACC_RDWR_F, file_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-    call hdf5_write_int_array(file_id, 'eps_header/params/polFFTgrid', (/3/), pol%FFTgrid(:), error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-    call h5fclose_f(file_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
+  !   call h5fopen_f(trim(name), H5F_ACC_RDWR_F, file_id, error)
+  !   if (error .ne. 0) then
+  !      call die("HDF5 error", only_root_writes=.true.)
+  !   endif
+  !   call hdf5_write_int_array(file_id, 'eps_header/params/polFFTgrid', (/3/), pol%FFTgrid(:), error)
+  !   if (error .ne. 0) then
+  !      call die("HDF5 error", only_root_writes=.true.)
+  !   endif
+  !   call h5fclose_f(file_id, error)
+  !   if (error .ne. 0) then
+  !      call die("HDF5 error", only_root_writes=.true.)
+  !   endif
 
-    POP_SUB(write_pol_fftgrid_hdf)
-  end subroutine write_pol_fftgrid_hdf
+  !   POP_SUB(write_pol_fftgrid_hdf)
+  ! end subroutine write_pol_fftgrid_hdf
 
 end module write_matrix_m

@@ -36,7 +36,7 @@ contains
 
     call h5fopen_f(TRIM(name), H5F_ACC_RDONLY_F, file_id, error)
 
-    call hdf5_read_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)
+    ! call hdf5_read_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)
     call hdf5_read_double(file_id, 'eps_header/params/ecuts', pol%ecuts, error)
     call hdf5_read_double(file_id, 'eps_header/params/efermi', pol%efermi, error)
     pol%efermi = pol%efermi*ryd
@@ -47,15 +47,15 @@ contains
     call hdf5_read_int(file_id, 'eps_header/params/matrix_flavor', pol%matrix_flavor, error)
     call hdf5_read_int(file_id, 'eps_header/params/matrix_type', pol%matrix_type, error)
     call hdf5_read_int(file_id, 'eps_header/params/nband', pol%nband, error)
-    call hdf5_read_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
+    ! call hdf5_read_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
     if (error .ne. 0) then
        call die("HDF5 error", only_root_writes=.true.)
     endif
 
     call hdf5_read_int(file_id, 'eps_header/params/nmatrix', pol%nmatrix, error)
-    call hdf5_read_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
-    call hdf5_read_int(file_id, 'eps_header/params/skip_ncb', pol%skip_ncb, error)
-    call hdf5_read_int(file_id, 'eps_header/params/skip_nvb', pol%skip_nvb, error)
+    ! call hdf5_read_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
+    ! call hdf5_read_int(file_id, 'eps_header/params/skip_ncb', pol%skip_ncb, error)
+    ! call hdf5_read_int(file_id, 'eps_header/params/skip_nvb', pol%skip_nvb, error)
     call hdf5_read_logical(file_id, 'eps_header/params/subsample', pol%subsample, error)
     call hdf5_read_logical(file_id, 'eps_header/params/subspace', pol%subspace, error)
     call h5lexists_f(file_id, 'eps_header/params/timeordered', exists, error)

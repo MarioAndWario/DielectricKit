@@ -10,14 +10,18 @@ endif
 COMMONOBJS = misc.o check_inversion.o inversion.o vcoul_generator.o \
           symmetries.o input_utils.o sort.o blas.o \
           io_utils.o epsread_hdf5.o hdf5_io.o so32su2.o \
-          wfn_io_hdf5.o epswrite_hdf5.o write_matrix.o scalapack.o lapack.o
+          wfn_io_hdf5.o epswrite_hdf5.o write_matrix.o scalapack.o lapack.o fftw.o fullbz.o gmap.o ploteps_common.o
 
 # Global object files for all subroutines
 GLOBALOBJS = global.o intrinsics.o nrtype.o typedefs.o peinfo.o message.o push_pop.o scalapack_aux.o timing.o 
 GLOBALMODS = $(GLOBALOBJS:.o=_m.mod)
 
+PLOTEPSSRC = distrib.f90 write_eps.f90 inread.f90
+PLOTEPSOBJS = $(PLOTEPSSRC:.f90=.o)
+PLOTEPSMODS = $(PLOTEPSSRC: .f90=_m.mod)
+
 # External libs
-LIBS = $(SCALAPACKLIB) $(LAPACKLIB) $(HDF5LIB) # $(SLATECLIB) 
+LIBS = $(SCALAPACKLIB) $(LAPACKLIB) $(HDF5LIB) $(FFTWLIB) # $(SLATECLIB) 
 SPGLIB = ./spglib-1.0.9
 
 #Default values for the C++ library, stored in $(CC_LINK_LIBS), when linking
@@ -68,10 +72,9 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 %.o : %.c
 	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
 
-default: EpsInv
-EpsInv: EpsInv.x
-EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a EpsInv.o 
-	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
+default: EpsInv PlotEps
+EpsInv: EpsInv.x 
+PlotEps: PlotEps.x
 
 # Dependence
 $(COMMONOBJS) : $(GLOBALMODS) f_defs.h
@@ -88,12 +91,34 @@ global.o global_m.mod: intrinsics_m.mod scalapack_aux_m.mod nrtype_m.mod timing_
 # Utilitarian modules
 input_utils.o input_utils_m.mod : blas_m.mod
 misc.o misc_m.mod : blas_m.mod scalapack_m.mod
+fullbz.o fullbz_m.mod : misc_m.mod
+gmap.o gmap_m.mod : misc_m.mod
 symmetries.o symmetries_m.mod : misc_m.mod sort_m.mod
 inversion.o inversion_m.mod: lapack_m.mod scalapack_m.mod
 write_matrix.o write_matrix_m.mod : scalapack_m.mod io_utils_m.mod hdf5_io_m.mod
 wfn_io_hdf5.o wfn_io_hdf5_m.mod : hdf5_io_m.mod
 epsread_hdf5.o epsread_hdf5_m.mod : hdf5_io_m.mod
 epswrite_hdf5.o epswrite_hdf5_m.mod : hdf5_io_m.mod wfn_io_hdf5_m.mod
+
+# PlotEPS
+PlotEps.x: $(GLOBALOBJS) $(COMMONOBJS) $(PLOTEPSOBJS) $(SPGLIB)/libsymspg.a ploteps.o
+	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
+
+$(PLOTEPSOBJ) $(PLOTEPSMODS): $(GLOBALMODS) ploteps_common_m.mod
+
+ploteps.o : $(PLOTEPSMODS)
+
+# ploteps.o : sort_m.mod fftw_m.mod input_utils_m.mod gmap_m.mod io_utils_m.mod \
+#             misc_m.mod write_eps_m.mod inread_m.mod fullbz_m.mod random_m.mod hdf5_io.o wfn_io_hdf5.o
+# distrib.o : ploteps_common_m.mod
+# ploteps.o : ploteps_common_m.mod
+# inread.o inread_m.mod : ploteps_common_m.mod
+# write_eps.o write_eps_m.mod : ploteps_common_m.mod
+#ploteps_common.o ploteps_common_m.mod : fullbz_m.mod misc_m.mod wfn_rho_vxc_io_m.mod checkbz_m.mod
+
+# EpsInv
+EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a EpsInv.o 
+	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
 
 # Main object
 EpsInv.o: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a 

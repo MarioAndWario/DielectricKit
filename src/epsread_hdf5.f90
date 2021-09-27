@@ -21,7 +21,7 @@ module epsread_hdf5_m
        read_eps_freqgrid_hdf5, &
        read_eps_matrix_flavor_hdf5, &
        read_eps_params_hdf5, &
-       read_eps_qgrid_hdf5
+       read_eps_qgrid_hdf5, read_eps_matrix_ser_allq_hdf5, read_eps_matrix_par_distribute_rq_hdf5
 
 contains
 
@@ -164,4 +164,217 @@ contains
 
     POP_SUB(read_eps_freqgrid_hdf5)
   end subroutine read_eps_freqgrid_hdf5
+
+  !> Read epsmat for all q, one freq
+  subroutine read_eps_matrix_ser_allq_hdf5(eps, nmtxmax, nq, is, ifreq, name)
+    SCALAR, intent(out) :: eps(:,:,:) !< (nmtxmax,nmtxmax,nq)
+    integer, intent(in) :: nmtxmax, nq, is
+    integer, intent(in) :: ifreq
+    character(len=*), intent(in) :: name
+    integer(HID_T) :: file_id       ! File identifier
+    integer(HID_T) :: data_id       ! Property list identifier
+    integer(HID_T) :: dataspace        ! Property list identifier
+    integer(HID_T) :: memspace        ! Property list identifier
+    integer :: error, rank
+    integer(HSIZE_T) :: count(6), offset(6)
+    !> data(imatrix_flavor, ig1, ig2, ifreq, is, iq)
+    real(DP), allocatable :: data(:,:,:,:,:,:)
+    PUSH_SUB(read_eps_matrix_ser_allq_hdf5)
+
+    call h5fopen_f(trim(name), H5F_ACC_RDONLY_F, file_id, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5dopen_f(file_id, 'mats/matrix', data_id, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5dget_space_f(data_id,dataspace,error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    rank = 6
+    count(:) = (/ SCALARSIZE, nmtxmax, nmtxmax, 1, 1, nq /)
+
+    call h5screate_simple_f(rank, count, memspace, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    offset(:) = (/ 0, 0, 0, ifreq-1, is-1, 0 /)
+    call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, count, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    SAFE_ALLOCATE(data,(count(1),count(2),count(3),count(4),count(5),count(6)))
+    call h5dread_f(data_id, H5T_NATIVE_DOUBLE, data, count, error, memspace, dataspace)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+    eps(:,:,:) = SCALARIFY2(data(1,:,:,1,1,:),data(2,:,:,1,1,:))
+    SAFE_DEALLOCATE(data)
+
+    call h5sclose_f(memspace, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5sclose_f(dataspace, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5dclose_f(data_id,error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5fclose_f(file_id,error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    POP_SUB(read_eps_matrix_ser_allq_hdf5)
+  end subroutine read_eps_matrix_ser_allq_hdf5
+
+  
+  !> Partition over rq
+  subroutine read_eps_matrix_par_distribute_rq_hdf5(eps, nmtxmax, is, irq_start, nrq_loc, ifreq, name)
+    SCALAR, intent(inout) :: eps(:,:,:) !< (nmtxmax,nmtxmax,nrq_loc)
+    integer, intent(in) :: nmtxmax, is, irq_start, nrq_loc
+    integer, intent(in) :: ifreq !> use to specify which frequency is the zero frequency
+    character(len=*), intent(in) :: name
+
+    integer(HID_T) :: file_id       ! File identifier
+    integer(HID_T) :: data_id       ! Property list identifier
+    integer(HID_T) :: plist_id       ! Property list identifier
+    integer(HID_T) :: dataspace        ! Property list identifier
+    integer(HID_T) :: memspace        ! Property list identifier
+    integer :: error
+    integer(HSIZE_T) :: count(6), offset(6) !, countm(6)
+    !> data(imatrix_flavor, ig1, ig2, ifreq, is, iq)
+    real(DP), allocatable :: data(:,:,:,:,:,:)
+    PUSH_SUB(read_eps_matrix_par_distribute_rq_hdf5)
+
+    !> We only distribute rq of epsinv(ig1,ig2,iq) over all procs
+    SAFE_ALLOCATE(data, (SCALARSIZE, nmtxmax, nmtxmax, 1, 1, MAX(nrq_loc,1)))
+
+#ifdef MPI
+    call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5pset_fapl_mpio_f(plist_id, MPI_COMM_WORLD, MPI_INFO_NULL, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5fopen_f(trim(name), H5F_ACC_RDONLY_F, file_id, error, access_prp = plist_id)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5pclose_f(plist_id,error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+#else
+    call h5fopen_f(trim(name), H5F_ACC_RDONLY_F, file_id, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+#endif
+
+    call h5dopen_f(file_id, 'mats/matrix', data_id, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5dget_space_f(data_id,dataspace,error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    count(:) = (/ SCALARSIZE, nmtxmax, nmtxmax, 1, 1, MAX(nrq_loc,1) /)
+
+    call h5screate_simple_f(6, count, memspace, error)
+    if (error .ne. 0) then
+       call die("1 HDF5 error", only_root_writes=.true.)
+    endif
+
+    !> Construct data and offset
+    if (nrq_loc > 0) then
+       offset(:) = (/ 0, 0, 0, ifreq - 1, is - 1, irq_start - 1 /)
+       !> Select hyperslab
+       call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, count, error)
+       if (error .ne. 0) then
+          call die("2 HDF5 error", only_root_writes=.true.)
+       endif
+    else
+       call H5sselect_none_f(memspace,error);
+       if (error .ne. 0) then
+          call die("3 HDF5 error", only_root_writes=.true.)
+       endif
+       call H5sselect_none_f(dataspace,error);
+       if (error .ne. 0) then
+          call die("4 HDF5 error", only_root_writes=.true.)
+       endif
+    endif
+
+#ifdef MPI
+    call h5pcreate_f(H5P_DATASET_XFER_F, plist_id, error)
+    if (error .ne. 0) then
+       call die("5 HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5pset_dxpl_mpio_f(plist_id, H5FD_MPIO_COLLECTIVE_F, error)
+    if (error .ne. 0) then
+       call die("6 HDF5 error", only_root_writes=.true.)
+    endif
+
+    !> Collectively read the file
+    call h5dread_f(data_id, H5T_NATIVE_DOUBLE, data, count, error, memspace, dataspace, xfer_prp = plist_id)
+    if (error .ne. 0) then
+       call die("7 HDF5 error", only_root_writes=.true.)
+    endif
+#else
+    call h5dread_f(data_id, H5T_NATIVE_DOUBLE, data, count, error, memspace, dataspace)
+    if (error .ne. 0) then
+       call die("8 HDF5 error", only_root_writes=.true.)
+    endif
+#endif
+
+    if (nrq_loc > 0) then
+       eps(:, :, :) = SCALARIFY2(data(1, :, :, 1, 1, :),data(2, :, :, 1, 1, :))
+    endif
+
+    call h5sclose_f(memspace, error)
+    if (error .ne. 0) then
+       call die("9 HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5sclose_f(dataspace, error)
+    if (error .ne. 0) then
+       call die("10 HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5dclose_f(data_id, error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    call h5fclose_f(file_id,error)
+    if (error .ne. 0) then
+       call die("HDF5 error", only_root_writes=.true.)
+    endif
+
+    SAFE_DEALLOCATE(data)
+    POP_SUB(read_eps_matrix_par_distribute_rq_hdf5)
+  end subroutine read_eps_matrix_par_distribute_rq_hdf5
+
 end module epsread_hdf5_m

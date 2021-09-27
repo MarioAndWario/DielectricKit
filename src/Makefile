@@ -72,7 +72,7 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 %.o : %.c
 	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
 
-default: PlotEps
+default: EpsInv PlotEps
 EpsInv: EpsInv.x 
 PlotEps: PlotEps.x
 
@@ -105,22 +105,12 @@ PlotEps.x: $(GLOBALOBJS) $(COMMONOBJS) $(PLOTEPSOBJS) $(SPGLIB)/libsymspg.a plot
 	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
 
 $(PLOTEPSOBJ) $(PLOTEPSMODS): $(GLOBALMODS) ploteps_common_m.mod
-
 ploteps.o : $(GLOBALOBJS) $(COMMONOBJS) $(PLOTEPSMODS) $(SPGLIB)/libsymspg.a
-
-# ploteps.o : sort_m.mod fftw_m.mod input_utils_m.mod gmap_m.mod io_utils_m.mod \
-#             misc_m.mod write_eps_m.mod inread_m.mod fullbz_m.mod random_m.mod hdf5_io.o wfn_io_hdf5.o
-# distrib.o : ploteps_common_m.mod
-# ploteps.o : ploteps_common_m.mod
-# inread.o inread_m.mod : ploteps_common_m.mod
-# write_eps.o write_eps_m.mod : ploteps_common_m.mod
-#ploteps_common.o ploteps_common_m.mod : fullbz_m.mod misc_m.mod wfn_rho_vxc_io_m.mod checkbz_m.mod
 
 # EpsInv
 EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a EpsInv.o 
 	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
 
-# Main object
 EpsInv.o: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a 
 
 # Space group library
@@ -146,6 +136,7 @@ endif
 $(SPGLIB)/libsymspg.a : $(SPGLIB_OBJ)
 	$(AR) ru $@ $^
 
+# clean all
 clean:
 	rm -f *.o *.p.f *~ core *__genmod.f90 *.a *.mod *.x
 	cd $(SPGLIB) && $(MAKE) clean

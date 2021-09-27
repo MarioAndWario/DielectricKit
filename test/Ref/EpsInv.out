@@ -1,3 +1,4 @@
+ Do not use mc-averaged vcoul.
  sFileName = chimat.h5
 Atoms:
 Atom #    1 Z =    14 f = ( 0.000000000 0.000000000 0.000000000 )
@@ -29,7 +30,14 @@ symbol_ = Fd-3m
  #    1 omega = (     0.00000 ) eV varepsilon =      0.00000 eV
 
  We are using no truncation
+
+ More job parameters:
+ - Number of valence bands: 4
+ - Number of valence bands to skip: 0
+ - Number of conduction bands: 4
+ - Number of conduction bands to skip: 0
  - Number of spins: 1
+ - FFTgrid =         17        17        17
  - Max. number of G1/G2 vectors for one q: 59
 
  Initializing epsmat.h5
@@ -96,24 +104,24 @@ symbol_ = Fd-3m
  
                              CPU (s)        WALL (s)          #
  
- INIT:           (min.)        0.020           0.104          1
-                 (PE 0)        0.020           0.104
-                 (max.)        0.100           0.104
- READ CHI:       (min.)        0.000           0.039          3
-                 (PE 0)        0.000           0.039
-                 (max.)        0.050           0.057
+ INIT:           (min.)        0.010           0.095          1
+                 (PE 0)        0.010           0.095
+                 (max.)        0.100           0.095
+ READ CHI:       (min.)        0.010           0.047          3
+                 (PE 0)        0.010           0.047
+                 (max.)        0.050           0.058
  CALC VCOUL:     (min.)       -0.000           0.000          3
-                 (PE 0)        0.000           0.000
+                 (PE 0)       -0.000           0.000
                  (max.)        0.010           0.001
  GET EPS:        (min.)       -0.000           0.000          3
-                 (PE 0)        0.000           0.000
-                 (max.)        0.000           0.000
- INVERT EPS:     (min.)        0.050           0.116          3
-                 (PE 0)        0.090           0.116
-                 (max.)        0.120           0.116
- OUTPUT:         (min.)        0.010           1.620          3
-                 (PE 0)        0.010           1.632
-                 (max.)        1.590           1.632
- TOTAL:          (min.)        0.120           1.969          1
-                 (PE 0)        0.120           1.969
-                 (max.)        1.900           1.969
+                 (PE 0)       -0.000           0.000
+                 (max.)        0.010           0.000
+ INVERT EPS:     (min.)        0.020           0.078          3
+                 (PE 0)        0.070           0.078
+                 (max.)        0.090           0.078
+ OUTPUT:         (min.)        0.000           0.028          3
+                 (PE 0)        0.010           0.033
+                 (max.)        0.030           0.033
+ TOTAL:          (min.)        0.100           0.303          1
+                 (PE 0)        0.100           0.303
+                 (max.)        0.280           0.303

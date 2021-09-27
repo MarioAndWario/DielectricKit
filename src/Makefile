@@ -72,7 +72,7 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 %.o : %.c
 	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
 
-default: EpsInv PlotEps
+default: PlotEps
 EpsInv: EpsInv.x 
 PlotEps: PlotEps.x
 
@@ -106,7 +106,7 @@ PlotEps.x: $(GLOBALOBJS) $(COMMONOBJS) $(PLOTEPSOBJS) $(SPGLIB)/libsymspg.a plot
 
 $(PLOTEPSOBJ) $(PLOTEPSMODS): $(GLOBALMODS) ploteps_common_m.mod
 
-ploteps.o : $(PLOTEPSMODS)
+ploteps.o : $(GLOBALOBJS) $(COMMONOBJS) $(PLOTEPSMODS) $(SPGLIB)/libsymspg.a
 
 # ploteps.o : sort_m.mod fftw_m.mod input_utils_m.mod gmap_m.mod io_utils_m.mod \
 #             misc_m.mod write_eps_m.mod inread_m.mod fullbz_m.mod random_m.mod hdf5_io.o wfn_io_hdf5.o

@@ -4,28 +4,46 @@
 !!
 !! Routines:
 !!
-!! 3. get_volume()       Originally By (SIB)     Last Modified 6/12/2008 (JRD)
+!! 1. checknorm()   By Meng Wu (2020)
+!!
+!!    Check the normalization condition of Bloch waves for one kpoint, one band
+!!
+!! 2. get_volume()       Originally By (SIB)     Last Modified 6/12/2008 (JRD)
 !!
 !!    This assumes that b is a symmetric matrix.  It sets
 !!    vol = (2pi)^3 / square_root(|det(b)|)
 !!    This makes sense if b is the matrix of dot products of the recip
 !!    lattice vectors, so vol is the real space volume.
 !!
-!! 4. findvector()       Originally By (SIB)     Last Modified 6/12/2008 (JRD)
+!! 3. findvector()       Originally By (SIB)     Last Modified 6/12/2008 (JRD)
 !!
-!!    Looks for the vector in the list of vectors
-!!    gvec%components(1:3,1:gvec%ng).  If found, iout is its index.  Otherwise
-!!    iout is zero.
+!!    Given Gvectors as a 3D vector, return its index in the gvec%components(:,:) array
+!!    If not found, return 0
 !!
-!! 11. procmem()          Originally By (gsm)     Last Modified 4/14/2009 (gsm)
+!! 4. M33INV()
 !!
-!!     Determines the amount of free memory per processor
-!!     from the proc file system
+!!    Inverse of a 3x3 matrix
 !!
-!! 12. sizeof_scalar()    Originally By (DAS)     Last Modified 1/25/2011 (DAS)
+!! 5. procmem()          Originally By (gsm)     Last Modified 4/14/2009 (gsm)
 !!
-!!     Return the size of the SCALAR type, for memory estimation.
+!!    Determines the amount of free memory per processor
+!!    from the proc file system
 !!
+!! 6. sizeof_scalar()    Originally By (DAS)     Last Modified 1/25/2011 (DAS)
+!!
+!!    Return the size of the SCALAR type, for memory estimation.
+!!
+!! 7. get_gumk3()       By Meng Wu (2020)
+!!
+!!    Given a kpoint (could be outside 1st BZ), return its Umklapp vector
+!!
+!! 8. get_gumk3()       By Meng Wu (2020)
+!!
+!!    Given a kpoint (could be outside 1st BZ), return its Umklapp vector
+!!
+!! 9. generate_full_WS_BZ()   By Meng Wu (2020)
+!!
+!!    Given kgrid, generate all the kpoints in the Wigner-Seitz BZ
 !!
 !!===================================================================
 
@@ -38,7 +56,7 @@ module misc_m
   implicit none
   private
   public ::   checknorm, get_volume, findvector, procmem, sizeof_scalar, &
-       get_gumk3, get_gumk4, M33INV, output_header, generate_full_WS_BZ
+       get_gumk3, M33INV, generate_full_WS_BZ, prepare_syms
 contains
 
   subroutine checknorm(filename, iband, ik, nspin, wfn, ispin, tol)
@@ -170,14 +188,6 @@ contains
     return
   end subroutine findvector
 
-  !***********************************************************************************************************************************
-  !  M33INV  -  Compute the inverse of a 3x3 matrix.
-  !
-  !  A       = input 3x3 matrix to be inverted
-  !  AINV    = output 3x3 inverse of matrix A
-  !  OK_FLAG = (output) .TRUE. if the input matrix could be inverted, and .FALSE. if the input matrix is singular.
-  !***********************************************************************************************************************************
-
   SUBROUTINE M33INV (A, AINV, OK_FLAG)
 
     IMPLICIT NONE
@@ -295,29 +305,7 @@ contains
        endif
     endif
 
-    !> === Example output from vm_stat ===
-    !! Mach Virtual Memory Statistics: (page size of 4096 bytes)
-    !! Pages free:                           2886.
-    !! Pages active:                       139635.
-    !! Pages inactive:                      66906.
-    !! Pages speculative:                    2376.
-    !! Pages wired down:                    50096.
-    !! "Translation faults":            123564742.
-    !! Pages copy-on-write:              10525831.
-    !! Pages zero filled:                53274329.
-    !! Pages reactivated:                  739514.
-    !! Pageins:                           2282166.
-    !! Pageouts:                           306727.
-    !! Object cache: 25 hits of 522230 lookups (0% hit rate)
-
     if(m == 0 .and. mac_m == 0) then ! BSD
-       !> http://mario79t.wordpress.com/2008/08/29/memory-usage-on-freebsd/
-       !! -bash-2.05b$ sysctl vm.stats.vm.v_free_count
-       !! vm.stats.vm.v_free_count: 29835
-       !! -bash-2.05b$ sysctl vm.stats.vm.v_page_count
-       !! vm.stats.vm.v_page_count: 124419
-       !! -bash-2.05b$ sysctl hw.pagesize
-       !! hw.pagesize: 4096
        write(filename,'(a,i9.9)') 'sysctl_', peinf%inode
        SYSTEMCALL("sysctl -a > " + TRUNC(filename) + " 2> /dev/null")
        !> Fortran 2008 would use execute_command_line instead
@@ -348,7 +336,6 @@ contains
 
 #ifdef MPI
     call MPI_Allreduce(x,y,1,MPI_REAL_DP,MPI_SUM,MPI_COMM_WORLD,mpierr)
-    !    call MPI_Allreduce(xtot,ytot,1,MPI_REAL_DP,MPI_SUM,MPI_COMM_WORLD,mpierr)
 #else
     y=x
     !    ytot=xtot
@@ -360,11 +347,7 @@ contains
     ! and figures out the number of ranks running on the same node. At the end, we
     ! pick the upper bound for ranks_per_node.
 
-    ! if(present(nfreq_group)) then
-    !    SAFE_ALLOCATE(hostnames, (peinf%npes_orig))
-    ! else
     SAFE_ALLOCATE(hostnames, (peinf%npes))
-    ! endif
     HOSTNAMECALL(my_hostname, info)
     hostnames(peinf%inode+1) = my_hostname(1:host_len)
 
@@ -507,263 +490,6 @@ contains
 
   end subroutine get_gumk3
 
-  !> (kvector(:) - dble(gumk_out(:))) falls into first WS BZ, having the shortest distance to Gamma
-  subroutine get_gumk4(bdot, kvector, gumk_out)
-    real(DP), intent(in) :: bdot(3,3)
-    real(DP), intent(in) :: kvector(3)
-    integer, intent(out) :: gumk_out(3)
-    real(DP) :: len2_kvector_temp, len2_kvector_temp_min, kvector_temp(3), kvector_(3)
-    integer :: b1, b2, b3, ib1, ib2, ib3, b_out(3), b1list(9), b2list(9), b3list(9), nb1, nb2, nb3, nb(3), id
-    logical :: dim_flag(3)
-
-    !> If kvector(id) = 0 and bdot(id,id) is block-diagonal, e.g. bdot(1,3)=DOT[b1,b3] = 0, bdot(2,3)=DOT[b2,b3]=0
-    !> do not apply integer shift!
-    if ( ABS(kvector(1)) < TOL_ZERO .and. ABS(bdot(1,2)) < TOL_ZERO .and. ABS(bdot(1,3)) < TOL_ZERO ) then
-       nb1 = 1
-       b1list = 0
-    else
-       nb1 = 9
-       b1list(:) = (/0, -1, 1, -2, 2, -3, 3, -4, 4/)
-    endif
-
-    if ( ABS(kvector(2)) < TOL_ZERO .and. ABS(bdot(1,2)) < TOL_ZERO .and. ABS(bdot(2,3)) < TOL_ZERO ) then
-       nb2 = 1
-       b2list = 0
-    else
-       nb2 = 9
-       b2list(:) = (/0, -1, 1, -2, 2, -3, 3, -4, 4/)
-    endif
-
-    if ( ABS(kvector(3)) < TOL_ZERO .and. ABS(bdot(1,3)) < TOL_ZERO .and. ABS(bdot(2,3)) < TOL_ZERO ) then
-       nb3 = 1
-       b3list = 0
-    else
-       nb3 = 9
-       b3list(:) = (/0, -1, 1, -2, 2, -3, 3, -4, 4/)
-    endif
-
-    len2_kvector_temp_min = INF
-    kvector_ = 0.0D0
-    b_out = 0
-
-    nb = (/ nb1, nb2, nb3 /)
-    dim_flag = (nb > 1)
-
-    do ib1 = 1, nb1
-       b1 = b1list(ib1)
-       do ib2 = 1, nb2
-          b2 = b2list(ib2)
-          do ib3 = 1, nb3
-             b3 = b3list(ib3)
-
-             kvector_temp(:) = kvector(:) - (/DBLE(b1), DBLE(b2), DBLE(b3)/)
-             len2_kvector_temp = DOT_PRODUCT(kvector_temp, MATMUL(bdot, kvector_temp))
-
-             !> If T, it means the kvector is at the edge of BZ
-             if (ABS(len2_kvector_temp - len2_kvector_temp_min) < TOL_SMALL) then
-                !> Determine whether we should replace b_out
-                !> We try to make the first meaningful fractional coordinates >= 0 and as large as possible
-                !> Since BZ has inversion symmetry, we can always find an BZ edge point with the first meaningful fractional coordinate >= 0
-                loop_id: do id = 1, 3
-                   if (.not. dim_flag(id)) cycle
-                   !> kvector_temp(id)
-                   !> Pick the larger fractional coordinate
-                   if (kvector_temp(id) > kvector_(id)) then
-                      len2_kvector_temp_min = len2_kvector_temp
-                      kvector_(:) = kvector_temp(:)
-                      b_out(:) = (/ b1, b2, b3 /)
-                      !> If this fractional coordinate is the same, cycle to the next one
-                   elseif ( ABS(kvector_temp(id) - kvector_(id)) < TOL_ZERO) then
-                      cycle
-                   endif
-                   exit loop_id
-                enddo loop_id
-             elseif ( len2_kvector_temp < len2_kvector_temp_min ) then
-                !> Determine whether this is at edge of BZ
-                len2_kvector_temp_min = len2_kvector_temp
-                kvector_(:) = kvector_temp(:)
-                b_out(:) = (/ b1, b2, b3 /)
-             endif
-          enddo
-       enddo
-    enddo
-    ! write(*,'(A,3F15.8,A,3F15.8)') "k_in = ", kvector, "k_out = ", kvector_
-    gumk_out(:) = b_out(:)
-
-  end subroutine get_gumk4
-
-  subroutine output_header(file_header, kp, gvec, syms, crys)
-    character (len=*), intent(in) :: file_header
-    type (kpoints), intent(in) :: kp
-    type (crystal), intent(in) :: crys
-    type (symmetry), intent(in) :: syms
-    type (gspace), intent(in) :: gvec
-    integer :: ascunit=2345, ib, ik, is, isym, ii, iatom
-    integer :: temp_i3(3)
-    real(DP) :: temp_r3(3)
-    open( unit = ascunit, file = TRUNC(file_header), form = 'formatted', status = 'replace' )
-
-    write(ascunit,'(A)') '====== kpoints:kp information ======'
-    write(ascunit,'(A,I5)') 'kp%nspin = ', kp%nspin
-    write(ascunit,'(A,I5)') 'kp%nspinor = ', kp%nspinor
-    write(ascunit,'(A,I5)') 'kp%nrk = ', kp%nrk
-    write(ascunit,'(A,I5)') 'kp%mnband = ', kp%mnband
-    write(ascunit,'(A,I5)') 'kp%ngkmax = ', kp%ngkmax ! npwx_g : the maximum number of Gvector owned by one kpoints among all kpoints
-    write(ascunit,'(A,G20.10)') 'kp%ecutwfc = ', kp%ecutwfc ! reals
-
-    write(ascunit,'(A, 3I5)') 'kp%kgrid(1:3) = ', kp%kgrid(:) ! integers
-
-    write(ascunit,'(A, 3G20.10)') 'kp%shift(1:3) = ', kp%shift(:) ! reals
-
-    write(ascunit,'(A)') "------------------------------------"
-    write(ascunit,'(A)') '   ik   kp%ngk(ik) :' ! integers
-    do ik=1, kp%nrk
-       write(ascunit,'(I5, I5)') ik, kp%ngk(ik)
-    enddo
-
-    write(ascunit,'(A)') "------------------------------------"
-    write(ascunit,'(A)') '   ik   kp%w(ik) : ' ! real
-    do ik=1, kp%nrk
-       write(ascunit,'(I5, G20.10)') ik, kp%w(ik)
-    enddo
-
-    write(ascunit,'(A)') "------------------------------------"
-    write(ascunit,'(A)') '   ik   kp%rk(1:3, ik) : ' ! real
-    do ik=1, kp%nrk
-       write(ascunit,'(I5, 3G20.10)') ik, kp%rk(:,ik)
-    enddo
-
-    write(ascunit,'(A)') "------------------------------------"
-    write(ascunit,'(A)') '   ik   is   kp%ifmin(ik,is) kp%ifmax(ik,is):' ! integers
-    do ik=1, kp%nrk
-       do is=1, kp%nspin
-          write(ascunit,'(I5, I5, 2I5)') ik, is, kp%ifmin(ik,is), kp%ifmax(ik,is)
-       enddo
-    enddo
-
-    write(ascunit,'(A)') "------------------------------------"
-    write(ascunit,'(A)') '   ib   ik   is   kp%el(ib,ik,is) : ' ! real
-    do ib=1, kp%mnband
-       do ik=1, kp%nrk
-          do is=1, kp%nspin
-             write(ascunit,'(I5, I5, I5, G20.10)') ib, ik, is, kp%el(ib,ik,is)
-          enddo
-       enddo
-    enddo
-
-    write(ascunit,'(A)') "------------------------------------"
-    write(ascunit,'(A)') '   ib   ik   is   kp%occ(ib,ik,is) : ' ! real
-    do ib=1, kp%mnband
-       do ik=1, kp%nrk
-          do is=1, kp%nspin
-             write(ascunit,'(I5, I5, I5, G20.10)') ib, ik, is, kp%occ(ib,ik,is)
-          enddo
-       enddo
-    enddo
-
-    write(ascunit,'(A)') "====================================="
-
-    write(ascunit,'(A)') "====== gspace:gvec information ======"
-
-    write(ascunit,'(A, I5)') "gvec%ng = ", gvec%ng ! ngm_g : global number of Gvectors (summed over procs)
-    write(ascunit,'(A, G20.10)') "gvec%ecutrho = ", gvec%ecutrho
-    write(ascunit,'(A, 3I5)') "gvec%FFTgrid(1:3) = ", gvec%FFTgrid
-
-    write(ascunit,'(A)') "====================================="
-
-
-    write(ascunit,'(A)') "====== symmetry:syms information ======"
-    write(ascunit,'(A, I5)') "syms%ntran = ", syms%ntran
-    write(ascunit,'(A, I5)') "syms%cell_symmetry = ", syms%cell_symmetry
-
-    write(ascunit,'(A)') "---------------------------------------"
-    write(ascunit,'(A, I5)') "syms%mtrx(1:3,1:3,1:48) "
-    do isym=1,syms%ntran
-       write(ascunit,'("#", I5, ":")') isym
-       do ii=1,3
-          temp_i3(:) = syms%mtrx(ii, 1:3, isym)
-          WRITE (ascunit,'(I8,1X,I8,1X,I8)') temp_i3(:)
-       enddo
-    enddo
-
-    ! write(ascunit,'(A)') "---------------------------------------"
-    ! write(ascunit,'(A, I5)') "syms%mtrx_reci(1:3,1:3,1:48) "
-    ! do isym=1,syms%ntran
-    !    write(ascunit,'("#", I5, ":")') isym
-    !    do ii=1,3
-    !       temp_i3(:) = syms%mtrx_reci(ii, 1:3, isym)
-    !       WRITE (ascunit,'(I8,1X,I8,1X,I8)') temp_i3(:)
-    !    enddo
-    ! enddo
-
-    ! write(ascunit,'(A)') "---------------------------------------"
-    ! write(ascunit,'(A, I5)') "syms%mtrx_cart(1:3,1:3,1:48) "
-    ! do isym=1,syms%ntran
-    !    write(ascunit,'("#", I5, ":")') isym
-    !    do ii=1,3
-    !       temp_r3(:) = syms%mtrx_cart(ii, 1:3, isym)
-    !       WRITE (ascunit,'(F12.5,1X,F12.5,1X,F12.5)') temp_r3(:)
-    !    enddo
-    ! enddo
-
-    write(ascunit,'(A)') "---------------------------------------"
-    write(ascunit,'(A, I5)') "   isym   syms%tnp(1:3,isym) "
-    do isym=1,syms%ntran
-       temp_r3(:) = syms%tnp(1:3, isym)
-       WRITE (ascunit,'(I5, 3G20.10)') isym, temp_r3(:)
-    enddo
-
-    write(ascunit,'(A)') "======================================="
-
-    write(ascunit,'(A)') "====== crystal:crys information ======"
-
-    write(ascunit,'(A, I5)') "crys%nat = ", crys%nat
-    write(ascunit,'(A, G20.10)') "crys%celvol = ", crys%celvol
-    write(ascunit,'(A, G20.10)') "crys%alat = ", crys%alat
-
-    write(ascunit,'(A)') 'Lattice vectors crys%avec(1:3,1:3) : '
-    do ii=1, 3
-       temp_r3(:) = crys%avec(ii, 1:3)
-       write(ascunit,'(F15.8,1X,F15.8,1X,F15.8,1X)') temp_r3(:)
-    enddo
-
-    write(ascunit,'(A)') '------------------------------------'
-
-    write(ascunit,'(A)') 'crys%adot : '
-
-    do ii=1, 3
-       temp_r3(:) = crys%adot(ii, 1:3)
-       write(ascunit,'(F15.8,1X,F15.8,1X,F15.8,1X)') temp_r3(:)
-    enddo
-
-    write(ascunit,'(A)') '------------------------------------'
-
-    write(ascunit,'(A, G20.10)') 'crys%recvol = ', crys%recvol
-    write(ascunit,'(A, G20.10)')   'crys%blat = ', crys%blat
-
-    write(ascunit,'(A)') 'Reciprocal lattice vectors crys%bvec(1:3,1:3): '
-    do ii=1, 3
-       temp_r3(:) = crys%bvec(ii, 1:3)
-       write(ascunit,'(F15.8,1X,F15.8,1X,F15.8,1X)') temp_r3(:)
-    enddo
-    write(ascunit,'(A)') '------------------------------------'
-
-    write(ascunit,'(A)') 'crys%bdot : '
-    do ii = 1, 3
-       temp_r3(:) = crys%bdot(ii, 1:3)
-       write(ascunit,'(F15.8,1X,F15.8,1X,F15.8,1X)') temp_r3(:)
-    enddo
-    write(ascunit,'(A)') '------------------------------------'
-    write(ascunit,'(A)') "   iatom   crys%atyp(iatom)   crys%apos(1:3, iatom)" ! Cartesian positions of atoms in units of alat
-    do iatom=1, crys%nat
-       write(ascunit,'(I5, 3X, I5, 3G20.10)') iatom, crys%atyp(iatom), crys%apos(1:3,iatom)
-    enddo
-
-    write(ascunit,'(A)') "====================================="
-
-    close(ascunit)
-  end subroutine output_header
-
   subroutine generate_full_WS_BZ(kgrid, qshift, bdot, nfk, fk)
     integer, intent(in) :: kgrid(3)
     real(DP), intent(in) :: qshift(3) !> in reciprocal space crystal coordinates [b1,b2,b3]
@@ -800,5 +526,39 @@ contains
        call die("nfk mistach.", only_root_writes=.true.)
     endif
   end subroutine generate_full_WS_BZ
+
+  subroutine prepare_syms(crys, syms)
+    type(crystal), intent(in) :: crys
+    type(symmetry), intent(inout) :: syms
+    real(DP), dimension(3,3) :: atTat
+    real(DP), dimension(3,3) :: inv_atTat
+    real(DP), dimension(3,3) :: inv_at
+    integer :: itran
+    logical :: flag_inv
+
+    ! crys%avec(:,:) = at(:,:)
+    ! at(:,:) = [a1, a2, a3]
+    atTat = MATMUL(TRANSPOSE(crys%avec),crys%avec)
+    ! -------------------------------
+    ! [a1]
+    ! ------adot = [a1 a2 a3] \cdot [a2]
+    ! [a3]
+    ! -------------------------------
+    call M33INV(atTat, inv_atTat, flag_inv)
+    if (.not. flag_inv) then
+       call die("prepare_syms: atTat not invertable", only_root_writes=.true.)
+    endif
+    call M33INV(crys%avec,inv_at, flag_inv)
+    if (.not. flag_inv) then
+       call die("prepare_syms: crys%avec not invertable", only_root_writes=.true.)
+    endif
+    syms%mtrx_reci(:,:,:) = 0.0D0
+    syms%mtrx_cart(:,:,:) = 0.0D0
+    do itran = 1, syms%ntran
+       syms%mtrx_reci(1:3,1:3,itran) = nint(MATMUL(MATMUL(atTat, dble(syms%mtrx(1:3,1:3,itran))), inv_atTat))
+       syms%mtrx_cart(1:3,1:3,itran) = MATMUL(MATMUL(crys%avec, dble(syms%mtrx(1:3,1:3,itran))), inv_at)
+    enddo
+
+  end subroutine prepare_syms
 
 end module misc_m

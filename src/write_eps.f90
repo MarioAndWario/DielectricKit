@@ -4,9 +4,13 @@
 !
 ! Routines()
 !
-! (1) write_eps()
+! (1) write_eps()    By Meng Wu (2020)
 !
-!     Writes out epsinv
+!     Writes out polarizability or dielectric response function in real space
+!     in the .xsf format (http://www.xcrysden.org/doc/XSF.html).
+!
+!     Note that .xsf requires that the first and last indices correspond to the
+!     same point, even for a periodic crystal structure.
 !
 !=============================================================================
 
@@ -16,7 +20,9 @@ module write_eps_m
   implicit none
   private
   public :: write_eps
+
 contains
+
   subroutine write_eps(peps, crys, nfft, scfft, ir2)
     type(ploteps_t), intent(in) :: peps
     type(crystal), intent(in) :: crys
@@ -33,11 +39,10 @@ contains
     nw_eff(:) = (nw(:) + peps%downsample(:) - 1) / peps%downsample(:)
     r2_cart_ang(:) = MATMUL(crys%avec(:,:), peps%r2(:,ir2)) * crys%alat * BOHR ! in angstrom
 
-    !> output xsf file
-    !> [WORKING]
-    !> Use wrapper functions to output
+    !! output xsf file
+    !! Use wrapper functions to output
     
-    !> real part of epsinv
+    !! real part of epsinv
     if (peps%realpart) then
        write(filename,'(a,i0,a,i0,a)') 'OUT.REAL.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')
@@ -59,11 +64,11 @@ contains
        natom_tot=peps%nsuper(1)*peps%nsuper(2)*peps%nsuper(3)*crys%nat
        write(30, '(I5,1X,I5)') natom_tot+1, 1
 
-       !> Print all the atomic positions, considering supercell
+       !! Print all the atomic positions, considering supercell
        do isuper3 = 1, peps%nsuper(3)
           do isuper2 = 1, peps%nsuper(2)
              do isuper1 = 1, peps%nsuper(1)
-                !> crys%apos(1:3,1:crys%nat) in cartesian bohr units
+                !! crys%apos(1:3,1:crys%nat) in cartesian bohr units
                 do iatom = 1, crys%nat
                    shift_cart_ang(1:3) = ( dble(isuper1-1) * crys%avec(1:3,1) * crys%alat + dble(isuper2-1) * crys%avec(1:3,2) * crys%alat + dble(isuper3-1) * crys%avec(1:3,3) * crys%alat ) * BOHR
 
@@ -73,18 +78,18 @@ contains
           enddo
        enddo
 
-       !> Print the position of r2
+       !! Print the position of r2
        write(30, '(I5,1X,3F15.8)') 1, r2_cart_ang(1:3) ! r2
 
        write(30, '(A)') "BEGIN_BLOCK_DATAGRID_3D"
        write(30, '(A)') "  real_epsinv"
        write(30, '(A)') "  BEGIN_DATAGRID_3D_real_epsinv"
 
-       !> Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
+       !! Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
        write(30, '(3I5)') nw_eff(:) + 1
-       !> origin of the datagrid
+       !! origin of the datagrid
        write(30, '(3f15.8)') 0.0D0, 0.0D0, 0.0D0
-       !> spanning vector of the datagrid
+       !! spanning vector of the datagrid
        write(30, '(3f15.8)') peps%nsuper(1) * crys%avec(1:3,1) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(2) * crys%avec(1:3,2) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(3) * crys%avec(1:3,3) * crys%alat * BOHR ! in Angstrom
@@ -123,7 +128,7 @@ contains
        call close_file(30)
     endif
 
-    !> imaginary part of epsinv
+    !! imaginary part of epsinv
     if (peps%imagpart) then
        write(filename,'(a,i0,a,i0,a)') 'OUT.IMAG.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')       
@@ -145,11 +150,11 @@ contains
        natom_tot=peps%nsuper(1)*peps%nsuper(2)*peps%nsuper(3)*crys%nat
        write(30, '(I5,1X,I5)') natom_tot+1, 1
 
-       !> Print all the atomic positions, considering supercell
+       !! Print all the atomic positions, considering supercell
        do isuper3 = 1, peps%nsuper(3)
           do isuper2 = 1, peps%nsuper(2)
              do isuper1 = 1, peps%nsuper(1)
-                !> crys%apos(1:3,1:crys%nat) in cartesian bohr units
+                !! crys%apos(1:3,1:crys%nat) in cartesian bohr units
                 do iatom = 1, crys%nat
                    shift_cart_ang(1:3) = ( dble(isuper1-1) * crys%avec(1:3,1) * crys%alat + dble(isuper2-1) * crys%avec(1:3,2) * crys%alat + dble(isuper3-1) * crys%avec(1:3,3) * crys%alat ) * BOHR
                    write(30,'(I5,1X,3F15.8)') crys%atyp(iatom), crys%apos(1:3,iatom) * crys%alat * BOHR + shift_cart_ang(1:3) ! in Angstrom
@@ -158,16 +163,16 @@ contains
           enddo
        enddo
 
-       !> Print the position of r2
+       !! Print the position of r2
        write(30, '(I5,1X,3F15.8)') 1, r2_cart_ang(1:3) ! r2
        write(30, '(A)') "BEGIN_BLOCK_DATAGRID_3D"
        write(30, '(A)') "  imag_epsinv"
        write(30, '(A)') "  BEGIN_DATAGRID_3D_imag_epsinv"
-       !> Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
+       !! Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
        write(30, '(3I5)') nw_eff(:) + 1
-       !> origin of the datagrid
+       !! origin of the datagrid
        write(30, '(3f15.8)') 0.0D0, 0.0D0, 0.0D0
-       !> spanning vector of the datagrid
+       !! spanning vector of the datagrid
        write(30, '(3f15.8)') peps%nsuper(1) * crys%avec(1:3,1) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(2) * crys%avec(1:3,2) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(3) * crys%avec(1:3,3) * crys%alat * BOHR ! in Angstrom
@@ -206,7 +211,7 @@ contains
        call close_file(30)
     endif
 
-    !> abs of epsinv
+    !! abs of epsinv
     if (peps%abs) then
        write(filename,'(a,i0,a,i0,a)') 'OUT.ABS.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')       
@@ -228,11 +233,11 @@ contains
        natom_tot=peps%nsuper(1)*peps%nsuper(2)*peps%nsuper(3)*crys%nat
        write(30, '(I5,1X,I5)') natom_tot+1, 1
 
-       !> Print all the atomic positions, considering supercell
+       !! Print all the atomic positions, considering supercell
        do isuper3 = 1, peps%nsuper(3)
           do isuper2 = 1, peps%nsuper(2)
              do isuper1 = 1, peps%nsuper(1)
-                !> crys%apos(1:3,1:crys%nat) in cartesian bohr units
+                !! crys%apos(1:3,1:crys%nat) in cartesian bohr units
                 do iatom = 1, crys%nat
                    shift_cart_ang(1:3) = ( dble(isuper1-1) * crys%avec(1:3,1) * crys%alat + dble(isuper2-1) * crys%avec(1:3,2) * crys%alat + dble(isuper3-1) * crys%avec(1:3,3) * crys%alat ) * BOHR
 
@@ -242,18 +247,18 @@ contains
           enddo
        enddo
 
-       !> Print the position of r2
+       !! Print the position of r2
        write(30, '(I5,1X,3F15.8)') 1, r2_cart_ang(1:3) ! r2
 
        write(30, '(A)') "BEGIN_BLOCK_DATAGRID_3D"
        write(30, '(A)') "  abs_epsinv"
        write(30, '(A)') "  BEGIN_DATAGRID_3D_abs_epsinv"
 
-       !> Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
+       !! Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
        write(30, '(3I5)') nw_eff(:) + 1
-       !> origin of the datagrid
+       !! origin of the datagrid
        write(30, '(3f15.8)') 0.0D0, 0.0D0, 0.0D0
-       !> spanning vector of the datagrid
+       !! spanning vector of the datagrid
        write(30, '(3f15.8)') peps%nsuper(1) * crys%avec(1:3,1) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(2) * crys%avec(1:3,2) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(3) * crys%avec(1:3,3) * crys%alat * BOHR ! in Angstrom
@@ -292,7 +297,7 @@ contains
        call close_file(30)
     endif
 
-    !> abs2 of epsinv
+    !! abs2 of epsinv
     if (peps%abs2) then
        write(filename,'(a,i0,a,i0,a)') 'OUT.ABS2.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')       
@@ -314,11 +319,11 @@ contains
        natom_tot=peps%nsuper(1)*peps%nsuper(2)*peps%nsuper(3)*crys%nat
        write(30, '(I5,1X,I5)') natom_tot+1, 1
 
-       !> Print all the atomic positions, considering supercell
+       !! Print all the atomic positions, considering supercell
        do isuper3 = 1, peps%nsuper(3)
           do isuper2 = 1, peps%nsuper(2)
              do isuper1 = 1, peps%nsuper(1)
-                !> crys%apos(1:3,1:crys%nat) in cartesian bohr units
+                !! crys%apos(1:3,1:crys%nat) in cartesian bohr units
                 do iatom = 1, crys%nat
                    shift_cart_ang(1:3) = ( dble(isuper1-1) * crys%avec(1:3,1) * crys%alat + dble(isuper2-1) * crys%avec(1:3,2) * crys%alat + dble(isuper3-1) * crys%avec(1:3,3) * crys%alat ) * BOHR
                    write(30,'(I5,1X,3F15.8)') crys%atyp(iatom), crys%apos(1:3,iatom) * crys%alat * BOHR + shift_cart_ang(1:3) ! in Angstrom
@@ -327,17 +332,17 @@ contains
           enddo
        enddo
 
-       !> Print the position of r2
+       !! Print the position of r2
        write(30, '(I5,1X,3F15.8)') 1, r2_cart_ang(1:3) ! r2
        write(30, '(A)') "BEGIN_BLOCK_DATAGRID_3D"
        write(30, '(A)') "  abs2_epsinv"
        write(30, '(A)') "  BEGIN_DATAGRID_3D_abs2_epsinv"
 
-       !> Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
+       !! Output number of data-points in each direction (i.e. nx ny nz for 3D grids), note that xsf use general grid (with dim nw_eff(:)+1)
        write(30, '(3I5)') nw_eff(:) + 1
-       !> origin of the datagrid
+       !! origin of the datagrid
        write(30, '(3f15.8)') 0.0D0, 0.0D0, 0.0D0
-       !> spanning vector of the datagrid
+       !! spanning vector of the datagrid
        write(30, '(3f15.8)') peps%nsuper(1) * crys%avec(1:3,1) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(2) * crys%avec(1:3,2) * crys%alat * BOHR ! in Angstrom
        write(30, '(3f15.8)') peps%nsuper(3) * crys%avec(1:3,3) * crys%alat * BOHR ! in Angstrom
@@ -378,4 +383,5 @@ contains
     POP_SUB(write_eps)
     return
   end subroutine write_eps
+
 end module write_eps_m

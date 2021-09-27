@@ -1,12 +1,9 @@
 #include "f_defs.h"
 
 module ploteps_common_m
-
   use global_m
   implicit none
-
   private
-
   public :: ploteps_t
   
   type ploteps_t
@@ -39,7 +36,6 @@ module ploteps_common_m
                                 ! 0: static calculation 2: full frequency 3: two imaginary frequencies
      integer :: nfreq           !< number of frequencies used in full frequency calculation
      integer :: nfreq_imag      !< number of imaginary freqs for CD (also 1 for GN GPP)
-     ! complex(DP), pointer :: freqs(:) !< complex frequencies
      complex(DP) :: freq_target
      integer :: FFTgrid(3), FFTfactor
      logical :: high_resolution

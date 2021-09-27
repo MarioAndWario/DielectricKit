@@ -172,7 +172,7 @@ program ploteps
      endif
 
      call read_gspace(TRUNC(filename_eps_hdf5), gvec)
-     call read_symmetry(TRUNC(filename_eps_hdf5), syms)
+     call read_symmetry(TRUNC(filename_eps_hdf5), syms)     
      call read_crystal(TRUNC(filename_eps_hdf5), crys)
 
   endif
@@ -210,6 +210,8 @@ program ploteps
      call MPI_BCAST(syms%mtrx_cart(1,1,1), 3*3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(syms%tnp, 3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
   endif
+  !> prepare syms%mtrx_reci and syms%mtrx_cart  
+  call prepare_syms(crys, syms)
 
   SAFE_ALLOCATE(gvec%components, (3, gvec%ng))
   call read_hdf5_gvectors(TRUNC(filename_eps_hdf5), gvec%ng, gvec%components)
@@ -298,9 +300,9 @@ program ploteps
   qg%r(:,:) = peps%rq(:,:)
   !> Use fullbz to generate from peps%rq all the qpoints in FBZ
   if (peps%unfold) then
-     call fullbz_2(crys, syms, qg)
+     call fullbz(crys, syms, qg)
   else
-     call fullbz_2(crys, syms, qg, use_identity_only=.true.)
+     call fullbz(crys, syms, qg, use_identity_only=.true.)
   endif
 
   !> Block-distribute all fq points over peinf%npes procs

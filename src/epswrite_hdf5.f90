@@ -134,8 +134,8 @@ contains
     call hdf5_write_int(file_id, 'eps_header/params/nband', pol%nband, error)
     ! call hdf5_write_int(file_id, 'eps_header/params/skip_nvb', pol%skip_nvb, error)
     ! call hdf5_write_int(file_id, 'eps_header/params/skip_ncb', pol%skip_ncb, error)
-    ! call hdf5_write_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
-    ! call hdf5_write_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
+    call hdf5_write_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
+    call hdf5_write_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
     ! call hdf5_write_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)    
     ! call hdf5_write_logical(file_id, 'eps_header/params/correcthead', .false., error)    
    

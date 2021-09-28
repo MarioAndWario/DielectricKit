@@ -41,14 +41,14 @@ contains
     peps%nsuper(:) = 0
     peps%nr2 = 0
     peps%ispin=1
-    peps%unfold = .false.
+    peps%unfold = .true.
     peps%downsample(:)=1
     peinf%verbosity = 1
     peps%ecut = 0.0D0
     peps%freq_target = (0.0D0, 0.0D0)
     peps%FFTfactor = 1
-    peps%low_comm = .true.
-    peps%mid_comm = .false.
+    peps%low_comm = .false.
+    peps%mid_comm = .true.
 
     !> Output flags
     peps%realpart = .false.
@@ -92,8 +92,10 @@ contains
           endif
        elseif(trim(keyword).eq.'verbosity') then
           read(line,*,err=110) peinf%verbosity
-       elseif(trim(keyword).eq.'use_symmetries') then
+       elseif(trim(keyword).eq.'use_symmetry') then
           peps%unfold = .true.
+       elseif(trim(keyword).eq.'no_symmetry') then
+          peps%unfold = .false.
        elseif(trim(keyword).eq.'filename') then
           read(line,*,err=110) peps%filename
           peps%filename = TRUNC(peps%filename)

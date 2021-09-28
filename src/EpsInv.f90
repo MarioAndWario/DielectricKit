@@ -314,9 +314,9 @@ program EpsInv
      !! pol%matrix_type = 0 means we will output a epsmat file
      pol%matrix_type = 0
      ! write(6,'(/1X,A)') 'More job parameters:'
-     ! write(6,'(1X,A,I0)') '- Number of valence bands: ', pol%nvb
+     write(6,'(1X,A,I0)') '- Number of valence bands: ', pol%nvb
      ! write(6,'(1X,A,I0)') '- Number of valence bands to skip: ', pol%skip_nvb
-     ! write(6,'(1X,A,I0)') '- Number of conduction bands: ', pol%ncb
+     write(6,'(1X,A,I0)') '- Number of conduction bands: ', pol%ncb
      ! write(6,'(1X,A,I0)') '- Number of conduction bands to skip: ', pol%skip_ncb
      write(6,'(1X,A,I0)') '- Number of spins: ', kp%nspin
      ! write(6,'(1X,A,3I10)') "- FFTgrid = ", pol%FFTgrid
@@ -333,8 +333,8 @@ program EpsInv
      call MPI_BCAST(pol%nq0, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%nq1, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%nband, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     ! call MPI_BCAST(pol%nvb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
-     ! call MPI_BCAST(pol%ncb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+     call MPI_BCAST(pol%nvb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
+     call MPI_BCAST(pol%ncb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(pol%nmtx, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      ! call MPI_BCAST(pol%skip_nvb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)
      ! call MPI_BCAST(pol%skip_ncb, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, mpierr)

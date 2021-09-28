@@ -17,7 +17,7 @@ program RealSpace
   use global_m
   use fftw_m
   use fullbz_m
-  use inread_m
+  use inread_realspace_m
   use misc_m
   use sort_m
   use write_eps_m
@@ -77,9 +77,8 @@ program RealSpace
   call timacc(0,0)
   call timacc(1,1)
 
-  ! call write_program_header('PlotEps', .false.)
   !> Read realspace.inp
-  call inread(peps)
+  call inread_realspace(peps)
 
   !> epsinv in {q G G'} space
   filename_eps_hdf5=TRUNC(peps%filename)

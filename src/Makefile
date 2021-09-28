@@ -5,6 +5,8 @@ ifeq ($(findstring -DUSESCALAPACK,$(MATHFLAG)),-DUSESCALAPACK)
     $(error -DUSESCALAPACK flag requires -DMPI; please check your arch.mk file)
   endif
 endif
+# Use complex datatype for SCALAR macro
+TYPEFLAG = -DCPLX
 
 # Object files for module files
 COMMONOBJS = misc.o inversion.o vcoul_generator.o symmetries.o input_utils.o sort.o blas.o \

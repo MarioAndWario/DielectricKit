@@ -1,13 +1,24 @@
-# EpsInv
+# DielectricKit
 
 High-performance computing toolkit to calculate and visualize polarizability and
-dielectric response function within the random-phase approximation
+dielectric response function within the random-phase approximation.
 
 ## Introduction
 
+`DielectricKit` includes three Fortran programs: `Chi.x`, `EpsInv.x`, and `RealSpace.x`. Some of the libraries and modules are
+incorporated from the open-source [`BerkeleyGW`](https://berkeleygw.org) package. The input and output formats are also compatible
+with `BerkeleyGW`.
+
+`Chi.x` calculates the polarizability function (`chimat.h5` and/or `chi0mat.h5`) in reciprocal space using Kohn-Sham eigenstates and eigenvalues from a density-functional
+theory calculation. Current, we only support [`Quantum ESPRESSO`](https://www.quantum-espresso.org), which is an open-source DFT code.
+
+`EpsInv.x` calculates use `chimat.h5` and/or `chi0mat.h5` as input to calculate the inverse dielectric response function (`epsmat.h5` and/or `eps0mat.h5`) in reciprocal space.
+
+`RealSpace.x` perform fast Fourier transform to calculate polarizability or inverse dielectric response functions in real space. The result with one fixed coordinate is output in the Xcrysden format (.xsf).
+
 ## Theoretical formalism
 
-## Features
+See the pdf file within the `doc` folder.
 
 ## Libraries
 
@@ -16,6 +27,12 @@ dielectric response function within the random-phase approximation
 * Math libraries:
   * Linear algebra: BLAS, LAPACK, SCALAPACK
   * Fast Fourier transform: FFTW
+
+## Installation
+
+* Copy one `arch.mk` file from `config` folder to `src` folder. Make necessary modifications for the compiler, compilation flags, and library paths.
+
+* Use `make` to compile the source code.  Use `make -j` to enable parallel compilation to same time.
 
 ## Usage
 

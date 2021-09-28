@@ -1,5 +1,6 @@
-# EpsInv
-  Version 0.1  (2020)
+# DielectricKit
+
+  Version 0.2  (2021)
 
 ## Introduction
 
@@ -12,7 +13,9 @@
 
 ### Usage
 
-#### Command line
+### Chi
+
+### EpsInv
 
 `EpsInv.x chimat.h5 > EpsInv.out`
 
@@ -31,3 +34,5 @@ or
 `eps0mat.h5`: inverse dielectric response function matrix calculated on a uniform k-grid
 
 `epsmat.h5`: inverse dielectric response function matrix calculated on a shifted k-grid with $\Gamma$ shifted to $q_0$
+
+### RealSpace

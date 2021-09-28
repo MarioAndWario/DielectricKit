@@ -1,12 +1,23 @@
 #include "f_defs.h"
 
+!==============================================================================
+!
+! Module:
+!
+! (1) inread
+!
+!     Read information from input file chi.inp.
+!
+!==============================================================================
+
 module inread_chi_m
   use global_m
   implicit none
   private
   public :: inread_chi
+  
 contains
-  !> supply optionals for absorption, and do not for inteqp
+
   subroutine inread_chi(pol)
     type (polarizability), intent(out) :: pol
     character*256 :: blockword, keyword, line, errmsg
@@ -23,7 +34,7 @@ contains
 
     call open_file(unit_input, file='chi.inp', form='formatted', status='old')
 
-    !> Every proc will read in absorption.inp file
+    !! Every proc will read in absorption.inp file
 #ifdef MPI
     ! Non-root nodes should wait for root to read the whole file.
     ! That way, we can be sure root gets a chance to write errors before
@@ -31,7 +42,7 @@ contains
     if (peinf%inode .ne. 0) call MPI_Barrier(MPI_COMM_WORLD, mpierr)
 #endif
 
-    !> Set default values of pol
+    !! Set default values of pol
     pol%nq0 = 0
     pol%nq1 = 0
     pol%nq = 0
@@ -43,8 +54,8 @@ contains
     pol%non_uniform = .false.
     pol%subsample = .false.
 
-    !> ------------------
-    !> Frequency related variables
+    !! ------------------
+    !! Frequency related variables
     pol%freq_dep=0
     pol%freq_dep_method=2
     pol%nFreq=1
@@ -64,7 +75,6 @@ contains
     pol%dSFreqStepIncrease=0d0
     pol%dSFreqCutoff1=-1d0
     pol%dSFreqCutoff2=-1d0
-    !> ------------------
     pol%fullConvLog=0
     pol%icutv=0
     pol%truncval(1)=0.0d0
@@ -109,15 +119,15 @@ contains
     pol%time_reversal=.true.
     pol%full_axis_frequency=.false.
 
-    !> Never ending loop...
+    !! Never ending loop...
     do while(.true.)
-       !> Actually the loop ends when the end of the file is reached
+       !! Actually the loop ends when the end of the file is reached
        read(unit_input,'(a256)',iostat=iostat) line
        if(iostat < 0) exit
 
-       !> Skip comment lines
+       !! Skip comment lines
        if (len_trim(line).eq.0 .or. line(1:1).eq.'#') cycle
-       !> Determine keyword:
+       !! Determine keyword:
        keyword=line(1:scan(line," ")-1)
        line=adjustl(line(scan(line," ")+1:256))
        unknown_keyword = .false.
@@ -141,9 +151,9 @@ contains
                    if (qflag .ne. 0 .and. qflag .ne. 1) then
                       call die("Invalid qflag", only_root_writes=.true.)
                    endif
-                   !> qflag == 0 ==> q0
-                   !> qflag == 1 ==> q1
-                   !> all q0 must be placed before all q1
+                   !! qflag == 0 ==> q0
+                   !! qflag == 1 ==> q1
+                   !! all q0 must be placed before all q1
                    if (qflag < qflag_) then
                       call die("All q0 must be placed before all q1.", only_root_writes=.true.)
                    else
@@ -235,13 +245,13 @@ contains
     pol%qpt(1:3, 1:pol%nq) = rq_input(1:3, 1:pol%nq)
 
     if (peinf%inode .eq. 0) then
-       write(*,'(1X,A)') "q0 vectors:"
+       write(6,'(1X,A)') "q0 vectors:"
        do iq = 1, pol%nq0
-          write(*,'(I5,3F15.8)') iq, pol%qpt(:,iq)
+          write(6,'(I5,3F15.8)') iq, pol%qpt(:,iq)
        enddo
-       write(*,'(1X,A)') "q1 vectors:"
+       write(6,'(1X,A)') "q1 vectors:"
        do iq = pol%nq0+1, pol%nq
-          write(*,'(I5,3F15.8)') iq, pol%qpt(:,iq)
+          write(6,'(I5,3F15.8)') iq, pol%qpt(:,iq)
        enddo
     endif
 
@@ -281,11 +291,11 @@ contains
     !<- FF ->
     if (pol%freq_dep .eq. 2) then
        call initialize_FF()
-       !> <- GPP ->
+       !! <- GPP ->
     elseif (pol%freq_dep .eq. 0) then
        if (peinf%inode .eq. 0) then
-          write(*,'(1X,A)') "Use GPP."
-          write(*,'(1X,A)')
+          write(6,'(1X,A)') "Use GPP."
+          write(6,'(1X,A)')
        endif
        if (pol%nBrdning .ne. 1) then
           call die("GPP must use pol%nBrdning = 1.", only_root_writes=.true.)
@@ -320,19 +330,19 @@ contains
 
     subroutine initialize_FF()
       if (peinf%inode .eq. 0) then
-         write(*,'(1X,A)') "Use full-frequency."
+         write(6,'(1X,A)') "Use full-frequency."
          if (pol%time_reversal) then
-            write(*,'(1X,A)') "With time-reversal symmetry"
+            write(6,'(1X,A)') "With time-reversal symmetry"
             if (pol%full_axis_frequency) then
-               write(*,'(1X,A)') "Use full-axis frequencies."
+               write(6,'(1X,A)') "Use full-axis frequencies."
             else
-               write(*,'(1X,A)') "Use positive-axis frequencies."
+               write(6,'(1X,A)') "Use positive-axis frequencies."
             endif
          else
             pol%full_axis_frequency = .true.
-            write(*,'(1X,A)') "Without time-reversal symmetry, must use full-axis frequencies (set pol%full_axis_frequency = T)"
+            write(6,'(1X,A)') "Without time-reversal symmetry, must use full-axis frequencies (set pol%full_axis_frequency = T)"
          endif
-         write(*,'(1X,A)')
+         write(6,'(1X,A)')
       endif
 
       if (pol%freq_dep_method .ne. 2) then
@@ -345,9 +355,9 @@ contains
          call die("Check pol%delta_freq_imag for FF calculations.", only_root_writes=.true.)
       endif
 
-      !> We now allow negative broadening pol%dBrdning and negative pol%dFreqCutoff1 as input
-      !> If pol%dFreqCutoff1 < 0, there will not be any \omega + i \eta near the real-axis
-      !> We will only reset pol%dBrdning when they are default value -1000 (default)
+      !! We now allow negative broadening pol%dBrdning and negative pol%dFreqCutoff1 as input
+      !! If pol%dFreqCutoff1 < 0, there will not be any \omega + i \eta near the real-axis
+      !! We will only reset pol%dBrdning when they are default value -1000 (default)
       if (ABS(pol%dBrdning+1000d0) < TOL_Zero) pol%dBrdning = 0.1d0
       if (ABS(pol%dFreqCutoff+1.0D0) < TOL_Zero) pol%dFreqCutoff = 200d0
       if (pol%dDeltaFreq < 0d0) pol%dDeltaFreq = pol%dBrdning
@@ -355,7 +365,7 @@ contains
          call die("When nBrdning > 1, pol%dBrdning cannot <= 0.", only_root_writes=.true.)
       endif
       if (peinf%inode .eq. 0) then
-         write(*,'(1X,A,I5,A,F10.3,A,F10.3,A)') "We will consider ", pol%nBrdning, " broadening parameters starting from ", pol%dBrdning, "eV with a stepsize of ", pol%Brdning_stepsize, "eV"
+         write(6,'(1X,A,I5,A,F10.3,A,F10.3,A)') "We will consider ", pol%nBrdning, " broadening parameters starting from ", pol%dBrdning, "eV with a stepsize of ", pol%Brdning_stepsize, "eV"
       endif
 
       if (peinf%inode .eq. 0) then
@@ -391,36 +401,20 @@ contains
       pol%nfreq_real = iFreqCounter
       pol%nfreq = pol%nfreq_real + pol%nfreq_imag
 
-      ! !> This condition plays nicely with the condition above when nfreq_group .gt. npes, i.e. the conditions ensure
-      ! !> the number of processors will always be re-set to a legitimate/sensible number
-      ! if (pol%nfreq_group .gt. pol%nFreq) then
-      !    call die("pol%nfreq_group > nFreq", only_root_writes=.true.)
-      !    write(0,'(/1x,a)') 'WARNING: Number of frequency groups cannot exceed number of frequencies computed'
-      !    write(0,'(/,1x,2(a,i5),/)') 'Resetting nfreq_group',pol%nfreq_group,'to number of frequencies computed', pol%nfreq
-      !    pol%nfreq_group = peinf%npes
-      ! endif
-      ! if (pol%subspace) then
-      !    call die("Low-rank not supported", only_root_writes=.true.)
-      !    if (pol%nfreq_group .lt. peinf%npes) then
-      !       ! this is a workaround for the subspace method in order to use all proc at freq=0
-      !       pol%nfreq_group = 1
-      !    endif
-      ! endif
-
-      !> Consider broken time-reversal symmetry
+      !! Consider broken time-reversal symmetry
       if (pol%full_axis_frequency) then
-         !> [0, 1] --> [-1, 0, 1]
+         !! [0, 1] --> [-1, 0, 1]
          pol%nfreq_real = pol%nfreq_real * 2 - 1
          pol%nfreq_imag = pol%nfreq_imag * 2 - 1
          pol%nfreq = pol%nfreq_real + pol%nfreq_imag
       endif
 
-      !> real(DP)
+      !! real(DP)
       SAFE_ALLOCATE(pol%dFreqGrid,(pol%nFreq))
-      !> complex(DPC)
+      !! complex(DPC)
       SAFE_ALLOCATE(pol%dFreqBrd,(pol%nFreq))
 
-      !> Positive-axis frequency
+      !! Positive-axis frequency
       if (.not. pol%full_axis_frequency) then
          if (ABS(pol%dInitFreq) > TOL_ZERO) then
             if (peinf%inode .eq. 0) then
@@ -447,7 +441,7 @@ contains
                enddo
             endif
          endif
-         !> Full-axis frequency
+         !! Full-axis frequency
       else
          if (ABS(pol%dInitFreq) > TOL_ZERO) then
             call die("Full-axis only supports frequencies starting from zero.", only_root_writes=.true.)
@@ -477,15 +471,15 @@ contains
       endif
 
       if (pol%timeordered) then
-         !> If pol%resetrealfreq = T, set first real-axis frequency to be exactly 0
+         !! If pol%resetrealfreq = T, set first real-axis frequency to be exactly 0
          if (pol%resetrealfreq) then
             if (peinf%inode .eq. 0) then
-               write(*,'(1X,A)') "Reset real-axis frequency at omega=0 to be exacly 0."
+               write(6,'(1X,A)') "Reset real-axis frequency at omega=0 to be exacly 0."
             endif
             do ifreq_real = 1, pol%nfreq_real
                if (ABS(pol%dFreqGrid(ifreq_real)) < TOL_ZERO) then
                   if (peinf%inode .eq. 0) then
-                     write(*,*) "ifreq_zero = ", ifreq_real
+                     write(6,*) "ifreq_zero = ", ifreq_real
                   endif
                   pol%dFreqBrd(ifreq_real) = (0.0D0, 0.0D0)
                endif
@@ -493,47 +487,47 @@ contains
          endif
       endif
 
-      !> output frequencies
+      !! output frequencies
       if (peinf%inode .eq. 0) then
          if (pol%timeordered) then
-            write(*,'(1X,A,F0.5,A)') "- omegapp_max = ", omegapp_max_, "eV"
-            write(*,'(1X,A,F0.5,A)') "- delta_freq_imag = ", pol%delta_freq_imag, " eV"
-            write(*,'(1X,A,F0.5,A)') "- pol%dDeltaFreq = ", pol%dDeltaFreq, " eV"
-            write(*,'(1X,A,I5)') "- pol%nfreq_imag = ", pol%nfreq_imag
-            write(*,'(1X,A)')
+            write(6,'(1X,A,F0.5,A)') "- omegapp_max = ", omegapp_max_, "eV"
+            write(6,'(1X,A,F0.5,A)') "- delta_freq_imag = ", pol%delta_freq_imag, " eV"
+            write(6,'(1X,A,F0.5,A)') "- pol%dDeltaFreq = ", pol%dDeltaFreq, " eV"
+            write(6,'(1X,A,I5)') "- pol%nfreq_imag = ", pol%nfreq_imag
+            write(6,'(1X,A)')
 
-            write(*,'(1X,A)') "Time-ordered <=> varepsilon is non-zero for real-axis frequencies"
+            write(6,'(1X,A)') "Time-ordered <=> varepsilon is non-zero for real-axis frequencies"
             if (pol%nfreq_real .gt. 0) then
-               write(*,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
+               write(6,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
                do ifreq = 1, pol%nfreq_real
-                  !> pol%dFreqBrd(ifreq) is frequency-dependent varepsilon in this case
-                  write(*,'(1X,A,I5,A,F12.5,A,F12.5,A)') "#", ifreq, " omega = (", pol%dFreqGrid(ifreq), " ) eV varepsilon = ", DIMAG(pol%dFreqBrd(ifreq)), " eV"
+                  !! pol%dFreqBrd(ifreq) is frequency-dependent varepsilon in this case
+                  write(6,'(1X,A,I5,A,F12.5,A,F12.5,A)') "#", ifreq, " omega = (", pol%dFreqGrid(ifreq), " ) eV varepsilon = ", DIMAG(pol%dFreqBrd(ifreq)), " eV"
                enddo
             endif
 
             if (pol%nfreq_imag .gt. 0) then
-               write(*,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
+               write(6,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
                do ifreq = pol%nfreq_real+1, pol%nfreq
-                  write(*,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV varepsilon = 0 eV"
+                  write(6,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV varepsilon = 0 eV"
                enddo
             endif
          else
-            write(*,'(1X,A)') "Retarded <==> varepsilon = 0 eV"
+            write(6,'(1X,A)') "Retarded <==> varepsilon = 0 eV"
             if (pol%nfreq_real .gt. 0) then
-               write(*,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
+               write(6,'(1X,A,I10)') "Real-axis frequencies: nfreq_real = ", pol%nfreq_real
                do ifreq = 1, pol%nfreq_real
-                  write(*,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
+                  write(6,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
                enddo
             endif
 
             if (pol%nfreq_imag .gt. 0) then
-               write(*,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
+               write(6,'(1X,A,I10)') "Imaginary-axis frequencies: nfreq_imag = ", pol%nfreq_imag
                do ifreq = pol%nfreq_real+1, pol%nfreq
-                  write(*,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
+                  write(6,'(1X,A,I5,A,"(",F12.5, " + i ", F12.5,")",A)') "#", ifreq, " omega = ", pol%dFreqGrid(ifreq), DIMAG(pol%dFreqBrd(ifreq)), " eV"
                enddo
             endif
          endif
-         write(*,'(1X,A)')
+         write(6,'(1X,A)')
       endif
     end subroutine initialize_FF
 

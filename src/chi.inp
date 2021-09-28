@@ -1,0 +1,42 @@
+# chi.inp
+
+# Kinetic energy cutoff for the polarizability function, in Ry. The polarizability
+# function matrix $\chi_{GG'}$ will contain all G-vectors with kinetic energy $|q+G|^2$
+# up to this cutoff.
+#[unit=Ry]
+chi_cutoff 5.0
+
+# Number of vlance bands included in the RPA polarizability.
+number_val_bands 4
+# Number of conduction bands in the RPA polarizability.
+number_cond_bands 4
+
+# Number of valance bands counted from valence band maximum to be excluded (default 0)
+skip_nvb 0
+# Number of conduction bands counted from conduction band minimum to be excluded (default 0)
+skip_ncb 0
+
+# Use Coulomb truncation for quasi-2D materials
+#cell_slab_truncation
+
+# q1 q2 q3 is_q0
+# scale_factor is for specifying values such as 1/3
+# is_q0 = 0 for a small q-vector in semiconductors (read val WFNs from WFNq)
+# is_q0 = 1 for regular, non-zero q-vectors (read val WFNs from WFN)
+# if present the small q-vector should be first in the list
+begin qpoints
+0.000000000      0.000000000     0.001000000     0
+0.000000000 	 0.000000000 	 0.000000000 	 1
+0.000000000 	 0.000000000 	 0.500000000 	 1
+0.000000000 	 0.500000000 	 0.500000000 	 1
+end
+
+# Set this to use eigenvalues in eqp.dat and eqp_q.dat
+# If not set, these files will be ignored.
+#eqp_corrections
+
+# Uncomment this flag if you would like to restart your Epsilon calculation
+# instead of starting it from scratch. Note that we can only reuse q-points
+# that were fully calculated. This flag is ignored unless you are running
+# the code with HDF5.
+#restart

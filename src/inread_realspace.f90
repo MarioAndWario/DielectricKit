@@ -2,22 +2,22 @@
 
 !==============================================================================
 !
-! Routine:
+! Module:
 !
-! (1) inread
+! (1) inread_realspace
 !
 !     Read information from input file realspace.inp.
 !
 !==============================================================================
 
-module inread_m
+module inread_realspace_m
   use global_m
   use realspace_common_m
   implicit none
-  public :: inread
+  public :: inread_realspace
 contains
 
-  subroutine inread(peps)
+  subroutine inread_realspace(peps)
     type (realspace_t), intent(out) :: peps
     character*256 :: blockword,keyword,line,errmsg
     integer :: ii,iostat,jj
@@ -25,7 +25,7 @@ contains
     real(DP) :: r2_temp(3,1000), freq_real, freq_imag
 
     r2_temp(:,:)=0.0D0
-    PUSH_SUB(inread)
+    PUSH_SUB(inread_realspace)
 #ifdef MPI
     ! Non-root nodes should wait for root to read the whole file.
     ! That way, we can be sure root gets a chance to write errors before
@@ -99,14 +99,9 @@ contains
           peps%filename = TRUNC(peps%filename)
        elseif(trim(keyword).eq.'cutoff') then
           read(line,*,err=110) peps%ecut
-          ! elseif(trim(keyword).eq.'qgrid') then
-          !    read(line,*,err=110) peps%qgrid(1:3)
-          !    peps%nfq = PRODUCT(peps%qgrid(:))
        elseif(trim(keyword).eq.'frequency') then
           read(line,*,err=110) freq_real, freq_imag
           peps%freq_target = DCMPLX(freq_real, freq_imag)
-          ! elseif(trim(keyword).eq.'supercell_size') then
-          !    read(line,*,err=110) (peps%nsuper(ii),ii=1,3)
        elseif(trim(keyword).eq.'real_part') then
           peps%realpart = .TRUE.
        elseif(trim(keyword).eq.'imag_part') then
@@ -145,9 +140,6 @@ contains
        if (peps%ecut < TOL_ZERO) then
           call die("Must set peps%ecut", only_root_writes = .true.)
        endif
-       ! if (peps%nfq .le. 0) then
-       !    call die("Number of qpoints <= 0, please check qgrid", only_root_writes = .true.)
-       ! endif
        if (peps%nr2 .le. 0) then
           call die("Number of r2 points <= 0, please check r2 list", only_root_writes = .true.)
        endif
@@ -192,8 +184,6 @@ contains
           write(6,'(1X,A)') 'No symmetry is used.'
        endif
        write(6,'(A)')
-       ! write(6,'(1X,A,3(i4,1x))') 'Supercell size:', peps%nsuper
-       ! write(6,'(1X,A,3(i4,1x),A,I4,A)') 'qgrid :', peps%qgrid(:), " with ", peps%nfq, " qpoints in full BZ"
        write(6,'(1X,A,3(i4,1x))') 'Real-space grid will be downsampled by a factor of:', peps%downsample
        write(6,'(1X,A,3(i4,1x))') 'Real-space FFTgrid will be multiplied by a factor of:', peps%FFTfactor
 
@@ -226,21 +216,6 @@ contains
     peps%r2(1:3, 1:peps%nr2) = r2_temp(1:3, 1:peps%nr2)
 
     if (peinf%inode .eq. 0) then
-       ! !> Check that all the r2 are within the peps%nsuper(3) range
-       ! if ( (any(peps%r2(1,:) > peps%nsuper(1))) .or. (any(peps%r2(2,:) > peps%nsuper(2))) .or. (any(peps%r2(3,:) > peps%nsuper(3))) ) then
-       !    call die("r2 beyond range", only_root_writes=.TRUE.)
-       ! elseif ( (any(peps%r2(1,:) < 0)) .or. (any(peps%r2(2,:) < 0)) .or. (any(peps%r2(3,:) < 0)) ) then
-       !    call die("r2 beyond range", only_root_writes=.TRUE.)
-       ! endif
-       ! if ( ANY( (peps%nsuper(:) - peps%qgrid(:)) > 0 ) ) then
-       !    call die("nsuper cannot exceed qgrid", only_root_writes = .TRUE.)
-       ! endif
-       ! if ( ANY( (peps%nsuper(:) .le. 0 ) ) ) then
-       !    call die("Please check supercell_size", only_root_writes = .TRUE.)
-       ! endif
-       ! if ( ANY( (peps%qgrid(:) .le. 0 ) ) ) then
-       !    call die("Please check qgrid", only_root_writes = .TRUE.)
-       ! endif
        write(6,'(1X,A,I5,A)') "We will consider ", peps%nr2, " r2 points (in fractional coordinates): "
        do ir2 = 1, peps%nr2
           write(6,'(1X,"#",I5,3F15.6)') ir2, peps%r2(:,ir2)
@@ -251,9 +226,10 @@ contains
     !> root lets the others go after it is done reading (see beginning of function)
     if (peinf%inode .eq. 0) call MPI_Barrier(MPI_COMM_WORLD, mpierr)
 #endif
-    POP_SUB(inread)
+    POP_SUB(inread_realspace)
     return
 110 write(errmsg,'(3a)') 'Unexpected characters were found while reading the value for the keyword ', trim(keyword), '. '
     call die(errmsg, only_root_writes = .true.)
-  end subroutine inread
-end module inread_m
+  end subroutine inread_realspace
+  
+end module inread_realspace_m

@@ -1,0 +1,41 @@
+ Running with verbosity level 1 (default).
+
+ low_comm: We will store entire epsmat.h5 on each proc.
+ Dealing with file:chimat.h5
+
+ List of output files:
+ Output module square of epsinv.
+ We will use self-adaptive FFT grid (using peps cutoff) to plot low-resolution image.
+
+ Unfolding epsinv matrix using symmetry.
+
+ Real-space grid will be downsampled by a factor of:   1    1    1
+ Real-space FFTgrid will be multiplied by a factor of:   1
+ G-cutoff for epsinv used in FFT :      5.000 Ry
+
+ chi(G=Gp=0)(q-->0) = 0
+ We will consider     1 r2 points (in fractional coordinates): 
+ #    1       0.000000       0.000000       0.000000
+
+ Readingchimat.h5                      file
+ - Supercell size:   2    2    2
+ - Qgrid :   2    2    2  with    8 qpoints in full BZ
+ - G-cutoff of epsinv read from chimat.h5 :      5.000 Ry
+ - Target frequency : (     0.00000,     0.00000).
+ - ifreq_target in chimat.h5 =     1
+ Distribute fq points:
+ - Maximal number of full BZ qpoint on a proc: 8
+ - Number of idle procs : 0
+
+ Grids information:
+ - FFT box size: 6 6 6
+ - Supercell grid: 12 12 12
+ - Effective supercell grid: 12 12 12
+ r2 = ( 0.00000000000000000000000E+00 0.00000000000000000000000E+00 0.00000000000000000000000E+00)
+
+ Writing data set to OUT.ABS2.ir2_1_is_1.xsf
+ 
+                            CPU (s)        WALL (s)          #
+ 
+ TOTAL:                        0.010           0.427
+ 

@@ -1,0 +1,49 @@
+# realspace.inp
+
+# The HDF5 file containing the polarizability or dielectric response function matrix
+# default: epsmat.h5
+filename chimat.h5
+
+# Reset the head element (q=G=G'=0) of the matrix to be plotted
+# default: 1.0
+#epsinvhead 1.0D0
+
+#> coordinates of r2 in crystal coordinates, in units of supercell lattice vectors
+#> (e.g. center of 1 1 60 supercell should be written as 0.5 0.5 30.0)
+begin r2
+0.0 0.0 0.0
+end
+
+# Use dense FFT grid (the same as the grid for all the available Gvectors)
+# to plot high-resolution image
+#high_resolution
+
+# If set, the real-space FFTgrid will be multiplied by FFTfactor
+# default: 1
+FFTfactor 1
+
+# Low communication (high memory) option: store entire filename on each proc
+# high communication (low memory) option: split q-points and store each part on a proc
+# default: high communication
+#low_comm
+
+# Use symmetry to unfold epsinv from reduced Brillouin zoneto full Brillouin zone
+# default: use_symmetry
+use_symmetry
+#no_symmetry
+
+# Instead of calculating every real-space grid point, we downsample the grid
+# by the `downsample` factor
+downsample 1 1 1
+
+# Kinetic energy cutoff used in fast Fourier transform
+# no default, must set cutoff
+cutoff 5.0
+
+# Quantity to be output, must choose at least one of the following option
+# abs = absolute value
+# abs2 = abs square
+#real_part
+#imag_part
+#abs
+abs2

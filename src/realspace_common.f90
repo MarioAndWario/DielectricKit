@@ -1,12 +1,12 @@
 #include "f_defs.h"
 
-module ploteps_common_m
+module realspace_common_m
   use global_m
   implicit none
   private
-  public :: ploteps_t
+  public :: realspace_t
   
-  type ploteps_t
+  type realspace_t
      character*20 :: filename         !< either epsmat.h5 or chimat.h5
      real(DP) :: epsinvhead           !< need to be set for filename = epsmat.h5
      integer :: nrq                   !< number of qpoints in RBZ
@@ -41,6 +41,6 @@ module ploteps_common_m
      logical :: high_resolution
      logical :: low_comm, mid_comm
      integer :: rq_blocksize, nrq_loc, nrq_loc_max
-  end type ploteps_t
+  end type realspace_t
 
-end module ploteps_common_m
+end module realspace_common_m

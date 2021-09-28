@@ -12,10 +12,10 @@
 
 subroutine distrib(peps)
   use global_m
-  use ploteps_common_m
+  use realspace_common_m
   use scalapack_m
   implicit none
-  type (ploteps_t), intent(in) :: peps
+  type (realspace_t), intent(in) :: peps
   integer :: ifq, ipe, modnfqnpes, nfq_loc_count, ifq_loc, inode, ipes, ik_loc
   integer, allocatable :: startindex(:)
   PUSH_SUB(distrib)

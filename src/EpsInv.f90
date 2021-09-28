@@ -252,7 +252,7 @@ program EpsInv
      !! Check matrix_flavor in epsmat
      call read_eps_matrix_flavor_hdf5(matrix_flavor_, TRUNC(filename_chi_hdf5))
      if (pol%matrix_flavor .ne. matrix_flavor_) then
-        call die("ploteps: matrix_flavor mismatch betwen code and epsmat.")
+        call die("EpsInv: matrix_flavor mismatch betwen code and epsmat.")
      endif
 
      call read_eps_params_hdf5(TRUNC(filename_chi_hdf5), pol)

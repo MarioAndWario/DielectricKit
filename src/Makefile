@@ -7,18 +7,23 @@ ifeq ($(findstring -DUSESCALAPACK,$(MATHFLAG)),-DUSESCALAPACK)
 endif
 
 # Object files for module files
-COMMONOBJS = misc.o check_inversion.o inversion.o vcoul_generator.o \
-          symmetries.o input_utils.o sort.o blas.o \
-          io_utils.o epsread_hdf5.o hdf5_io.o so32su2.o \
-          wfn_io_hdf5.o epswrite_hdf5.o write_matrix.o scalapack.o lapack.o fftw.o fullbz.o gmap.o ploteps_common.o
+COMMONOBJS = misc.o inversion.o vcoul_generator.o symmetries.o input_utils.o sort.o blas.o \
+          io_utils.o epsread_hdf5.o hdf5_io.o so32su2.o wfn_io_hdf5.o epswrite_hdf5.o \
+          write_matrix.o scalapack.o lapack.o fftw.o fullbz.o gmap.o realspace_common.o \
+          wfn_rho_vxc_io.o eqpcor.o
 
 # Global object files for all subroutines
-GLOBALOBJS = global.o intrinsics.o nrtype.o typedefs.o peinfo.o message.o push_pop.o scalapack_aux.o timing.o 
-GLOBALMODS = $(GLOBALOBJS:.o=_m.mod)
+GLOBALSRCS = global.f90 intrinsics.f90 nrtype.f90 typedefs.f90 peinfo.f90 message.f90 push_pop.f90 scalapack_aux.f90 timing.f90
+GLOBALOBJS = $(GLOBALSRCS:.f90=.o)
+GLOBALMODS = $(GLOBALSRCS:.f90=_m.mod)
 
-PLOTEPSSRC = distrib.f90 write_eps.f90 inread.f90
-PLOTEPSOBJS = $(PLOTEPSSRC:.f90=.o)
-PLOTEPSMODS = $(PLOTEPSSRC: .f90=_m.mod)
+REALSPACESRCS = distrib.f90 write_eps.f90 inread_realspace.f90
+REALSPACEOBJS = $(REALSPACESRCS:.f90=.o)
+REALSPACEMODS = $(REALSPACESRCS:.f90=_m.mod)
+
+CHISRCS = inread_chi.f90 distrib_chi.f90 input_chi.f90 genwf_chi.f90 mtxel.f90 
+CHIOBJS = $(CHISRCS:.f90=.o)
+CHIMODS = $(CHISRCS:.f90=_m.mod)
 
 # External libs
 LIBS = $(SCALAPACKLIB) $(LAPACKLIB) $(HDF5LIB) $(FFTWLIB) # $(SLATECLIB) 
@@ -72,9 +77,10 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 %.o : %.c
 	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
 
-default: EpsInv PlotEps
+default: Chi # EpsInv RealSpace
+Chi : Chi.x
 EpsInv: EpsInv.x 
-PlotEps: PlotEps.x
+RealSpace: RealSpace.x
 
 # Dependence
 $(COMMONOBJS) : $(GLOBALMODS) f_defs.h
@@ -89,29 +95,43 @@ timing.o timing_m.mod : push_pop_m.mod nrtype_m.mod intrinsics_m.mod peinfo_m.mo
 global.o global_m.mod: intrinsics_m.mod scalapack_aux_m.mod nrtype_m.mod timing_m.mod typedefs_m.mod peinfo_m.mod push_pop_m.mod message_m.mod
 
 # Utilitarian modules
+inread_chi.o inread_chi_m.mod: global_m.mod
 input_utils.o input_utils_m.mod : blas_m.mod
 misc.o misc_m.mod : blas_m.mod scalapack_m.mod
 fullbz.o fullbz_m.mod : misc_m.mod
 gmap.o gmap_m.mod : misc_m.mod
+eqpcor.o eqpcor_m.mod: misc_m.mod
 symmetries.o symmetries_m.mod : misc_m.mod sort_m.mod
 inversion.o inversion_m.mod: lapack_m.mod scalapack_m.mod
 write_matrix.o write_matrix_m.mod : scalapack_m.mod io_utils_m.mod hdf5_io_m.mod
 wfn_io_hdf5.o wfn_io_hdf5_m.mod : hdf5_io_m.mod
 epsread_hdf5.o epsread_hdf5_m.mod : hdf5_io_m.mod
 epswrite_hdf5.o epswrite_hdf5_m.mod : hdf5_io_m.mod wfn_io_hdf5_m.mod
+mtxel.o mtxel_m.mod: fftw_m.mod misc_m.mod
+wfn_rho_vxc_io.o wfn_rho_vxc_io_m.mod: sort_m.mod misc_m.mod
 
-# PlotEPS
-PlotEps.x: $(GLOBALOBJS) $(COMMONOBJS) $(PLOTEPSOBJS) $(SPGLIB)/libsymspg.a ploteps.o
+# Chi
+Chi.x: $(GLOBALOBJS) $(COMMONOBJS) $(CHIOBJS) $(SPGLIB)/libsymspg.a Chi.o
 	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
 
-$(PLOTEPSOBJ) $(PLOTEPSMODS): $(GLOBALMODS) ploteps_common_m.mod
-ploteps.o : $(GLOBALOBJS) $(COMMONOBJS) $(PLOTEPSMODS) $(SPGLIB)/libsymspg.a
+Chi.o: $(GLOBALOBJS) $(COMMONOBJS) $(CHIOBJS) $(SPGLIB)/libsymspg.a 
+# Subroutines for Chi
+distrib_chi.o: misc_m.mod scalapack_m.mod
+input_chi.o: fullbz_m.mod input_utils_m.mod misc_m.mod sort_m.mod wfn_rho_vxc_io_m.mod scalapack_m.mod eqpcor_m.mod
+genwf_chi.o: blas_m.mod gmap_m.mod input_utils_m.mod sort_m.mod misc_m.mod so32su2_m.mod
 
 # EpsInv
 EpsInv.x: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a EpsInv.o 
 	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
 
 EpsInv.o: $(GLOBALOBJS) $(COMMONOBJS) $(SPGLIB)/libsymspg.a 
+
+# RealSpace
+RealSpace.x: $(GLOBALOBJS) $(COMMONOBJS) $(REALSPACEOBJS) $(SPGLIB)/libsymspg.a RealSpace.o
+	$(LINK) $(FOPTS) -o $@ $^ $(LIBS)
+
+$(REALSPACEOBJ) $(REALSPACEMODS): $(GLOBALMODS) realspace_common_m.mod
+RealSpace.o : $(GLOBALOBJS) $(COMMONOBJS) $(REALSPACEMODS) $(SPGLIB)/libsymspg.a
 
 # Space group library
 SPGLIB_SRC = $(addprefix $(SPGLIB)/, cell.c debug.c hall_symbol.c kpoint.c lattice.c mathfunc.c pointgroup.c primitive.c \

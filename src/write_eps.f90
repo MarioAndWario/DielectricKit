@@ -16,7 +16,7 @@
 
 module write_eps_m
   use global_m
-  use ploteps_common_m
+  use realspace_common_m
   implicit none
   private
   public :: write_eps
@@ -24,7 +24,7 @@ module write_eps_m
 contains
 
   subroutine write_eps(peps, crys, nfft, scfft, ir2)
-    type(ploteps_t), intent(in) :: peps
+    type(realspace_t), intent(in) :: peps
     type(crystal), intent(in) :: crys
     integer, intent(in) :: nfft(3)
     complex(DP), intent(in) :: scfft(:,:,:) !< (nw_eff(1),nw_eff(2),nw_eff(3))

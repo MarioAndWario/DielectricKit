@@ -13,7 +13,7 @@ module input_utils_m
   use blas_m
   implicit none
   private
-  public :: gvec_index, kinetic_energies
+  public :: gvec_index, kinetic_energies, calc_efermi
 contains
 
   !---------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ contains
        iadd = ((gvec%components(1, ig) + gvec%FFTgrid(1) / 2) * gvec%FFTgrid(2) &
             + gvec%components(2, ig) + gvec%FFTgrid(2) / 2) * gvec%FFTgrid(3) &
             + gvec%components(3, ig) + gvec%FFTgrid(3) / 2 + 1
-       
+
        gvec%index_vec(iadd) = ig
     enddo
 
@@ -92,4 +92,60 @@ contains
     return
   end subroutine kinetic_energies
 
+  subroutine calc_efermi(kp, efermi, ib_min, ib_max)
+    type(kpoints), intent(in) :: kp
+    real(DP), intent(out) :: efermi
+    integer, intent(in) :: ib_min, ib_max
+    integer :: ik, is, ib_vbm, ib_vbm_
+    real(DP) :: vbm, cbm
+    PUSH_SUB(calc_efermi)
+
+    ib_vbm = MAXVAL(kp%ifmax(:, :))
+    ib_vbm_ = MINVAL(kp%ifmax(:, :))
+    if (ib_vbm .ge. kp%mnband) then
+       call die("calc_efermi: ib_vbm >= total number of bands.", only_root_writes=.true.)
+    endif
+    if (ib_vbm .ne. ib_vbm_) then
+       call die("calc_efermi: Check ifmax.", only_root_writes=.true.)
+    endif
+    if (ib_min > ib_vbm) then
+       write(*,*) ib_min, ib_vbm
+       call die("calc_efermi ib_min > ib_vbm.", only_root_writes=.true.)
+    endif
+    if (ib_max < ib_vbm) then
+       call die("calc_efermi ib_max > ib_vbm.", only_root_writes=.true.)
+    endif
+
+    !> In units of eV
+    vbm = (MAXVAL(kp%el(  ib_vbm, :, :))) * RYD
+    cbm = (MINVAL(kp%el(ib_vbm+1, :, :))) * RYD
+    efermi = (vbm + cbm) / 2.0D0
+
+    do is = 1, kp%nspin
+       do ik = 1, kp%nrk
+          if (ANY(kp%el(ib_min:kp%ifmax(ik, is), ik, is) > (efermi / RYD + TOL_Zero))) then
+             write(*,*) "ib_min = ", ib_min, " ik = ", ik
+             call die("calc_efermi: a valence state has higher energy than emiddle.", only_root_writes=.true.)
+          endif
+
+          if (ANY(kp%el(kp%ifmax(ik, is)+1:ib_max, ik, is) < (efermi / RYD - TOL_Zero))) then
+             if (peinf%inode .eq. 0) then
+                write(*,*) "kp%ifmax(ik, is) = ", kp%ifmax(ik, is), " ib_max = ", ib_max
+                write(*,'(10F15.5)') kp%el(kp%ifmax(ik, is)+1:ib_max, ik, is) * RYD
+                write(*,*) "efermi = ", efermi
+                call die("calc_efermi: a conduction state has lower energy than emiddle.", only_root_writes=.true.)
+             endif
+          endif
+       enddo
+    enddo
+
+    if (peinf%inode .eq. 0) then
+       write(6,'(1X,A,F12.5,A)') 'VBM energy = ', vbm, " eV"
+       write(6,'(1X,A,F12.5,A)') 'CBM energy = ', cbm, " eV"
+       write(6,'(1X,A,F12.5,A)') 'Fermi energy = ', efermi, " eV"
+    endif
+
+    POP_SUB(calc_efermi)
+    return
+  end subroutine calc_efermi
 end module input_utils_m

@@ -221,4 +221,28 @@ module typedefs_m
      type(gspace):: gvec
   end type mf_header_t
 
+  type wavefunction
+     integer :: ng
+     integer :: nband
+     integer :: nspin
+     integer :: nspinor = 1 !< nspinor = 2 if doing two-component spinor calculation; 1 is default
+     integer, pointer :: isort(:)
+     ! cg(ig, ib, is)     
+     SCALAR, pointer :: cg(:,:,:)
+  end type wavefunction
+  
+  type int_wavefunction
+     integer :: nspin
+     integer :: nspinor = 1 !< nspinor = 2 if doing two-component spinor calculation; 1 is default
+     integer, pointer ::  ng(:)     !< (nk)
+     integer, pointer :: isort(:,:) !< (ngmax, nk)
+     integer, pointer :: cbi(:)
+     !> I think this can be decommissioned if we use kp%rk instead
+     real(DP), pointer :: qk(:,:)
+     ! cg(ig, ib, is)
+     SCALAR, pointer :: cg(:,:,:)
+     ! cgk(ig, ib, is, ik)     
+     SCALAR, pointer :: cgk(:,:,:,:)
+  end type int_wavefunction
+  
 end module typedefs_m

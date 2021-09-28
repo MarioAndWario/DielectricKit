@@ -6,19 +6,19 @@
 !
 ! (1) inread
 !
-!     Read information from input file ploteps.inp.
+!     Read information from input file realspace.inp.
 !
 !==============================================================================
 
 module inread_m
   use global_m
-  use ploteps_common_m
+  use realspace_common_m
   implicit none
   public :: inread
 contains
 
   subroutine inread(peps)
-    type (ploteps_t), intent(out) :: peps
+    type (realspace_t), intent(out) :: peps
     character*256 :: blockword,keyword,line,errmsg
     integer :: ii,iostat,jj
     integer :: ir2
@@ -32,7 +32,7 @@ contains
     ! any die call is issued by another node. Root calls MPI_Barrier below.
     if(peinf%inode /= 0) call MPI_Barrier(MPI_COMM_WORLD, mpierr)
 #endif
-    call open_file(8,file='ploteps.inp',form='formatted',status='old')
+    call open_file(8,file='realspace.inp',form='formatted',status='old')
 
     ! Set default values
     peps%nfq = 0
@@ -132,7 +132,7 @@ contains
        elseif(trim(keyword).eq.'epsinvhead') then
           read(line,*,err=110) peps%epsinvhead
        else
-          write(errmsg,'(3a)') 'Unexpected keyword ', trim(keyword), ' was found in ploteps.inp.'
+          write(errmsg,'(3a)') 'Unexpected keyword ', trim(keyword), ' was found in realspace.inp.'
           call die(errmsg, only_root_writes = .true.)
        end if
     enddo

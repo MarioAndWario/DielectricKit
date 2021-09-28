@@ -45,6 +45,15 @@
 !!
 !!    Given kgrid, generate all the kpoints in the Wigner-Seitz BZ
 !!
+!! 10. prepare symmetry()     By Meng Wu (2020)
+!!
+!!    Generate point group symmetry matrices in the cartesian
+!!    basis and reciprocal lattice basis
+!!
+!! 11. subgroup()             By Meng Wu (2020)
+!!
+!!    Generate a subgroup of syms that preserves dq(1:3)
+!!
 !!===================================================================
 
 #include "f_defs.h"
@@ -56,7 +65,7 @@ module misc_m
   implicit none
   private
   public ::   checknorm, get_volume, findvector, procmem, sizeof_scalar, &
-       get_gumk3, M33INV, generate_full_WS_BZ, prepare_syms
+       get_gumk3, M33INV, generate_full_WS_BZ, prepare_syms, subgroup
 contains
 
   subroutine checknorm(filename, iband, ik, nspin, wfn, ispin, tol)
@@ -561,4 +570,38 @@ contains
 
   end subroutine prepare_syms
 
+  !> Generate a subgroup of syms that preserves dq(1:3)
+  subroutine subgroup(syms_sub, syms, crys, qshift)
+    type (symmetry), intent(inout) :: syms_sub
+    type (crystal), intent(in) :: crys
+    type (symmetry), intent(in) :: syms
+    real(DP), intent(in) :: qshift(3)
+    integer :: gumk(3), itran
+    real(DP) :: dq(3)
+
+    syms_sub%ntran = 0
+    syms_sub%mtrx(:,:,:) = 0
+    syms_sub%mtrx_reci(:,:,:) = 0.0D0
+    syms_sub%mtrx_cart(:,:,:) = 0.0D0
+    syms_sub%kgzero(:,:) = 0.0D0
+    syms_sub%tnp(:,:) = 0.0D0
+
+    do itran = 1, syms%ntran
+       dq(1:3) = MATMUL(DBLE(syms%mtrx_reci(1:3, 1:3, itran)), qshift(1:3)) - qshift(1:3)
+       call get_gumk3(crys%bdot, dq, gumk)
+       dq(:) = dq(:) - DBLE(gumk(:))
+       if (all(abs(dq(1:3)) .lt. TOL_Small)) then
+          !> Store index of element of subgroup
+          syms_sub%ntran = syms_sub%ntran + 1
+          syms_sub%mtrx(1:3,1:3,syms_sub%ntran) = syms%mtrx(1:3,1:3,itran)
+          syms_sub%mtrx_reci(1:3,1:3,syms_sub%ntran) = syms%mtrx_reci(1:3,1:3,itran)
+          syms_sub%mtrx_cart(1:3,1:3,syms_sub%ntran) = syms%mtrx_cart(1:3,1:3,itran)
+          syms_sub%tnp(1:3,syms_sub%ntran) = syms%tnp(1:3,itran)
+          !> matmul(syms_sub%mtrx_reci(1:3, 1:3, itran), qshift(1:3)) + syms_sub%kgzero(1:3,itran) = qshift(1:3), itran = 1, syms_sub%ntran
+          syms_sub%kgzero(1:3, syms_sub%ntran) = - gumk(1:3)
+       endif
+    enddo
+
+  end subroutine subgroup
+  
 end module misc_m

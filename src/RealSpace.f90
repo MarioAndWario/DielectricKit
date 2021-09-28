@@ -2,11 +2,9 @@
 
 !====================================================================
 !
-! Routines:
+! Program:  RealSpace     By Meng Wu (2020)
 !
-! (1) ploteps
-!
-! input files: epsmat.h5 or chimat.h5, ploteps.inp
+! input files: epsmat.h5 or chimat.h5, RealSpace.inp
 !
 ! output files:
 !
@@ -15,7 +13,7 @@
 ! 3. Check multiple r2 points
 !====================================================================
 
-program ploteps
+program RealSpace
   use global_m
   use fftw_m
   use fullbz_m
@@ -23,7 +21,7 @@ program ploteps
   use misc_m
   use sort_m
   use write_eps_m
-  use ploteps_common_m
+  use realspace_common_m
   use wfn_io_hdf5_m
   use input_utils_m
   use gmap_m
@@ -40,7 +38,7 @@ program ploteps
   type (gspace) :: gvec
   type (kpoints) :: kp
   type (grid) :: qg
-  type (ploteps_t) :: peps
+  type (realspace_t) :: peps
   integer :: ii, igrid1_super, igrid2_super, igrid3_super, igrid1_primitive, igrid2_primitive, igrid3_primitive, igrid1_super_downsample, igrid2_super_downsample, igrid3_super_downsample, ir2_loop
   integer :: ncount, ntim
   integer :: ngrid_super(3), ngrid_super_downsample(3), nfft(3)
@@ -80,7 +78,7 @@ program ploteps
   call timacc(1,1)
 
   ! call write_program_header('PlotEps', .false.)
-  !> Read ploteps.inp
+  !> Read realspace.inp
   call inread(peps)
 
   !> epsinv in {q G G'} space
@@ -91,7 +89,7 @@ program ploteps
      write(6,'(1X,A)') "Reading"//filename_eps_hdf5//" file"
      INQUIRE(FILE=TRUNC(filename_eps_hdf5), EXIST=file_exists)
      if (.not. file_exists) then
-        call die("ploteps: "//TRUNC(peps%filename)//" file not exist", only_root_writes=.TRUE.)
+        call die("RealSpace: "//TRUNC(peps%filename)//" file not exist", only_root_writes=.TRUE.)
      endif
 
      call read_eps_grid_sizes_hdf5(ng, peps%nrq, ecuts, peps%nfreq, peps%nfreq_imag, nmtx_max_file, peps%qgrid, peps%freq_dep, TRUNC(filename_eps_hdf5))
@@ -121,19 +119,19 @@ program ploteps
      write(*,'(1X,A,F10.3,A)') "- G-cutoff of epsinv read from "//TRUNC(filename_eps_hdf5)//" : ", ecuts, " Ry"
 
      if ((peps%freq_dep .eq. 0) .and. (peps%nfreq .gt. 1)) then
-        call die("ploteps: GPP epsmat with > 1 frequencies.", only_root_writes=.true.)
+        call die("RealSpace: GPP epsmat with > 1 frequencies.", only_root_writes=.true.)
      endif
      !> if FF but with 1 frequency
      if ((peps%freq_dep .ne. 0) .and. (peps%nfreq .le. 1)) then
-        call die("ploteps: FF epsmat with <= 1 frequencies.", only_root_writes=.true.)
+        call die("RealSpace: FF epsmat with <= 1 frequencies.", only_root_writes=.true.)
      endif
      if ((peps%freq_dep .ne. 0) .and. (SCALARSIZE .eq. 1)) then
-        call die("ploteps: FF not compatible with complex-flavor.", only_root_writes=.true.)
+        call die("RealSpace: FF not compatible with complex-flavor.", only_root_writes=.true.)
      endif
 
      if (peps%ecut > ecuts) then
         write(*,'(A,F10.3,A,F10.3)') "peps%ecut = ", peps%ecut, " ecuts = ", ecuts
-        call die("ploteps: peps%ecut > ecuts.", only_root_writes=.true.)
+        call die("RealSpace: peps%ecut > ecuts.", only_root_writes=.true.)
      endif
 
      if (peps%freq_dep .ne. 0) then
@@ -168,7 +166,7 @@ program ploteps
      !> Check matrix_flavor in epsmat
      call read_eps_matrix_flavor_hdf5(matrix_flavor_, TRUNC(filename_eps_hdf5))
      if (matrix_flavor .ne. matrix_flavor_) then
-        call die("ploteps: matrix_flavor mismatch betwen code and epsmat.")
+        call die("RealSpace: matrix_flavor mismatch betwen code and epsmat.")
      endif
 
      call read_gspace(TRUNC(filename_eps_hdf5), gvec)
@@ -238,7 +236,7 @@ program ploteps
      !> Read header of epsmat.h5 and check input parameters
      call read_eps_qgrid_hdf5(peps%nrq, peps%rq, nmtx_file, TRUNC(filename_eps_hdf5))
      if (NORM2(peps%rq(:,1)) > TOL_SMALL) then
-        call die("ploteps: first rq must be Gamma.", only_root_writes=.true.)
+        call die("RealSpace: first rq must be Gamma.", only_root_writes=.true.)
      endif
 
      !> Note that nmtx_max_file is for epsinv_rq read from epsmat.h5
@@ -261,7 +259,7 @@ program ploteps
         call sortrx(gvec%ng, ekin, isrtx, gvec = gvec%components)
         peps%nmtx(irq) = gcutoff(gvec%ng, ekin, isrtx, peps%ecut)
         if (peps%nmtx(irq) > nmtx_file(irq)) then
-           call die("ploteps: nmtx(irq) > nmtx_file(irq).", only_root_writes=.true.)
+           call die("RealSpace: nmtx(irq) > nmtx_file(irq).", only_root_writes=.true.)
         endif
         do ig = 1, gvec%ng
            peps%isrtxi(isrtx(ig), irq) = ig
@@ -399,7 +397,7 @@ program ploteps
      write(6,'(1X,a,3(1x,i0))') '- Effective supercell grid:', ngrid_super_downsample
   endif
 
-  !> Loop over r2 positions within a unit cell, r2 positions read from ploteps.inp
+  !> Loop over r2 positions within a unit cell, r2 positions read from RealSpace.inp
   DO ir2_loop = 1, peps%nr2
      !> r2 in fractional coordinates
      r2(:) = peps%r2(:, ir2_loop)
@@ -632,4 +630,4 @@ program ploteps
   call MPI_FINALIZE(mpierr)
 #endif
 
-end program ploteps
+end program RealSpace

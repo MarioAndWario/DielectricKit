@@ -20,13 +20,14 @@ theory calculation. Current, we only support [`Quantum ESPRESSO`](https://www.qu
 
 See the [pdf](/doc/formalism.pdf) file within the `doc` folder.
 
-## Libraries
+## Requirements and libraries
 
-* Parallelization schemes: hybrid MPI / OpenMP
+* Fortran compiler with MPI/OpenMP support
 * Parallel IO: HDF5
 * Math libraries:
   * Linear algebra: BLAS, LAPACK, SCALAPACK
   * Fast Fourier transform: FFTW
+* We also need `pw.x` and `pw2bgw.x` in the Quantum ESPRESSO package to perform density-functional theory (DFT) calculations and postprocessing.
 
 ## Installation
 
@@ -36,13 +37,7 @@ See the [pdf](/doc/formalism.pdf) file within the `doc` folder.
 
 ## Usage
 
-### Generate wavefunction from Quantum ESPRESSO
-
-### Calculate polarizability with Chi.x
-
-### Calculate inverse dielectric response function with EpsInv.x
-
-### Plot polarizability or dielectric response function in real space with RealSpace.x
+See the example of Bulk Si within the `example` folder
 
 ## References
 

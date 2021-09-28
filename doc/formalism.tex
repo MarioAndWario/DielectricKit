@@ -1,0 +1,372 @@
+\documentclass[11pt, oneside]{article}          % use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                           % See geometry.pdf to learn the layout options. There are lots.
+\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+% \geometry{letterpaper}                                  % ... or a4paper or a5paper or ...
+% \geometry{landscape}                          % Activate for for rotated page geometry
+\usepackage[parfill]{parskip}                   % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}                           % Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+\usepackage{amsmath}
+\usepackage{bm}
+% TeX will automatically convert eps --> pdf in pdflatex
+\usepackage{amssymb}
+\usepackage{pdfsync}
+%% 
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{lmodern}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{dsfont}
+\usepackage{enumerate}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\usetikzlibrary{arrows,positioning,shapes.geometric}
+
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
+
+\lstset{
+  backgroundcolor=\color{editorGray},
+  language=[03]Fortran,
+  breaklines=true,
+  frame=none,
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\color{mygreen}, % the style that is used for the line-numbers
+  basicstyle=\ttfamily,
+  % backgroundcolor=\color{lightgray}
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{mygreen},
+  otherkeywords={SAVE, save, PROCEDURE, procedure,\#ifdef,\#else,\#endif,MPI_Group_incl,MPI_Comm_create,MPI_COMM_WORLD,MPI_SUCCESS},
+  escapeinside={$}{$},
+  morecomment=[l]{!\ }% Comment only with space after !
+}
+
+\title{Theoretical formalism of {\tt DielectricKit}}
+\author{Meng Wu}
+\date{}                                                 % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+\label{sec:introduction}
+
+In this document, I will describe in detail the theoretical formalism of {\tt DielectricKit}. I will cover the topic of many-body perturbation theory, polarizability and dielectric response functions within the random-phase approximation (RPA), fast Fourier transform (FFT), symmetry of Bloch waves and response functions, and finally how to calculate real-space response functions.
+
+\section{Many-body perturbation theory}
+\label{sec:many-body-pert}
+
+Electronic structure in solids is a typical many-body problem, involving a huge number ($\sim$ the Avogadro's constant) of electrons, ions, as well as under various external fields. The most systematic and elegant approach to this problem is based on the quantum field theory and the many-body perturbation theory (MBPT) (also called the Green's function method) \cite{hedin1965new, schwinger1951green, baym1961field, hedin1970effects}, from which the $GW$ and $GW$-BSE methods are derived. MBPT is probably one of the most powerful, predictive and versatile formalisms in physics. This section is just a sketch of important concepts and conclusions most relevant to the development of the $GW$ and $GW$-BSE methods, and we only focus on the Green's function formalism for electrons in the following. More details and other topics about MBPT can be found in several excellent reviews and textbooks \cite{hedin1970effects, fetter2012quantum, mahan2013many, nozieres1997theory, stefanucci2013nonequilibrium}.
+
+We start from a general Hamiltonian $\hat{H}$ for a system of interacting electrons under an external potential $V_{\mathsf{ext}}({\bm x})$ \cite{cohen2016fundamentals, fetter2012quantum, mahan2013many, strinati1988application}:
+\begin{equation}
+  \label{eq:Standard_H}
+  \begin{aligned}
+    \hat{H} & = \int \mathrm{d}{\bm x} \, \hat{\psi}^{\dagger} ({\bm x}) \left [ -\frac{\hbar^2}{2m_e}\nabla^2 + V_{\mathsf{ext}} ({\bm x}) \right ] \hat{\psi}({\bm x}) + \frac{1}{2} \int \mathrm{d}{\bm x} \mathrm{d}{\bm x}' \, v({\bm r},{\bm r}') \hat{\psi}^{\dagger}({\bm x}) \hat{\psi}^{\dagger}({\bm x}') \hat{\psi}({\bm x}') \hat{\psi}({\bm x}),
+  \end{aligned}
+\end{equation}
+where ${\bm x} = \{ {\bm r}\sigma \}$ and $\int \mathrm{d} {\bm x} = \sum_{\sigma} \int \mathrm{d}{\bm r}$. The spin-resolved electron density operator is defined as, $\hat{n}_e ({\bm x}) \equiv  \hat{\psi}^{\dagger}({\bm x}) \hat{\psi}({\bm x})$. The Coulomb interaction is given by, $v({\bm r},{\bm r}') = \frac{q_e^2}{4\pi \varepsilon_0|{\bm r}-{\bm r}'|}$, where $\varepsilon_0$ is the vacuum permittivity.
+
+The \emph{time-ordered single-particle Green's function} $G$ in the zero-temperature formalism is defined as:
+\begin{equation}
+  \begin{aligned}
+    \label{eq:def_GF}
+    G(12) & \equiv (-\frac{i}{\hbar}) \frac{\langle \Psi_0 | T[ e^{i \hat{H} t_1 /\hbar} \hat{\psi}({\bm x}_1) e^{-i\hat{H} t_1 /\hbar} e^{i \hat{H} t_2 / \hbar} \hat{\psi}^{\dagger}({\bm x}_2) e^{-i \hat{H} t_2 / \hbar} ] | \Psi_0 \rangle}{\langle \Psi_0 | \Psi_0 \rangle} \\
+    & \equiv (-\frac{i}{\hbar}) \frac{\langle \Psi_0 | T[ \hat{\psi}(1) \hat{\psi}^{\dagger}(2) ] | \Psi_0 \rangle}{\langle \Psi_0 | \Psi_0 \rangle},
+  \end{aligned}
+\end{equation}
+where $1 \equiv \{ {\bm x}_1 t_1 \}$, $T$ is the time-ordering operator, and $|\Psi_0 \rangle$ the ground state of an interacting system with the Hamiltonian in Eq. \eqref{eq:Standard_H}. Throughout the following derivation, the time-dependence of the field operator $\hat{\psi}(1)$ comes from the Hamiltonian in Eq. \eqref{eq:Standard_H},
+\begin{equation}
+  \label{eq:Heisenberg_picture}
+  \hat{\psi} (1) \equiv \hat{\psi}({\bm x}_1, t_1) = e^{i\hat{H}t_1/\hbar}\hat{\psi}({\bm x}_1)e^{-i\hat{H}t_1/\hbar}.
+\end{equation}
+Note that the following discussion also applies to the finite-temperature $G$, as shown in Ref. \cite{baym1961field}. After a time Fourier transform with respect to $t_1-t_2$, we get $G({\bm x}_1, {\bm x}_2; \omega)$, defined in the frequency domain.
+
+The \emph{retarded single-particle Green's function} $G^{\mathsf{R}}$ is defined as,
+\begin{equation}
+  \label{eq:retarded_GreenFunction}
+  G^{\mathsf{R}}(12) \equiv (-\frac{i}{\hbar}) \Theta(t_1 - t_2) \frac{ \langle \Psi_0 | \{ \hat{\psi}(1), \hat{\psi}^{\dagger}(2) \} | \Psi_0 \rangle} {\langle \Psi_0 | \Psi_0 \rangle},
+\end{equation}
+where the commutator $\{ A, B \} \equiv AB + BA$ is for fermionic operators. In the following, quantities without an explicit $\mathsf{R}$ superscript are all time-ordered. Applications of retarded correlation functions, including $G^{\mathsf{R}}$, will be discussed in the next section of dielectric responses. The single-particle Green's function is at the center of MBPT because (i) the Feynman rules are simpler for $G$ than for other operators, and (ii) the expectation value of any single-particle operator in the ground state of the system can be calculated using $G$ \cite{fetter2012quantum}. In this dissertation, we will adopt the functional derivative approach \cite{baym1961field, hedin1970effects, strinati1988application} to reduce the many-body problem to the solution of a coupled set of nonlinear integral equations. This approach avoids the cumbersome conventional diagrammatic expansion of relevant quantities.
+
+We first add an external time-dependent local potential $\varphi$ to the Hamiltonian in Eq. \eqref{eq:Standard_H} in order to perturb the system,
+\begin{equation}
+  \label{eq:Hp_perturb}
+  \hat{H}' (t) \equiv \int \mathrm{d}{\bm x} \, \hat{\psi}^{\dagger}({\bm x}) \varphi({\bm x}, t) \hat{\psi}({\bm x}).
+\end{equation}
+This perturbation potential will go to zero at the end of our derivation. Since there is an extra term in the Hamiltonian,
+\begin{equation}
+  \label{eq:Hamiltonian_more}
+  \hat{H}''(t) \equiv \hat{H} + \hat{H}'(t),
+\end{equation}
+we adopt the interaction picture from now on,
+\begin{equation}
+  \label{eq:H_interaction}
+  \hat{H}'_{\mathsf{I}}(t) \equiv e^{i \hat{H}t /\hbar} \hat{H}'(t) e^{-i \hat{H} t /\hbar},
+\end{equation}
+and introduce the $S$ matrix,
+\begin{equation}
+  \hat{S} \equiv \text{exp} \left \{ -\frac{i}{\hbar} \int^{\infty}_{-\infty} \mathrm{d} t \, \hat{H}'_{\mathsf{I}} (t) \right \}.
+\end{equation}
+The generalized single-particle Green's functions with respect to $\hat{H}''(t)$ is then,
+\begin{equation}
+  G(12) = \left ( - \frac{i}{\hbar} \right ) \frac{\langle \Psi_0 | T[\hat{S} \hat{\psi}(1) \hat{\psi}^{\dagger}(2)] | \Psi_0 \rangle}{\langle \Psi_0 | T[\hat{S}] | \Psi_0 \rangle}.
+\end{equation}
+When we take the limit of $\hat{H}' \rightarrow 0$, the $S$ matrix will be reduced to an identity operator. We now introduce a total potential $V_{\mathsf{tot}}$ averaged over the many-body ground state $| \Psi_0 \rangle$ as,
+\begin{equation}
+  \label{eq:V_tot_b}
+  V_{\mathsf{tot}}(1) \equiv \varphi(1) + \int \mathrm{d}2 \, v(12) \langle \hat{n}_e(2)\rangle = \varphi(1) - i \hbar \int \mathrm{d}2 \, v(12) G(22^{+}),
+\end{equation}
+where $v(12) = v({\bm r}_1,{\bm r}_2) \delta(t_1 - t_2)$, $\langle \hat{n}_e (2) \rangle \equiv \langle \Psi_0 | \hat{n}_e(2) | \Psi_0 \rangle = -i \hbar G(22^{+})$, $2=\{ {\bm x}_2 t^{+}_2 \}$, and $t^{+}_2 = t_2 + \eta$ with $\eta \rightarrow 0^{+}$. We relate $V_{\mathsf{tot}}$ to the external potential $\varphi$ by introducing the \emph{reducible polarizability} $\chi$ and the \emph{inverse dielectric function} $\varepsilon^{-1}$ as functional derivatives:
+\begin{eqnarray}
+  \label{eq:def_inv_chi}
+  \chi(12) & \equiv & \frac{\delta \langle \hat{n}_e(1) \rangle}{\delta \varphi(2)}, \\
+  \label{eq:def_inv_eps}
+  \varepsilon^{-1}(12) & \equiv & \frac{\delta V_{\mathsf{tot}}(1)}{\delta \varphi(2)} = \delta(12) + \int \mathrm{d}3 \, v(13) \chi(32).
+\end{eqnarray}
+Eq. \eqref{eq:def_inv_eps} can be inverted to get,
+\begin{equation}
+  \label{eq:def_eps}
+  \varepsilon(12) = \delta(12) - \int \mathrm{d}3 \, v(13) \chi^{\star}(32),
+\end{equation}
+where we have defined the \emph{irreducible polarizability} $\chi^{\star}$ as,
+\begin{equation}
+  \label{eq:def_P12}
+  \chi^{\star}(12) \equiv \frac{\delta \langle \hat{n}_e(1) \rangle}{\delta V_{\mathsf{tot}}(2)}.
+\end{equation}
+The \emph{screened Coulomb interaction} $W$ is defined intuitively as,
+\begin{equation}
+  \label{eq:def_W}
+  W(12) \equiv \int \mathrm{d} 3 \, \varepsilon^{-1}(13) v(32).
+\end{equation}
+Combine Eqs. \eqref{eq:def_inv_eps}, \eqref{eq:def_P12} and \eqref{eq:def_W}, and we get the following expressions of $W$,
+\begin{equation}
+  \label{eq:W_v_chi}
+  \begin{aligned}
+    W(12) & = v(12) + \int \mathrm{d} (34) \, v(13) \chi(34) v(42) \\
+    & = v(12) + \int \mathrm{d} (34) \, v(13) \chi^{\star}(34) W(42)
+  \end{aligned}
+\end{equation}
+The \emph{electron self-energy} $\Sigma$, the Hartree term $\Sigma_{\mathsf{H}}$ and the \emph{mass operator} $M(12)$ are defined as follows,
+\begin{eqnarray}
+  \label{eq:def_Sigma}
+  \Sigma(12) & \equiv & \Sigma_{\mathsf{H}}(12) + M(12), \\
+  \label{eq:def_Sigma_H}
+  \Sigma_{\mathsf{H}} (12) & \equiv & \delta(12) \int \mathrm{d}2 \, v(12) \langle \hat{n}_e(2) \rangle, \\
+  \label{eq:def_M}
+  M(12) & \equiv & i \hbar \int \mathrm{d}(34) v(13) \frac{\delta G(14)}{\delta \varphi(3)} G^{-1}(42).
+\end{eqnarray}
+$\Sigma$ drives the equation of motion of $G$,
+\begin{equation}
+  \label{eq:EOM_of_GF_2}
+  \left [ i \hbar \frac{\partial}{\partial t_1} + \frac{\hbar^2}{2m_e} \nabla^2_1 \right ] G(12) - \int \mathrm{d}3 \, \Sigma(13) G(32) = \delta(12).
+\end{equation}
+By defining a noninteracting single-particle Green's function $G_{0}(12)$ at the absence of the Coulomb interaction, Eq. \eqref{eq:EOM_of_GF_2} can be reformulated into the \emph{Dyson's equation},
+\begin{equation}
+  \label{eq:DysonEquation}
+  G(12) = G_0(12) + \int \mathrm{d}(34) \, G_0(13) \Sigma (34) G(42).
+\end{equation}
+The \emph{irreducible three-point vertex function} $\Gamma^{\star}$ is defined as,
+\begin{equation}
+  \label{eq:def_vertex}
+  \begin{aligned}
+    \Gamma^{\star}(123) & \equiv - \frac{\delta G^{-1}(12)}{\delta V_{\mathsf{tot}}(3)} = \delta(12) \delta(13) + \int \mathrm{d}(4567) \, \frac{\delta M(12)}{\delta G(45)} G(46) G(75) \Gamma^{\star}(673),
+  \end{aligned}
+\end{equation}
+$M$ can then be expressed as an integral involving $G$, $\Gamma^{\star}$, and $W$:
+\begin{equation}
+  \label{eq:Electron self-energy}
+  M(12) = i \hbar \int \mathrm{d}(34) \, G(13) W(41) \Gamma^{\star}(324).
+\end{equation}
+$\chi^{\star}$ is also related to $\Gamma^{\star}$ according to,
+\begin{equation}
+  \label{eq:P_e(12)}
+  \chi^{\star}(12) = - i \hbar \int \mathrm{d}(34) \, G(13) G(41)\Gamma^{\star}(342).
+\end{equation}
+Until now, we get the well-known \emph{Hedin's equations} \cite{hedin1965new,hedin1970effects} for a system of interacting electrons:
+\begin{eqnarray}
+  \label{eq:hedinsequation_1}
+  G(12) & = & G_0(12) + \int \mathrm{d}(34) \, G_0(13) \Sigma (34) G(42), \\
+  \label{eq:hedinsequation_2}
+  \Gamma^{\star}(123) & = & \delta(13) \delta(23) + \int \mathrm{d} (4567) \frac{\delta M(12)}{\delta G(45)} G(46) G(75) \Gamma^{\star}(673), \\
+  \label{eq:hedinsequation_3}
+  \chi^{\star}(12) & = & - i \hbar \int \mathrm{d} (34) \, G(13) G(41) \Gamma^{\star}(342), \\
+  \label{eq:hedinsequation_4}
+  W(12) & = & v(12) + \int \mathrm{d} (34 )\, v(13) \chi^{\star}(34) W(42), \\
+  \label{eq:hedinsequation_5}
+  M(12) & = & i \hbar \int \mathrm{d}(34) \, G(13) W(41) \Gamma^{\star}(324) = \Sigma(12) - \Sigma_{\mathsf{H}}(12).
+\end{eqnarray}
+This set of equations build up a large self-consistent loop involving the single-particle Green's function $G$, irreducible vertex function $\Gamma^{\star}$, irreducible polarizability $\chi^{\star}$, screened Coulomb interaction $W$ and mass operator $M$.
+
+\section{The $GW$ method and random-phase approximation}
+\label{sec:gw-method-random}
+
+The most important approximation of the $GW$ method is to take the zeroth order vertex (i.e., no vertex corrections) in Eq. \eqref{eq:hedinsequation_2},
+\begin{equation}
+  \label{eq:GW_vertex}
+  \Gamma^{\star}(123) = \delta(13) \delta(23),
+\end{equation}
+which leads to the irreducible polarizability within the \emph{random-phase approximation} (RPA),
+\begin{equation}
+  \label{eq:GW_chi}
+  \chi^{\star}(12) = -i \hbar G(12) G(21),
+\end{equation}
+and the iconic $GW$ mass operator,
+\begin{equation}
+  \label{eq:GW_Sigma}
+  M(12) = i \hbar G(12) W(21).
+\end{equation}
+The number of self-consistent Hedin's equations are now reduced to four. Underneath the simple look of the $GW$ method, it is actually one of the conserving approximations, as discussed by Kadanoff and Baym \cite{baym1961conservation, baym1962selfconsistent}, which means it is expected to satisfy the general (number, momentum, and energy) conservation laws.
+
+As discussed before, the band gap problem of DFT was successfully resolved by the development of the first-principles $GW$ method for quasiparticle excitations by Hybertsen and Louie \cite{hybertsen1986electron, hybertsen1985firstprinciples}. In real materials, $W$ is usually much weaker than the bare Coulomb interaction, which leads to the laudable accuracy and versatility of the $GW$ method. Even though the $GW$ method is much simpler than the original Hedin's equations, we still need further approximations for a realistic calculation. In practice, DFT results are usually used as a starting point for the $GW$ method by replacing the many-body wavefunctions by a Slater determinant of Kohn-Sham eigenstates. This allows us to evaluate the $GW$ self-energy (mass operator) as a first-order perturbation with respect to the Kohn-Sham eigenvalues,
+\begin{equation}
+  \label{eq:GW_correction_perturbation}
+  \epsilon^{\mathsf{QP}}_{n{\bm k}} = \epsilon^{\mathsf{KS}}_{n{\bm k}} + \langle n {\bm k} | M(\epsilon^{\mathsf{QP}}_{n {\bm k}}) - V_{\mathsf{xc}} | n {\bm k} \rangle.
+\end{equation}
+It has been shown that the overlap between DFT-LDA and quasiparticle wavefunctions is greater than 99.9\% in some conventional semiconductors and insulators \cite{hybertsen1986electron}. Moreover, the full self-consistency is often out of reach for real materials and therefore further approximations have to be adopted, such as the one-shot $GW$ method (also called the $G_0 W_0$ method). In the $G_0 W_0$ method, both $G_0$ and $W_0$ are constructed using Kohn-Sham eigenvalues and eigenstates in the quasiparticle approximation. $G_0$ is given by,
+\begin{equation}
+  \label{eq:G_GW_approximation}
+  G_0({\bm x}_1, {\bm x}_2;\omega) = \sum_{n{\bm k}} \frac{\phi^{\mathsf{KS}}_{n {\bm k}}({\bm x}_1) (\phi^{\mathsf{KS}}_{n {\bm k}}({\bm x}_2))^{*} }{ \hbar \omega - \epsilon^{\mathsf{KS}}_{n {\bm k}} + i \eta \, \mathsf{sgn}(\epsilon^{\mathsf{KS}}_{n{\bm k}} - \epsilon_{\mathsf{F}}) }, \quad \eta \rightarrow 0^{+},
+\end{equation}
+where $\epsilon_{\mathsf{F}}$ denotes the Fermi level and $\mathsf{sgn}$ is the sign function. After space and time Fourier transforms (Sec. \ref{cha:fourier-transforms}), $W_0$ can be constructed from the RPA (denoted by the superscript of $0$) irreducible polarizability $\chi^{\star;0}$ with Kohn-Sham eigenvalues and eigenstates,
+\begin{equation}
+  \label{eq:chistar_RPA}
+  \begin{aligned}
+    \chi^{\star;0}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) & = \frac{1}{N_k \Omega} \sum_{c v {\bm k}} \left \{ \frac{\langle v ({\bm k} - {\bm q}) | e^{-i ({\bm q} + {\bm G}_1) \cdot {\bm r}_1} | c {\bm k} \rangle \langle c {\bm k} | e^{i ({\bm q} + {\bm G}_2) \cdot {\bm r}_2} | v ({\bm k} - {\bm q}) \rangle}{\hbar \omega - (\epsilon^{\mathsf{KS}}_{c {\bm k}} - \epsilon^{\mathsf{KS}}_{v ({\bm k} - {\bm q})}) + i \eta} \right . \\
+    & \left . - \frac{\langle c {\bm k} | e^{-i ({\bm q} + {\bm G}_1)\cdot {\bm r}_1} | v ({\bm k} + {\bm q}) \rangle \langle v ({\bm k} + {\bm q}) | e^{i({\bm q} + {\bm G}_2) \cdot {\bm r}_2} | c {\bm k} \rangle}{\hbar \omega + (\epsilon^{\mathsf{KS}}_{c {\bm k}} - \epsilon^{\mathsf{KS}}_{v ({\bm k} + {\bm q})}) - i \eta} \right \}, \quad \eta \rightarrow 0^{+},
+  \end{aligned}
+\end{equation}
+where $N_k$ is the number of $k$-points in the Brillouin zone and it is also equal to the number of unit cells used in the Born-von K\'{a}rm\'{a}n boundary condition \cite{cohen2016fundamentals}, and $\Omega$ is the volume of a unit cell. Equation \eqref{eq:chistar_RPA} is the famous Adler-Wiser expression of the RPA polarizability \cite{adler1962quantum, wiser1963dielectric}.
+
+\section{FFT and matrix elements}
+\label{sec:fft-matrix-elements}
+
+In {\tt BGW/Epsilon} we want to calculate the matrix element for every ${\bm k}_0 \in \text{RBZ/Q}$.
+\begin{equation}
+  \label{eq:scalar_EpsilonMatrixElement}
+  \begin{aligned}
+    \langle n^{v}({\bm k}_0+{\bm q}) | e^{i({\bm q}+{\bm G})\cdot {\bm x}} | n^{c}{\bm k}_0 \rangle & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{V} \int_V d{\bm x} e^{-i({\bm k}_0+{\bm q}+{\bm G}_1)\cdot {\bm x}} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} e^{i({\bm q}+{\bm G})\cdot {\bm x}} e^{i({\bm k}_0+{\bm
+        G}_2)\cdot {\bm x}} C_{n^{c}{\bm k}_0 {\bm G}_2} \\
+    & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{V} \int_{V} d{\bm x} e^{i(-{\bm G}_1+{\bm G}+{\bm G}_2)\cdot {\bm x}} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}_0{\bm G}_2} \\
+    & = \sum_{{\bm G}_1{\bm G}_2} \left ( \frac{1}{V} \sum_{{\bm R}_l} e^{i(-{\bm G}_1+{\bm G}+{\bm G}_2)\cdot {\bm R}_l} \right ) \int_{\Omega} d {\bm \xi}~e^{i(-{\bm G}_1 + {\bm G} + {\bm G}_2)\cdot {\bm \xi}} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}_0{\bm G}_2} \\
+    & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{\Omega} \Delta {\bm \xi} \sum_{{\bm \xi}_m} e^{i(-{\bm G}_1 + {\bm G}+{\bm G}_2)\cdot {\bm \xi}_m} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}_0{\bm G}_2} \\
+    & = \frac{1}{N_{FFT}} \sum_{{\bm \xi}_m} e^{i{\bm G}\cdot {\bm \xi}_m} \left ( \sum_{{\bm G}_1} e^{-i{\bm G}_1 \cdot {\bm \xi}_m} C^{*}_{n^{v} ({\bm k}_0+{\bm q}){\bm G}_1} \right ) \left ( \sum_{{\bm G}_2} e^{i{\bm G}_2 \cdot {\bm \xi}_m} C_{n^{c} {\bm k}_0{\bm G}_2} \right ) \\
+    & = \frac{1}{N_{FFT}} {\color{red} \text{FFT}}[{\color{blue} \text{{\tt CONJ}}}[{\color{red} \text{FFT}}[C_{n^{v}({\bm k}_0+{\bm q})}(\{ {\bm G}_1 \})]].* {\color{red} \text{FFT}}[C_{n^{c}{\bm k}_0}(\{ {\bm G}_2 \})]]({\bm G})
+  \end{aligned}
+\end{equation}
+where {\color{blue} {\tt CONJ}} is the complex conjugate function in {\tt FORTRAN} and the {\color{red} FFT} all refers to {\bf backward} FFT,
+\begin{equation}
+  \label{eq:1DBackwardFFT_0}
+  Y_k = \sum^{n-1}_{j=0} X_j e^{2\pi j k \sqrt{-1}/n}
+\end{equation}
+and we have used the relation,
+\begin{equation}
+  \label{eq:1/N}
+  \frac{1}{V} \sum_{{\bm R}_l} e^{i(-{\bm G}_1 + {\bm G}+{\bm G}_2)\cdot {\bm R}_l} = \frac{N}{V} = \frac{1}{\Omega}
+\end{equation}
+
+\section{Symmetry of $\epsilon^{-1}$ and $\chi^{\star}$}
+\label{sec:symmetry-epsilon-1}
+
+Apply crystal space group symmetry on $W({\bm x}_1,{\bm x}_2;\omega)$
+\begin{equation}
+  \label{eq:W_sym_R}
+  \begin{aligned}
+    & W({\bm x}_1,{\bm x}_2;\omega) = \int d{\bm x}_3 \epsilon^{-1}({\bm x}_1,{\bm x}_3;\omega) V({\bm x}_3,{\bm x}_2;\omega) \\
+    & \Rightarrow W(\{\alpha | {\bm t} \} {\bm x}_1, \{ \alpha | {\bm t} \} {\bm x}_2;\omega) = \int d {\bm x}_3 \, \epsilon^{-1}(\{\alpha | {\bm t} \}{\bm x}_1,{\bm x}_3;\omega) V({\bm x}_3,\{\alpha | {\bm t} \} {\bm x}_2;\omega) \\
+    & = \int d \left ( \{\alpha | {\bm t} \} {\bm x}_3 \right ) \, \epsilon^{-1}(\{\alpha | {\bm t} \}{\bm x}_1,\{\alpha | {\bm t} \}{\bm x}_3;\omega) V( \{\alpha | {\bm t} \}{\bm x}_3,\{\alpha | {\bm t} \} {\bm x}_2;\omega) \equiv W({\bm x}_1,{\bm x}_2)
+  \end{aligned}
+\end{equation}
+which leads to the identity,
+\begin{equation}
+  \label{eq:epsilon_R}
+  \epsilon^{-1}(\{\alpha | {\bm t} \} {\bm x}_1, \{\alpha | {\bm t} \}{\bm x}_2;\omega) = \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega)
+\end{equation}
+
+With Eqn. \eqref{eq:epsilon_R}, we can prove that, if
+\begin{equation}
+  \label{eq:q'}
+  {\bm q}' = \alpha {\bm q} + {\bm G}_0
+\end{equation}
+then,
+\begin{equation}
+  \label{eq:epsilon_R_2}
+  \begin{aligned}
+    & \epsilon^{-1}_{{\bm G}_1 {\bm G}_2}({\bm q}';\omega) = \frac{1}{N\Omega} \int d{\bm x}_1 d {\bm x}_2 e^{-i({\bm q}'+{\bm G}_1)\cdot {\bm x}_1} e^{i({\bm q}+{\bm G}_2)\cdot {\bm x}_2} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
+    & = \frac{1}{N\Omega} \int d{\bm x}_1 d{\bm x}_2 e^{-i(\alpha {\bm q}+{\bm G}_0 + {\bm G}_1)\cdot {\bm x}_1} e^{i(\alpha{\bm q} + {\bm G}_0 + {\bm G}_2)\cdot {\bm x}_2} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
+    & = \frac{1}{N\Omega} \int d{\bm x}_1 d{\bm x}_2 e^{-i[\alpha({\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1))]\cdot {\bm x}_1} e^{i[\alpha({\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2))]\cdot {\bm x}_2} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
+    & = \frac{1}{N\Omega} \int d{\bm x}_1 d {\bm x}_2 e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot (\alpha^{-1}{\bm x}_1)} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot (\alpha^{-1}{\bm x}_2)} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega), \quad {\bm y}=\alpha^{-1}{\bm x} - \alpha^{-1}{\bm t} \\
+    & = \frac{1}{N\Omega} \int d (\alpha {\bm y}_1 + {\bm t}) d (\alpha {\bm y}_2 + {\bm t}) e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot ({\bm y}_1 + \alpha^{-1}{\bm t})} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot ({\bm y}_2 + \alpha^{-1}{\bm t})} \epsilon^{-1}(\alpha{\bm y}_1 + {\bm t},\alpha{\bm y}_2 + {\bm t};\omega) \\
+    & = e^{-i({\bm G}_1 - {\bm G}_2)\cdot {\bm t}} \frac{1}{N\Omega} \int d{\bm y}_1 d{\bm y}_2 e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot {\bm y}_1} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot {\bm y}_2} \epsilon^{-1}({\bm y}_1, {\bm y}_2;\omega) \\
+    & = e^{-i({\bm G}_1 - {\bm G}_2)\cdot {\bm t}} \epsilon^{-1}_{\alpha^{-1}({\bm G}_0 + {\bm G}_1) \alpha^{-1}({\bm G}_0 + {\bm G}_2)}({\bm q};\omega)
+  \end{aligned}
+\end{equation}
+
+This identity also applies to $\chi^{\star}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$. In this way, we only need to calculate $\epsilon^{-1}$ or $\chi^{\star}$ at symmetry reduced $k$-points and unfold it to recover the value at symmetry-equivalent $k$-points. This unfolding scheme has been implemented in {\tt RealSpace.x}.
+
+\section{Real-space $\epsilon^{-1}$ and $\chi^{\star}$}
+\label{sec:real-space-epsilon}
+
+There are two requirements for the real-space inverse dielectric function $\epsilon^{-1}({\bm r}_1, {\bm r}_2; \omega)$.
+\begin{equation}
+  \label{eq:two_conditions}
+  \begin{aligned}
+    & \epsilon^{-1}({\bm r}_1+{\bm R},{\bm r}_2+{\bm R};\omega) = \epsilon^{-1}({\bm r}_1,{\bm r}_2;\omega) \\
+    & \epsilon^{-1}({\bm r}_1+{\bm N}_{\mathsf{BvO}},{\bm r}_2;\omega) = \epsilon^{-1}({\bm r}_1,{\bm r}_2;\omega)
+  \end{aligned}
+\end{equation}
+where ${\bm R}=m {\bm a}_1 + n {\bm a}_2 + l {\bm a}_3$ is a lattice vector and ${\bm N}_{\mathsf{BvO}} = N^{i}_{\mathsf{BvO}} {\bm a}_i, \forall i=x,y,z$ is the period of the large BvO supercell. So it is sufficient to define a real-space function $\epsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2}({\bm R}; \omega) \equiv \epsilon^{-1}({\bm \xi}_1 + {\bm R}, {\bm \xi}_2; \omega)$, where ${\bm \xi}_1$ and ${\bm \xi}_2$ are real-space FFT grid within a primitive cell. The number of ${\bm \xi}_1$ (${\bm \xi}_2$) is equal to the number of $G-$vectors used in doing the Fourier transform. In this section, we use the information $\epsilon^{-1}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$ to calculate $\epsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2} ({\bm R}; \omega)$ with fixed ${\bm \xi}_2$ within a primitive cell, while ${\bm \xi}_1+{\bm R}$ is defined in the BvO cell.
+
+Note that the real-space and reciprocal-space lattice vectors are different. In reciprocal space, ${\bm q}$ is defined in the full Brillouin zone, and ${\bm G}_1$ and ${\bm G}_2$ are defined in a sphere around $\Gamma$ point with a kinetic energy cutoff. We order the ${\bm G}$-vectors using the kinetic energy $\propto |{\bm G}+{\bm q}|^2$. In real space, however, we define ${\bm \xi}_1$, ${\bm \xi}_2$ and ${\bm R}$ using a $[0,1]$-like convention. For example, we have FFT grid in the primitive cell $N_{\mathsf{FFT}} = [n_1,n_2,n_3]$. Then the fractional coordinates of ${\bm \xi}_1$ (${\bm \xi}_2$) in the basis of ${\bm a}_i$ are in the range of $[0,0,0] \rightarrow [\frac{n_1-1}{n_1},\frac{n_2-1}{n_2},\frac{n_3-1}{n_3}]$. We order ${\bm \xi}_1=[\frac{\tt i}{n_1},\frac{\tt j}{n_2},\frac{\tt k}{n_3}]$ using the following function, ${\tt INDEX\_xi}({\bm \xi}) = {\tt i} + {\tt j} * n_1 + {\tt k} * n_1 * n_2+1$ where ${\tt i} = 0, 1, \cdots, n_1$. As for ${\bm R}=[{\tt R_1}, {\tt R_2}, {\tt R_3}]$, it is defined with the same fractional coordinates in the range of $[0,0,0] \rightarrow [N^{\mathsf{BvO}}_1,N^{\mathsf{BvO}}_2,N^{\mathsf{BvO}}_3]$. A corresponding indexing function is defined as, ${\tt INDEX\_R}({\bm R}) = {\tt R_1} + {\tt R_2} * N^{\mathsf{BvO}}_1 + {\tt R_3} * N^{\mathsf{BvO}}_1 * N^{\mathsf{BvO}}_2 + 1$.
+
+\begin{equation}
+  \label{eq:epsinv_G_to_xi}
+  \begin{aligned}
+    & \epsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2} ({\bm R}; \omega) \equiv \epsilon^{-1} ({\bm \xi}_1+{\bm R}, {\bm \xi}_2; \omega) = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1 {\bm G}_2} e^{i ({\bm q} + {\bm G}_1) \cdot ({\bm \xi}_1 + {\bm R})} e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm \xi}_2} \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q};\omega) \\
+    & = \frac{1}{N \Omega} \sum_{{\bm q}} e^{i {\bm q} \cdot ({\bm \xi}_1 + {\bm R})} \left [ \sum_{{\bm G}_1} e^{i {\bm G}_1 \cdot {\bm \xi}_1} \left ( \sum_{{\bm G}_2} \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm \xi}_2} \right ) \right ] \\
+    & = \frac{1}{N \Omega} \sum_{{\bm q}} e^{i {\bm q} \cdot ( {\bm \xi}_1 + {\bm R} ) } {\tt ucfft}( {\bm \xi}_1; {\bm \xi}_2, {\bm q}, \omega)
+  \end{aligned}
+\end{equation}
+
+Now suppose we take the simplest form of $\epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega)$, corresponding to no screening at all,
+\begin{equation}
+  \label{eq:simple_epsinv}
+  \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) = \delta_{{\bm G}_1 {\bm G}_2}
+\end{equation}
+And then the real-space $\epsilon^{-1}({\bm r}_1, {\bm r}_2; \omega)$ is given by,
+\begin{equation}
+  \label{eq:real_space_simple_epsinv}
+  \begin{aligned}
+    & \epsilon^{-1} ({\bm r}_1, {\bm r}_2; \omega) = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1 {\bm G}_2} e^{i ({\bm q} + {\bm G}_1) \cdot {\bm r}_1} e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm r}_2} \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) \\
+    & = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1} e^{i ({\bm q} + {\bm G}_1) \cdot ({\bm r}_1 - {\bm r}_2)} \\
+    & = \frac{1}{N \Omega} \frac{1}{\Delta {\bm k}} \sum_{{\bm k}} \Delta {\bm k} \, e^{i {\bm k} \cdot ({\bm r}_1 - {\bm r}_2)}, \quad \Delta {\bm k} = \frac{(2\pi)^3}{N \Omega} \\
+    & = \frac{1}{(2 \pi)^3} \int d {\bm k}\, e^{i {\bm k} \cdot ({\bm r}_1 - {\bm r}_2)} = \delta ({\bm r}_1 - {\bm r}_2)
+  \end{aligned}
+\end{equation}
+
+But wait, what units should we use for $\Omega$? It actually depends on what unit we use for $({\bm r}_1 - {\bm r}_2)$. Since we use angstrom as the length unit in {\tt RealSpace.x}, we will also use ${\tt \AA}^{3}$ for $\Omega$ here. In practice, we will partition ${\bm q}$'s in FBZ among different processors. We then fix ${\bm \xi}_2$ and $\omega$. For each FBZ ${\bm q}$ we will determine the corresponding RBZ ${\bm q}$. $\epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega)$ for this RBZ ${\bm q}$ will be read and unfold.
+
+\bibliography{references_2}
+\bibliographystyle{naturemag}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

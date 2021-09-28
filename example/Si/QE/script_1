@@ -1,0 +1,10 @@
+#!/bin/bash -l
+prefix="Si"
+for d in 0{2..3}*/; do
+  mkdir -p $d/${prefix}.save
+  ln -sf ../../01-scf/${prefix}.save/data-file-schema.xml $d/${prefix}.save
+  ln -sf ../../01-scf/${prefix}.save/charge-density.dat $d/${prefix}.save
+done
+
+ln -sf ../QE/02-wfn/WFN ../Chi/WFN
+ln -sf ../QE/03-wfnq/WFNq ../Chi/WFNq

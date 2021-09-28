@@ -1,0 +1,10 @@
+#!/bin/bash -l
+# Clean output in each folder
+prefix="Si"
+for d in 0{1..3}*/; do
+    rm -rf $d/${prefix}.save
+    rm -f $d/${prefix}.xml
+    rm -f $d/${prefix}.wfc*
+    rm -f $d/*.out
+    rm -f $d/WFN*
+done

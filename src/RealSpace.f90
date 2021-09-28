@@ -402,7 +402,7 @@ program RealSpace
      r2(:) = peps%r2(:, ir2_loop)
 
      if (peinf%inode .eq. 0) then
-        write(6,'(1X,A,3ES30.23,A)') "r2 = (", r2(:), ")"
+        write(6,'(1X,A,3F15.6,A)') "r2 = (", r2(:), ")"
      endif
 
      scfft = ZERO

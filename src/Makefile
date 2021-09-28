@@ -19,7 +19,7 @@ GLOBALSRCS = global.f90 intrinsics.f90 nrtype.f90 typedefs.f90 peinfo.f90 messag
 GLOBALOBJS = $(GLOBALSRCS:.f90=.o)
 GLOBALMODS = $(GLOBALSRCS:.f90=_m.mod)
 
-REALSPACESRCS = distrib.f90 write_eps.f90 inread_realspace.f90
+REALSPACESRCS = write_eps.f90 inread_realspace.f90
 REALSPACEOBJS = $(REALSPACESRCS:.f90=.o)
 REALSPACEMODS = $(REALSPACESRCS:.f90=_m.mod)
 
@@ -79,7 +79,7 @@ RM_P_F_CMD = @$(REMOVE) $(basename $<).p.f
 %.o : %.c
 	$(C_COMP) $(INCLUDE) $(C_CPPOPT) -c $(C_OPTS) $< -o $@
 
-default: Chi # EpsInv RealSpace
+default: Chi EpsInv RealSpace
 Chi : Chi.x
 EpsInv: EpsInv.x 
 RealSpace: RealSpace.x

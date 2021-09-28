@@ -47,7 +47,7 @@ subroutine input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, 
   integer :: nvb_diff
   integer :: request_v, request_c, irk_loc_target, irkq_loc_target
   integer :: irk_start, irk_end, nrk_loc, nrk_loc_max, max1_nrk_loc, rk_blocksize
-  integer :: ipes, ipes_, irk_start_, irk_end_, nrk_loc_, ib_min, ib_max
+  integer :: ipes, ipes_, irk_start_, irk_end_, nrk_loc_, ib_min, ib_max, id
   character(LEN=50) :: file_eqp
 
   call logit('input_chi:  reading WFN')
@@ -55,10 +55,21 @@ subroutine input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, 
   sheader = 'WFN'
   iflavor = 0
   call read_binary_header_type(25, sheader, iflavor, kp, gvec, syms, crys)
-  
+
+  !! Make compatible with QE/pw2bgw.x
+  do itran = 1, syms%ntran
+     syms%tnp(:,itran) = - 0.5D0 / PI_D * MATMUL(syms%tnp(:,itran), syms%mtrx(:,:,itran))
+     do id = 1, 3
+        if (syms%tnp(id,itran) < 0.0D0) then
+           syms%tnp(id,itran) = syms%tnp(id,itran) + 1.0D0
+        endif
+     enddo
+     syms%mtrx(:,:,itran) = TRANSPOSE(syms%mtrx(:,:,itran))
+  enddo
+
   !! prepare syms%mtrx_reci and syms%mtrx_cart
   call prepare_syms(crys, syms)
-  
+
   pol%nband = pol%nvb + pol%ncb
 
   ib_min = MINVAL(kp%ifmax(:,:)) - pol%nvb + 1
@@ -68,8 +79,8 @@ subroutine input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, 
   endif
   if (ib_max > kp%mnband) then
      if (peinf%inode .eq. 0) then
-        write(*,'(A,I5,A,I5,A,I5,A,I5)') "min_ifmax", MINVAL(kp%ifmax(:,:)), " max_ifmax", MAXVAL(kp%ifmax(:,:)), "nvb = ", pol%nvb, " ncb = ", pol%ncb        
-        write(*,'(A,I5,A,I5)') "ib_max = ", ib_max, " kp%mnband = ", kp%mnband
+        write(6,'(A,I5,A,I5,A,I5,A,I5)') "min_ifmax", MINVAL(kp%ifmax(:,:)), " max_ifmax", MAXVAL(kp%ifmax(:,:)), "nvb = ", pol%nvb, " ncb = ", pol%ncb
+        write(6,'(A,I5,A,I5)') "ib_max = ", ib_max, " kp%mnband = ", kp%mnband
         call die("Not enough bands in WFN.", only_root_writes=.true.)
      endif
   endif
@@ -124,8 +135,8 @@ subroutine input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, 
 
   !! Generate full brillouin zone from irreducible wedge, rk -> fk
   if (peinf%inode .eq. 0) then
-     write(*,'(1X,A)') "Use symmetries to expand the coarse grid sampling."
-     write(*,'(1X,A)') "Use symmetries to expand the shifted coarse grid sampling."
+     write(6,'(1X,A)') "Use symmetries to expand the coarse grid sampling."
+     write(6,'(1X,A)') "Use symmetries to expand the shifted coarse grid sampling."
   endif
   call timacc(7,1)
 
@@ -165,6 +176,18 @@ subroutine input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, 
      sheader = 'WFN'
      iflavor = 0
      call read_binary_header_type(26, sheader, iflavor, kpq, gvecq, symsq, crysq)
+
+     !! Make compatible with QE/pw2bgw.x
+     do itran = 1, symsq%ntran
+        symsq%tnp(:,itran) = - 0.5D0 / PI_D * MATMUL(symsq%tnp(:,itran), symsq%mtrx(:,:,itran))
+        do id = 1, 3
+           if (symsq%tnp(id,itran) < 0.0D0) then
+              symsq%tnp(id,itran) = symsq%tnp(id,itran) + 1.0D0
+           endif
+        enddo
+        symsq%mtrx(:,:,itran) = TRANSPOSE(symsq%mtrx(:,:,itran))
+     enddo
+
      call prepare_syms(crysq, symsq)
      call check_header('WFN', kp, gvec, syms, crys, 'WFNmq', kpq, gvecq, symsq, crysq, is_wfn = .true.)
      if (ANY(kp%kgrid(1:3) .ne. kpq%kgrid(1:3))) then
@@ -212,7 +235,7 @@ subroutine input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, 
      kgq%r(1:3,1:kgq%nr) = kpq%rk(1:3,1:kpq%nrk)
      !! Reset symsq here, original symsq = syms = crystal symmetry
      if (peinf%inode .eq. 0) then
-        write(*,*) "construct little group of q"
+        write(6,*) "construct little group of q"
      endif
 
      !! Check that the q0 and kgq%r are commensurate

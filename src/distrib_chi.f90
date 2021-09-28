@@ -13,7 +13,7 @@
 !
 !=====================================================================
 
-!> If WFNmq is not used, pol%indexq is identity mapping
+!! If WFNmq is not used, pol%indexq is identity mapping
 subroutine distrib_chi(pol, kg, kgq)
   use global_m
   use misc_m
@@ -30,10 +30,10 @@ subroutine distrib_chi(pol, kg, kgq)
   integer :: irk, irkq, irk_loc, irkq_loc
   PUSH_SUB(distrib_chi)
 
-  !> 1D-Block distribution of fk on peinf%npes procs
-  !> Number of fk on 1st proc (also the maximum among all procs)
+  !! 1D-Block distribution of fk on peinf%npes procs
+  !! Number of fk on 1st proc (also the maximum among all procs)
   peinf%nkpe = iceil(kg%nf, peinf%npes)
-  !> Number of fk owned by each proc
+  !! Number of fk owned by each proc
   SAFE_ALLOCATE(peinf%ikt, (peinf%npes))
   SAFE_ALLOCATE(peinf%ik,  (peinf%npes, peinf%nkpe))
   peinf%ikt = 0
@@ -46,25 +46,25 @@ subroutine distrib_chi(pol, kg, kgq)
   enddo
   nmax = NUMROC(kg%nf, peinf%nkpe, 0, 0, peinf%npes)
 
-  !> Build peinf%nrk, peinf%irk_l2g, peinf%irk_g2l mappings
-  SAFE_ALLOCATE(peinf%nrk, (peinf%npes))  !> For intwfnc
+  !! Build peinf%nrk, peinf%irk_l2g, peinf%irk_g2l mappings
+  SAFE_ALLOCATE(peinf%nrk, (peinf%npes))  !! For intwfnc
   peinf%nrk = 0
-  !> irk contains the indices of rk in kg%r(:,1:kg%nr) ==> used by conduction bands
+  !! irk contains the indices of rk in kg%r(:,1:kg%nr) ==> used by conduction bands
   SAFE_ALLOCATE(irk_, (nmax))
   SAFE_ALLOCATE(irk_unique_global, (nmax,peinf%npes))
   irk_unique_global = 0
 
-  SAFE_ALLOCATE(peinf%nrkq, (peinf%npes)) !> For intwfnvq
+  SAFE_ALLOCATE(peinf%nrkq, (peinf%npes)) !! For intwfnvq
   peinf%nrkq = 0
-  !> irkq contains the indices of rkq in kgq%r(:,1:kgq%nr) ==> used by valence bands
+  !! irkq contains the indices of rkq in kgq%r(:,1:kgq%nr) ==> used by valence bands
   SAFE_ALLOCATE(irkq_, (nmax))
   SAFE_ALLOCATE(irkq_unique_global, (nmax,peinf%npes))
   irkq_unique_global = 0
 
-  !> loop over all procs
+  !! loop over all procs
   do ipes = 1, peinf%npes
      if (peinf%ikt(ipes) .eq. 0) cycle
-     !> reset irk and irkq
+     !! reset irk and irkq
      irk_ = 0
      irkq_ = 0
      do ik_loc = 1, peinf%ikt(ipes)
@@ -73,7 +73,7 @@ subroutine distrib_chi(pol, kg, kgq)
         irkq_(ik_loc) = kgq%indr(pol%indexq(ik))
      enddo
 
-     !> Find (number of unique elements in irk or irkq), this is the number of rk that is to be stored in intwfnc and intwfnvq, respectively!
+     !! Find (number of unique elements in irk or irkq), this is the number of rk that is to be stored in intwfnc and intwfnvq, respectively!
      call unique(irk_(1:peinf%ikt(ipes)), peinf%nrk(ipes), irk_unique_global(1:peinf%ikt(ipes), ipes))
      call unique(irkq_(1:peinf%ikt(ipes)), peinf%nrkq(ipes), irkq_unique_global(1:peinf%ikt(ipes), ipes))
      call Bubble_Sort(irk_unique_global(1:peinf%nrk(ipes), ipes))
@@ -89,71 +89,59 @@ subroutine distrib_chi(pol, kg, kgq)
      ! endif
   enddo
 
-  !> Initialize irk_l2g, irkq_l2g, irk_g2l, irkq_g2l
-  !> irk_l2g(irk_loc) = irk
-  !> irkq_l2g(irkq_loc) = irkq
+  !! Initialize irk_l2g, irkq_l2g, irk_g2l, irkq_g2l
+  !! irk_l2g(irk_loc) = irk
+  !! irkq_l2g(irkq_loc) = irkq
   SAFE_ALLOCATE( peinf%irk_l2g, (MAX( peinf%nrk(peinf%inode+1),1)))
   SAFE_ALLOCATE(peinf%irkq_l2g, (MAX(peinf%nrkq(peinf%inode+1),1)))
   peinf%irk_l2g  = 0
   peinf%irkq_l2g = 0
 
-  !> irk_g2l(irk, ipes) = irk_loc
-  !> irkq_g2l(irkq, ipes) = irkq_loc
+  !! irk_g2l(irk, ipes) = irk_loc
+  !! irkq_g2l(irkq, ipes) = irkq_loc
   SAFE_ALLOCATE( peinf%irk_g2l, ( kg%nr, peinf%npes))
   SAFE_ALLOCATE(peinf%irkq_g2l, (kgq%nr, peinf%npes))
   peinf%irk_g2l  = 0
   peinf%irkq_g2l = 0
 
-  !> Get irk_g2l
-  !> if peinf%irk_g2l(irk,ipes) = 0, it means the ipes-th proc does not store irk-th kg%r
+  !! Get irk_g2l
+  !! if peinf%irk_g2l(irk,ipes) = 0, it means the ipes-th proc does not store irk-th kg%r
   do irk = 1, kg%nr
      do ipes = 1, peinf%npes
         loop_irk_loc: do irk_loc = 1, peinf%nrk(ipes)
            if (irk_unique_global(irk_loc, ipes) .eq. irk) then
               peinf%irk_g2l(irk, ipes) = irk_loc
-              !> We can do this exit because there are no duplicate elements in irk_unique_global(:,ipes)
+              !! We can do this exit because there are no duplicate elements in irk_unique_global(:,ipes)
               exit loop_irk_loc
            endif
         enddo loop_irk_loc
      enddo
   enddo
 
-  !> Get irkq_g2l
+  !! Get irkq_g2l
   do irkq = 1, kgq%nr
      do ipes = 1, peinf%npes
         loop_irkq_loc: do irkq_loc = 1, peinf%nrkq(ipes)
            if (irkq_unique_global(irkq_loc, ipes) .eq. irkq) then
               peinf%irkq_g2l(irkq, ipes) = irkq_loc
-              !> We can do this exit because there are no duplicate elements in irkq_unique_global(:,ipes)
+              !! We can do this exit because there are no duplicate elements in irkq_unique_global(:,ipes)
               exit loop_irkq_loc
            endif
         enddo loop_irkq_loc
      enddo
   enddo
 
-  !> Get irk_l2g
+  !! Get irk_l2g
   do irk_loc = 1, peinf%nrk(peinf%inode+1)
      peinf%irk_l2g(irk_loc) = irk_unique_global(irk_loc,peinf%inode+1)
   enddo
-  !> Get irkq_l2g
+  !! Get irkq_l2g
   do irkq_loc = 1, peinf%nrkq(peinf%inode+1)
      peinf%irkq_l2g(irkq_loc) = irkq_unique_global(irkq_loc,peinf%inode+1)
   enddo
 
   SAFE_DEALLOCATE(irk_unique_global)
   SAFE_DEALLOCATE(irkq_unique_global)
-
-  ! !> Check all the maps
-  ! if (peinf%inode .eq. 0) then
-  !    write(*,*) "irk_g2l and irkq_g2l"
-  !    do ipes = 1, peinf%npes
-  !       write(*,'(A,I5,A,10I5)') "inode = ", ipes-1, " irk_g2l = ", peinf%irk_g2l(:,ipes)
-  !       write(*,'(A,I5,A,10I5)') "inode = ", ipes-1, " irkq_g2l = ", peinf%irkq_g2l(:,ipes)
-  !    enddo
-  !    write(*,*) "==============="
-  ! endif
-  ! write(*,'(A,I5,A,10I5)') "inode = ", peinf%inode, " irk_l2g = ", peinf%irk_l2g(:)
-  ! write(*,'(A,I5,A,10I5)') "inode = ", peinf%inode, " irkq_l2g = ", peinf%irkq_l2g(:)
 
   POP_SUB(distrib_chi)
   return

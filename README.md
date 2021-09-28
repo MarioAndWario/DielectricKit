@@ -18,7 +18,7 @@ theory calculation. Current, we only support [`Quantum ESPRESSO`](https://www.qu
 
 ## Theoretical formalism
 
-See the pdf file within the `doc` folder.
+See the [pdf](/doc/formalism.pdf) file within the `doc` folder.
 
 ## Libraries
 

@@ -80,7 +80,7 @@ program Chi
   integer :: size_temp1(1), size_temp2(2), size_temp6(6)
   real(DP) :: q_vector(3), k_vector(3), fkq_vector(3), rkq_vector(3), lambda
   complex(DPC) :: umtrx(2,2), umtrx_transpose(2,2), prefactor, fact_FF, temp
-  integer :: ifk_loc, ifk, ispin, gumk(3), irk_need, irk_start, irk_end, gumk_(3),
+  integer :: ifk_loc, ifk, ispin, gumk(3), irk_need, irk_start, irk_end, gumk_(3)
   integer :: gumk__(3), rk_blocksize, nrk_loc, nrk_loc_max, nfk_loc, nfk_loc_max, iq, ipes, ifk_, irk_loc
   integer :: request, request_, irk_target, ib, is, ispinor
   integer :: iv, ic, ib_c, ib_v, irk_c, irk_v, ib_vbm, iq_offset, nroutnam, ifreq, imat

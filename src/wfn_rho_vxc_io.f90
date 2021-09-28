@@ -5,20 +5,7 @@
 !! (1) wfn_rho_vxc_io_m Originally by DAS Last Modified 10/17/2010 (DAS)
 !!
 !! Routines to read and write wavefunctions, density, and Vxc, and
-!! deallocate associated variables. The "type" routines use typedefs.
-!! The code is generated through repeated inclusion of a file with
-!! different preprocessor definitions each time. You are not expected to
-!! understand this. Consult the resulting .p.f file for clarity.
-!!
-!! Specification for ASCII matrix element files (vxc.dat, x.dat):
-!! Matrix elements are in eV and are always written with real and imaginary parts.
-!! They may contain any number of k-points in any order.
-!! Each k-point block begins with the line:
-!! kx, ky, kz [crystal coordinates], ndiag*nspin, noffdiag*nspin
-!! There are then ndiag*nspin lines of the form
-!! ispin, idiag, Re <idiag|V|idiag>, Im <idiag|V|idiag>
-!! There are then noffdiag*nspin lines of the form
-!! ispin, ioff1, ioff2, Re <ioff1|V|ioff2>, Im <ioff1|V|ioff2>
+!! deallocate associated variables.
 !!
 !!=========================================================================
 module wfn_rho_vxc_io_m

@@ -18,7 +18,9 @@ module epswrite_hdf5_m
   use wfn_io_hdf5_m
   implicit none
   private
-  public :: set_qpt_done, is_qpt_done, eps_hdf5_setup, eps_hdf5_setup_part
+  public :: set_qpt_done, is_qpt_done, &
+       eps_hdf5_setup, eps_hdf5_setup_part
+  
 contains
   
   subroutine set_qpt_done(fname, iq)
@@ -130,12 +132,12 @@ contains
     call hdf5_write_int(file_id, 'eps_header/params/icutv', pol%icutv, error)
     call hdf5_write_double(file_id, 'eps_header/params/ecuts', pol%ecuts, error)
     call hdf5_write_int(file_id, 'eps_header/params/nband', pol%nband, error)
-    call hdf5_write_int(file_id, 'eps_header/params/skip_nvb', pol%skip_nvb, error)
-    call hdf5_write_int(file_id, 'eps_header/params/skip_ncb', pol%skip_ncb, error)
-    call hdf5_write_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
-    call hdf5_write_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
-    call hdf5_write_logical(file_id, 'eps_header/params/correcthead', .false., error)    
-    ! call hdf5_write_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)
+    ! call hdf5_write_int(file_id, 'eps_header/params/skip_nvb', pol%skip_nvb, error)
+    ! call hdf5_write_int(file_id, 'eps_header/params/skip_ncb', pol%skip_ncb, error)
+    ! call hdf5_write_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
+    ! call hdf5_write_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
+    ! call hdf5_write_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)    
+    ! call hdf5_write_logical(file_id, 'eps_header/params/correcthead', .false., error)    
    
     call hdf5_write_double(file_id, 'eps_header/params/efermi', pol%efermi/ryd, error)
     call hdf5_write_int(file_id, 'eps_header/params/intraband_flag', pol%intraband_flag, error)
@@ -304,7 +306,6 @@ contains
       if (file_exists) then
          call h5fopen_f(trim(name), H5F_ACC_RDONLY_F, file_id, error)
          if (error==0) then
-            ! FHJ: Consistency check.
             call h5lexists_f(file_id, 'eps_header/qpoints/qpt_done', file_ok, error)
 
             if (file_ok) then
@@ -328,7 +329,6 @@ contains
             call h5fclose_f(file_id, error)
 
             if (file_ok) then
-               ! FHJ: File *seems* alright, we don`t have to initialize it
                write(6,'(1x,2a)') "Everything looks ok: restarting file ", trim(name)
                return
             endif

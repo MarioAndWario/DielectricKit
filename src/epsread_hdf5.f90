@@ -17,11 +17,10 @@ module epsread_hdf5_m
   use hdf5_io_m
   implicit none
   private
-  public :: read_eps_grid_sizes_hdf5, &
-       read_eps_freqgrid_hdf5, &
-       read_eps_matrix_flavor_hdf5, &
-       read_eps_params_hdf5, &
-       read_eps_qgrid_hdf5, read_eps_matrix_ser_allq_hdf5, read_eps_matrix_par_distribute_rq_hdf5
+  public :: read_eps_grid_sizes_hdf5, read_eps_freqgrid_hdf5, &
+       read_eps_matrix_flavor_hdf5, read_eps_params_hdf5, &
+       read_eps_qgrid_hdf5, read_eps_matrix_ser_allq_hdf5, &
+       read_eps_matrix_par_distribute_rq_hdf5
 
 contains
 
@@ -36,7 +35,6 @@ contains
 
     call h5fopen_f(TRIM(name), H5F_ACC_RDONLY_F, file_id, error)
 
-    ! call hdf5_read_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)
     call hdf5_read_double(file_id, 'eps_header/params/ecuts', pol%ecuts, error)
     call hdf5_read_double(file_id, 'eps_header/params/efermi', pol%efermi, error)
     pol%efermi = pol%efermi*ryd
@@ -47,19 +45,20 @@ contains
     call hdf5_read_int(file_id, 'eps_header/params/matrix_flavor', pol%matrix_flavor, error)
     call hdf5_read_int(file_id, 'eps_header/params/matrix_type', pol%matrix_type, error)
     call hdf5_read_int(file_id, 'eps_header/params/nband', pol%nband, error)
-    ! call hdf5_read_int(file_id, 'eps_header/params/ncb', pol%ncb, error)
     if (error .ne. 0) then
        call die("HDF5 error", only_root_writes=.true.)
     endif
 
     call hdf5_read_int(file_id, 'eps_header/params/nmatrix', pol%nmatrix, error)
-    ! call hdf5_read_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
-    ! call hdf5_read_int(file_id, 'eps_header/params/skip_ncb', pol%skip_ncb, error)
-    ! call hdf5_read_int(file_id, 'eps_header/params/skip_nvb', pol%skip_nvb, error)
     call hdf5_read_logical(file_id, 'eps_header/params/subsample', pol%subsample, error)
     call hdf5_read_logical(file_id, 'eps_header/params/subspace', pol%subspace, error)
     call h5lexists_f(file_id, 'eps_header/params/timeordered', exists, error)
-
+    ! call hdf5_read_int(file_id, 'eps_header/params/ncb', pol%ncb, error)    
+    ! call hdf5_read_int(file_id, 'eps_header/params/nvb', pol%nvb, error)
+    ! call hdf5_read_int(file_id, 'eps_header/params/skip_ncb', pol%skip_ncb, error)
+    ! call hdf5_read_int(file_id, 'eps_header/params/skip_nvb', pol%skip_nvb, error)
+    ! call hdf5_read_int_array(file_id, 'eps_header/params/FFTgrid', (/3/), pol%FFTgrid, error)
+    
     if (exists .and. error == 0) then
        call hdf5_read_logical(file_id, 'eps_header/params/timeordered', pol%timeordered, error)
     else
@@ -182,61 +181,24 @@ contains
     PUSH_SUB(read_eps_matrix_ser_allq_hdf5)
 
     call h5fopen_f(trim(name), H5F_ACC_RDONLY_F, file_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5dopen_f(file_id, 'mats/matrix', data_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5dget_space_f(data_id,dataspace,error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     rank = 6
     count(:) = (/ SCALARSIZE, nmtxmax, nmtxmax, 1, 1, nq /)
 
     call h5screate_simple_f(rank, count, memspace, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     offset(:) = (/ 0, 0, 0, ifreq-1, is-1, 0 /)
     call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, count, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
 
     SAFE_ALLOCATE(data,(count(1),count(2),count(3),count(4),count(5),count(6)))
     call h5dread_f(data_id, H5T_NATIVE_DOUBLE, data, count, error, memspace, dataspace)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
     eps(:,:,:) = SCALARIFY2(data(1,:,:,1,1,:),data(2,:,:,1,1,:))
     SAFE_DEALLOCATE(data)
 
     call h5sclose_f(memspace, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5sclose_f(dataspace, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5dclose_f(data_id,error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5fclose_f(file_id,error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
 
     POP_SUB(read_eps_matrix_ser_allq_hdf5)
   end subroutine read_eps_matrix_ser_allq_hdf5
@@ -265,88 +227,37 @@ contains
 
 #ifdef MPI
     call h5pcreate_f(H5P_FILE_ACCESS_F, plist_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5pset_fapl_mpio_f(plist_id, MPI_COMM_WORLD, MPI_INFO_NULL, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5fopen_f(trim(name), H5F_ACC_RDONLY_F, file_id, error, access_prp = plist_id)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5pclose_f(plist_id,error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
 #else
     call h5fopen_f(trim(name), H5F_ACC_RDONLY_F, file_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
 #endif
 
     call h5dopen_f(file_id, 'mats/matrix', data_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5dget_space_f(data_id,dataspace,error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
 
     count(:) = (/ SCALARSIZE, nmtxmax, nmtxmax, 1, 1, MAX(nrq_loc,1) /)
 
     call h5screate_simple_f(6, count, memspace, error)
-    if (error .ne. 0) then
-       call die("1 HDF5 error", only_root_writes=.true.)
-    endif
 
     !> Construct data and offset
     if (nrq_loc > 0) then
        offset(:) = (/ 0, 0, 0, ifreq - 1, is - 1, irq_start - 1 /)
        !> Select hyperslab
        call h5sselect_hyperslab_f(dataspace, H5S_SELECT_SET_F, offset, count, error)
-       if (error .ne. 0) then
-          call die("2 HDF5 error", only_root_writes=.true.)
-       endif
     else
        call H5sselect_none_f(memspace,error);
-       if (error .ne. 0) then
-          call die("3 HDF5 error", only_root_writes=.true.)
-       endif
        call H5sselect_none_f(dataspace,error);
-       if (error .ne. 0) then
-          call die("4 HDF5 error", only_root_writes=.true.)
-       endif
     endif
 
 #ifdef MPI
     call h5pcreate_f(H5P_DATASET_XFER_F, plist_id, error)
-    if (error .ne. 0) then
-       call die("5 HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5pset_dxpl_mpio_f(plist_id, H5FD_MPIO_COLLECTIVE_F, error)
-    if (error .ne. 0) then
-       call die("6 HDF5 error", only_root_writes=.true.)
-    endif
-
     !> Collectively read the file
     call h5dread_f(data_id, H5T_NATIVE_DOUBLE, data, count, error, memspace, dataspace, xfer_prp = plist_id)
-    if (error .ne. 0) then
-       call die("7 HDF5 error", only_root_writes=.true.)
-    endif
 #else
     call h5dread_f(data_id, H5T_NATIVE_DOUBLE, data, count, error, memspace, dataspace)
-    if (error .ne. 0) then
-       call die("8 HDF5 error", only_root_writes=.true.)
-    endif
 #endif
 
     if (nrq_loc > 0) then
@@ -354,24 +265,9 @@ contains
     endif
 
     call h5sclose_f(memspace, error)
-    if (error .ne. 0) then
-       call die("9 HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5sclose_f(dataspace, error)
-    if (error .ne. 0) then
-       call die("10 HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5dclose_f(data_id, error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
-
     call h5fclose_f(file_id,error)
-    if (error .ne. 0) then
-       call die("HDF5 error", only_root_writes=.true.)
-    endif
 
     SAFE_DEALLOCATE(data)
     POP_SUB(read_eps_matrix_par_distribute_rq_hdf5)

@@ -235,9 +235,6 @@ program RealSpace
   SAFE_ALLOCATE(ekin,  (gvec%ng))
 
   if (peinf%inode .eq. 0) then
-     ! write(6,'(A)') "Reading data from eps[0]mat.h5 files"
-     ! write(6,'(A)')
-
      SAFE_ALLOCATE(nmtx_file, (peps%nrq))
 
      !> Read header of epsmat.h5 and check input parameters

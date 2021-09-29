@@ -4,7 +4,7 @@
 # default: epsmat.h5
 filename chimat.h5
 
-# Reset the head element (q=G=G'=0) of the matrix to be plotted
+# Reset the head element \varepsilon^{-1}(q=G=G'=0) of the matrix to be plotted
 # default: 1.0
 #epsinvhead 1.0D0
 

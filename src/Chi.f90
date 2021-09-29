@@ -9,6 +9,18 @@
 !!    Chi.x calculates RPA polarizability function and stores it in
 !!    chimat.h5 for uniform qgrid, and chi0mat.h5 for q --> 0. 
 !!
+!! Description:
+!!
+!!    We will parallel over kpoints and calculate the matrix elements
+!!    < c fk | e^{i(q+G).r} | v (fk-q) > with fast Fourier transform
+!!    These matrix elements are then assembled to calculate polarizability
+!!
+!!    Crystal point group symmetry is used to generate wavefunction from
+!!    the reduced Brillouin zone to the full Brillouin zone.
+!!
+!!    We calculate each q-point sequentially. For each q-point, we parallel
+!!    over kpoints in the full Brillouin zone.
+!!
 !! Input files:
 !!
 !!    chi.inp
@@ -18,14 +30,6 @@
 !!
 !!    chimat.h5 and/or chi0mat.h5
 !!
-!! Description:
-!!
-!!    We will parallel over kpoints and calculate the matrix elements
-!!    < c fk | e^{i(q+G).r} | v (fk-q) > with fast Fourier transform
-!!    These matrix elements are then assembled to calculate polarizability
-!!
-!!    Crystal point group symmetry is used to generate wavefunction from
-!!    the reduced Brillouin zone to the full Brillouin zone.
 !!
 !!====================================================================
 

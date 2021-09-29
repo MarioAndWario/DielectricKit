@@ -12,6 +12,9 @@
 !   with input of irreducible polarizability $\chi^{\star}_{G_1 G_2}(q, \omega)$
 !   by inverting $\delta_{G_1 G_2} - v_{G_1}(q) chi^{\star}_{G_1 G_2}(q, \omega)$
 !
+!   We calculate each q-point sequentially. For each q-point, We parallel over
+!   G1-vectors and G2-vectors using SCALAPACK 2D block-cyclic layout.
+!
 ! USAGE:
 !
 !   1. For q1 on a uniform grid: EpsInv.x chimat.h5
@@ -362,9 +365,6 @@ program EpsInv
   SAFE_ALLOCATE(pol%qpt, (3, pol%nq))
   SAFE_ALLOCATE(pol%nmtx_of_q, (pol%nq))
   call read_eps_qgrid_hdf5(pol%nq, pol%qpt, pol%nmtx_of_q, TRUNC(filename_chi_hdf5))
-  ! if (pol%nmtx .ne. MAXVAL(pol%nmtx_of_q)) then
-  !    call die("pol%nmtx error.", only_root_writes=.true.)
-  ! endif
 
   !! Setup eps[0]mat.h5 file
   if (is_q1) then

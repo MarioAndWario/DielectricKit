@@ -6,9 +6,14 @@
 !!
 !!    RealSpace     By Meng Wu (2020)
 !!
+!! Description:
+!!
 !!    Calculate real-space polarizability function \chi^{\star}(r1,r2)
 !!    or inverse dielectric function \varepsilon(r1,r2) as a function of
 !!    r1 for selected r2.
+!!
+!!    We calculate each r2 point sequentially. For each r2, we parallel
+!!    over q-points in the full Brillouin zone.
 !!
 !! Input files: epsmat.h5 or chimat.h5, RealSpace.inp
 !!
@@ -246,11 +251,6 @@ program RealSpace
      if (nmtx_max_file .ne. MAXVAL(nmtx_file(:))) then
         call die("nmtx_max_file .ne. MAXVAL(nmtx_file(:))",only_root_writes=.true.)
      endif
-
-     ! write(6,'(1X,A,I5,A)') "We will consider ", peps%nrq," RBZ qpoints"
-     ! do irq = 1, peps%nrq
-     !    write(6,'(1X , "(", 3F12.5 , ")", A, I5 )') peps%rq(:, irq), " nmtx_file = ", nmtx_file(irq)
-     ! enddo
 
      !> Use peps%ecut to determine a new peps%nmtx, instead of using that from epsmat.h5
      !> Try to reduce the size of nfft using get_eps_fftgrid(...)

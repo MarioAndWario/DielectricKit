@@ -11,6 +11,13 @@ number_val_bands 4
 # Number of conduction bands in the RPA polarizability.
 number_cond_bands 4
 
+# For q --> 0, use WFNq for valence bands with kpoints defined as (k+q)
+# where k refers kpoints in WFN
+#k_plus_q
+# For q --> 0, use WFNmq for valence bands with kpoints defined as (k-q)
+# where k refers kpoints in WFN
+#k_minus_q
+
 # Number of valance bands counted from valence band maximum to be excluded (default 0)
 skip_nvb 0
 # Number of conduction bands counted from conduction band minimum to be excluded (default 0)

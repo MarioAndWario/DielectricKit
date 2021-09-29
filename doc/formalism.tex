@@ -1,6 +1,6 @@
 \documentclass[11pt, oneside]{article}          % use "amsart" instead of "article" for AMSLaTeX format
 \usepackage{geometry}                           % See geometry.pdf to learn the layout options. There are lots.
-\geometry{left=1.5cm,right=1.5cm,top=1.5cm,bottom=1.5cm}
+\geometry{left=1.5cm,right=1.5cm,top=2.5cm,bottom=2.5cm}
 % \geometry{letterpaper}                                  % ... or a4paper or a5paper or ...
 % \geometry{landscape}                          % Activate for for rotated page geometry
 \usepackage[parfill]{parskip}                   % Activate to begin paragraphs with an empty line rather than an indent
@@ -97,12 +97,7 @@ where $1 \equiv \{ {\bm x}_1 t_1 \}$, $T$ is the time-ordering operator, and $|\
 \end{equation}
 Note that the following discussion also applies to the finite-temperature $G$, as shown in Ref. \cite{baym1961field}. After a time Fourier transform with respect to $t_1-t_2$, we get $G({\bm x}_1, {\bm x}_2; \omega)$, defined in the frequency domain.
 
-The \emph{retarded single-particle Green's function} $G^{\mathsf{R}}$ is defined as,
-\begin{equation}
-  \label{eq:retarded_GreenFunction}
-  G^{\mathsf{R}}(12) \equiv (-\frac{i}{\hbar}) \Theta(t_1 - t_2) \frac{ \langle \Psi_0 | \{ \hat{\psi}(1), \hat{\psi}^{\dagger}(2) \} | \Psi_0 \rangle} {\langle \Psi_0 | \Psi_0 \rangle},
-\end{equation}
-where the commutator $\{ A, B \} \equiv AB + BA$ is for fermionic operators. In the following, quantities without an explicit $\mathsf{R}$ superscript are all time-ordered. Applications of retarded correlation functions, including $G^{\mathsf{R}}$, will be discussed in the next section of dielectric responses. The single-particle Green's function is at the center of MBPT because (i) the Feynman rules are simpler for $G$ than for other operators, and (ii) the expectation value of any single-particle operator in the ground state of the system can be calculated using $G$ \cite{fetter2012quantum}. In this dissertation, we will adopt the functional derivative approach \cite{baym1961field, hedin1970effects, strinati1988application} to reduce the many-body problem to the solution of a coupled set of nonlinear integral equations. This approach avoids the cumbersome conventional diagrammatic expansion of relevant quantities.
+The single-particle Green's function is at the center of MBPT because (i) the Feynman rules are simpler for $G$ than for other operators, and (ii) the expectation value of any single-particle operator in the ground state of the system can be calculated using $G$ \cite{fetter2012quantum}. In the following, we will adopt the functional derivative approach \cite{baym1961field, hedin1970effects, strinati1988application} to reduce the many-body problem to the solution of a coupled set of nonlinear integral equations. This approach avoids the cumbersome conventional diagrammatic expansion of relevant quantities.
 
 We first add an external time-dependent local potential $\varphi$ to the Hamiltonian in Eq. \eqref{eq:Standard_H} in order to perturb the system,
 \begin{equation}
@@ -243,7 +238,7 @@ It has been shown that the overlap between DFT-LDA and quasiparticle wavefunctio
   \label{eq:G_GW_approximation}
   G_0({\bm x}_1, {\bm x}_2;\omega) = \sum_{n{\bm k}} \frac{\phi^{\mathsf{KS}}_{n {\bm k}}({\bm x}_1) (\phi^{\mathsf{KS}}_{n {\bm k}}({\bm x}_2))^{*} }{ \hbar \omega - \epsilon^{\mathsf{KS}}_{n {\bm k}} + i \eta \, \mathsf{sgn}(\epsilon^{\mathsf{KS}}_{n{\bm k}} - \epsilon_{\mathsf{F}}) }, \quad \eta \rightarrow 0^{+},
 \end{equation}
-where $\epsilon_{\mathsf{F}}$ denotes the Fermi level and $\mathsf{sgn}$ is the sign function. After space and time Fourier transforms (Sec. \ref{cha:fourier-transforms}), $W_0$ can be constructed from the RPA (denoted by the superscript of $0$) irreducible polarizability $\chi^{\star;0}$ with Kohn-Sham eigenvalues and eigenstates,
+where $\epsilon_{\mathsf{F}}$ denotes the Fermi level and $\mathsf{sgn}$ is the sign function. After space and time Fourier transforms, $W_0$ can be constructed from the RPA (denoted by the superscript of $0$) irreducible polarizability $\chi^{\star;0}$ with Kohn-Sham eigenvalues and eigenstates,
 \begin{equation}
   \label{eq:chistar_RPA}
   \begin{aligned}
@@ -253,115 +248,203 @@ where $\epsilon_{\mathsf{F}}$ denotes the Fermi level and $\mathsf{sgn}$ is the 
 \end{equation}
 where $N_k$ is the number of $k$-points in the Brillouin zone and it is also equal to the number of unit cells used in the Born-von K\'{a}rm\'{a}n boundary condition \cite{cohen2016fundamentals}, and $\Omega$ is the volume of a unit cell. Equation \eqref{eq:chistar_RPA} is the famous Adler-Wiser expression of the RPA polarizability \cite{adler1962quantum, wiser1963dielectric}.
 
+When the system has time-reversal symmetry, we can prove that Eq. \eqref{eq:chistar_RPA} can be further reduced to,
+\begin{equation}
+  \label{eq:chistar_RPA_k_minus_q}
+  \begin{aligned}
+    \chi^{\star;0}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) & = \frac{1}{N_k \Omega} \sum_{c v {\bm k}} \langle v ({\bm k} - {\bm q}) | e^{-i ({\bm q} + {\bm G}_1) \cdot {\bm r}_1} | c {\bm k} \rangle \langle c {\bm k} | e^{i ({\bm q} + {\bm G}_2) \cdot {\bm r}_2} | v ({\bm k} - {\bm q}) \rangle \left \{ \frac{1}{\hbar \omega - (\epsilon^{\mathsf{KS}}_{c {\bm k}} - \epsilon^{\mathsf{KS}}_{v ({\bm k} - {\bm q})}) + i \eta} \right . \\
+    & \left . - \frac{1}{\hbar \omega + (\epsilon^{\mathsf{KS}}_{c {\bm k}} - \epsilon^{\mathsf{KS}}_{v ({\bm k} + {\bm q})}) - i \eta} \right \}, \quad \eta \rightarrow 0^{+},
+  \end{aligned}
+\end{equation}
+or,
+\begin{equation}
+  \label{eq:chistar_RPA_k_plus_q}
+  \begin{aligned}
+    \chi^{\star;0}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) & = \frac{1}{N_k \Omega} \sum_{c v {\bm k}} \langle c {\bm k} | e^{-i ({\bm q} + {\bm G}_1)\cdot {\bm r}_1} | v ({\bm k} + {\bm q}) \rangle \langle v ({\bm k} + {\bm q}) | e^{i({\bm q} + {\bm G}_2) \cdot {\bm r}_2} | c {\bm k} \rangle \left \{ \frac{1}{\hbar \omega - (\epsilon^{\mathsf{KS}}_{c {\bm k}} - \epsilon^{\mathsf{KS}}_{v ({\bm k} - {\bm q})}) + i \eta} \right . \\
+    & \left . - \frac{1}{\hbar \omega + (\epsilon^{\mathsf{KS}}_{c {\bm k}} - \epsilon^{\mathsf{KS}}_{v ({\bm k} + {\bm q})}) - i \eta} \right \}, \quad \eta \rightarrow 0^{+}.
+  \end{aligned}
+\end{equation}
+
+In {\tt DielectricKit}, we can either use Eq. \eqref{eq:chistar_RPA_k_minus_q} with keyword {\tt k\_minus\_q} or Eq. \eqref{eq:chistar_RPA_k_plus_q} with keyword {\tt k\_plus\_q}.
+
 \section{FFT and matrix elements}
 \label{sec:fft-matrix-elements}
 
-In {\tt BGW/Epsilon} we want to calculate the matrix element for every ${\bm k}_0 \in \text{RBZ/Q}$.
+To calculate the polarizability at a certain $q$-point, we need to first calculate the matrix element for every ${\bm k}$-points in the reduced Brillouin zone with respect to the symmetry of $q$-point.
 \begin{equation}
   \label{eq:scalar_EpsilonMatrixElement}
   \begin{aligned}
-    \langle n^{v}({\bm k}_0+{\bm q}) | e^{i({\bm q}+{\bm G})\cdot {\bm x}} | n^{c}{\bm k}_0 \rangle & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{V} \int_V d{\bm x} e^{-i({\bm k}_0+{\bm q}+{\bm G}_1)\cdot {\bm x}} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} e^{i({\bm q}+{\bm G})\cdot {\bm x}} e^{i({\bm k}_0+{\bm
-        G}_2)\cdot {\bm x}} C_{n^{c}{\bm k}_0 {\bm G}_2} \\
-    & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{V} \int_{V} d{\bm x} e^{i(-{\bm G}_1+{\bm G}+{\bm G}_2)\cdot {\bm x}} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}_0{\bm G}_2} \\
-    & = \sum_{{\bm G}_1{\bm G}_2} \left ( \frac{1}{V} \sum_{{\bm R}_l} e^{i(-{\bm G}_1+{\bm G}+{\bm G}_2)\cdot {\bm R}_l} \right ) \int_{\Omega} d {\bm \xi}~e^{i(-{\bm G}_1 + {\bm G} + {\bm G}_2)\cdot {\bm \xi}} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}_0{\bm G}_2} \\
-    & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{\Omega} \Delta {\bm \xi} \sum_{{\bm \xi}_m} e^{i(-{\bm G}_1 + {\bm G}+{\bm G}_2)\cdot {\bm \xi}_m} C^{*}_{n^{v}({\bm k}_0+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}_0{\bm G}_2} \\
-    & = \frac{1}{N_{FFT}} \sum_{{\bm \xi}_m} e^{i{\bm G}\cdot {\bm \xi}_m} \left ( \sum_{{\bm G}_1} e^{-i{\bm G}_1 \cdot {\bm \xi}_m} C^{*}_{n^{v} ({\bm k}_0+{\bm q}){\bm G}_1} \right ) \left ( \sum_{{\bm G}_2} e^{i{\bm G}_2 \cdot {\bm \xi}_m} C_{n^{c} {\bm k}_0{\bm G}_2} \right ) \\
-    & = \frac{1}{N_{FFT}} {\color{red} \text{FFT}}[{\color{blue} \text{{\tt CONJ}}}[{\color{red} \text{FFT}}[C_{n^{v}({\bm k}_0+{\bm q})}(\{ {\bm G}_1 \})]].* {\color{red} \text{FFT}}[C_{n^{c}{\bm k}_0}(\{ {\bm G}_2 \})]]({\bm G})
+    \langle n^{v}({\bm k}+{\bm q}) | e^{i({\bm q}+{\bm G})\cdot {\bm x}} | n^{c}{\bm k} \rangle & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{V} \int_V d{\bm x} e^{-i({\bm k}+{\bm q}+{\bm G}_1)\cdot {\bm x}} C^{*}_{n^{v}({\bm k}+{\bm q}){\bm G}_1} e^{i({\bm q}+{\bm G})\cdot {\bm x}} e^{i({\bm k}+{\bm
+        G}_2)\cdot {\bm x}} C_{n^{c}{\bm k} {\bm G}_2} \\
+    & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{V} \int_{V} d{\bm x} e^{i(-{\bm G}_1+{\bm G}+{\bm G}_2)\cdot {\bm x}} C^{*}_{n^{v}({\bm k}+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}{\bm G}_2} \\
+    & = \sum_{{\bm G}_1{\bm G}_2} \left ( \frac{1}{V} \sum_{{\bm R}_l} e^{i(-{\bm G}_1+{\bm G}+{\bm G}_2)\cdot {\bm R}_l} \right ) \int_{\Omega} d {\bm \xi}~e^{i(-{\bm G}_1 + {\bm G} + {\bm G}_2)\cdot {\bm \xi}} C^{*}_{n^{v}({\bm k}+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}{\bm G}_2} \\
+    & = \sum_{{\bm G}_1 {\bm G}_2} \frac{1}{\Omega} \Delta {\bm \xi} \sum_{{\bm \xi}_m} e^{i(-{\bm G}_1 + {\bm G}+{\bm G}_2)\cdot {\bm \xi}_m} C^{*}_{n^{v}({\bm k}+{\bm q}){\bm G}_1} C_{n^{c}{\bm k}{\bm G}_2} \\
+    & = \frac{1}{N_{FFT}} \sum_{{\bm \xi}_m} e^{i{\bm G}\cdot {\bm \xi}_m} \left ( \sum_{{\bm G}_1} e^{-i{\bm G}_1 \cdot {\bm \xi}_m} C^{*}_{n^{v} ({\bm k}+{\bm q}){\bm G}_1} \right ) \left ( \sum_{{\bm G}_2} e^{i{\bm G}_2 \cdot {\bm \xi}_m} C_{n^{c} {\bm k}{\bm G}_2} \right ) \\
+    & = \frac{1}{N_{FFT}} {\color{red} \text{FFT}}[{\color{blue} \text{{\tt CONJ}}}[{\color{red} \text{FFT}}[C_{n^{v}({\bm k}+{\bm q})}(\{ {\bm G}_1 \})]].* {\color{red} \text{FFT}}[C_{n^{c}{\bm k}}(\{ {\bm G}_2 \})]]({\bm G}),
   \end{aligned}
 \end{equation}
 where {\color{blue} {\tt CONJ}} is the complex conjugate function in {\tt FORTRAN} and the {\color{red} FFT} all refers to {\bf backward} FFT,
 \begin{equation}
   \label{eq:1DBackwardFFT_0}
-  Y_k = \sum^{n-1}_{j=0} X_j e^{2\pi j k \sqrt{-1}/n}
+  Y_k = \sum^{n-1}_{j=0} X_j e^{2\pi j k \sqrt{-1}/n}.
 \end{equation}
-and we have used the relation,
+In the derivation, we have used the following identity,
 \begin{equation}
   \label{eq:1/N}
-  \frac{1}{V} \sum_{{\bm R}_l} e^{i(-{\bm G}_1 + {\bm G}+{\bm G}_2)\cdot {\bm R}_l} = \frac{N}{V} = \frac{1}{\Omega}
+  \frac{1}{V} \sum_{{\bm R}_l} e^{i(-{\bm G}_1 + {\bm G}+{\bm G}_2)\cdot {\bm R}_l} = \frac{N}{V} = \frac{1}{\Omega}.
 \end{equation}
 
-\section{Symmetry of $\epsilon^{-1}$ and $\chi^{\star}$}
+\section{Symmetry of $\varepsilon^{-1}$ and $\chi^{\star}$}
 \label{sec:symmetry-epsilon-1}
 
-Apply crystal space group symmetry on $W({\bm x}_1,{\bm x}_2;\omega)$
+Apply crystal space group symmetry on $W({\bm x}_1,{\bm x}_2;\omega)$, and we will get
 \begin{equation}
   \label{eq:W_sym_R}
   \begin{aligned}
-    & W({\bm x}_1,{\bm x}_2;\omega) = \int d{\bm x}_3 \epsilon^{-1}({\bm x}_1,{\bm x}_3;\omega) V({\bm x}_3,{\bm x}_2;\omega) \\
-    & \Rightarrow W(\{\alpha | {\bm t} \} {\bm x}_1, \{ \alpha | {\bm t} \} {\bm x}_2;\omega) = \int d {\bm x}_3 \, \epsilon^{-1}(\{\alpha | {\bm t} \}{\bm x}_1,{\bm x}_3;\omega) V({\bm x}_3,\{\alpha | {\bm t} \} {\bm x}_2;\omega) \\
-    & = \int d \left ( \{\alpha | {\bm t} \} {\bm x}_3 \right ) \, \epsilon^{-1}(\{\alpha | {\bm t} \}{\bm x}_1,\{\alpha | {\bm t} \}{\bm x}_3;\omega) V( \{\alpha | {\bm t} \}{\bm x}_3,\{\alpha | {\bm t} \} {\bm x}_2;\omega) \equiv W({\bm x}_1,{\bm x}_2)
+    & W({\bm x}_1,{\bm x}_2;\omega) = \int d{\bm x}_3 \varepsilon^{-1}({\bm x}_1,{\bm x}_3;\omega) V({\bm x}_3,{\bm x}_2;\omega) \\
+    & \Rightarrow W(\{\alpha | {\bm t} \} {\bm x}_1, \{ \alpha | {\bm t} \} {\bm x}_2;\omega) = \int d {\bm x}_3 \, \varepsilon^{-1}(\{\alpha | {\bm t} \}{\bm x}_1,{\bm x}_3;\omega) V({\bm x}_3,\{\alpha | {\bm t} \} {\bm x}_2;\omega), \\
+    & = \int d \left ( \{\alpha | {\bm t} \} {\bm x}_3 \right ) \, \varepsilon^{-1}(\{\alpha | {\bm t} \}{\bm x}_1,\{\alpha | {\bm t} \}{\bm x}_3;\omega) V( \{\alpha | {\bm t} \}{\bm x}_3,\{\alpha | {\bm t} \} {\bm x}_2;\omega) \equiv W({\bm x}_1,{\bm x}_2),
   \end{aligned}
 \end{equation}
 which leads to the identity,
 \begin{equation}
   \label{eq:epsilon_R}
-  \epsilon^{-1}(\{\alpha | {\bm t} \} {\bm x}_1, \{\alpha | {\bm t} \}{\bm x}_2;\omega) = \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega)
+  \varepsilon^{-1}(\{\alpha | {\bm t} \} {\bm x}_1, \{\alpha | {\bm t} \}{\bm x}_2;\omega) = \varepsilon^{-1}({\bm x}_1,{\bm x}_2;\omega).
 \end{equation}
 
 With Eqn. \eqref{eq:epsilon_R}, we can prove that, if
 \begin{equation}
   \label{eq:q'}
-  {\bm q}' = \alpha {\bm q} + {\bm G}_0
+  {\bm q}' = \alpha {\bm q} + {\bm G}_0,
 \end{equation}
 then,
 \begin{equation}
   \label{eq:epsilon_R_2}
   \begin{aligned}
-    & \epsilon^{-1}_{{\bm G}_1 {\bm G}_2}({\bm q}';\omega) = \frac{1}{N\Omega} \int d{\bm x}_1 d {\bm x}_2 e^{-i({\bm q}'+{\bm G}_1)\cdot {\bm x}_1} e^{i({\bm q}+{\bm G}_2)\cdot {\bm x}_2} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
-    & = \frac{1}{N\Omega} \int d{\bm x}_1 d{\bm x}_2 e^{-i(\alpha {\bm q}+{\bm G}_0 + {\bm G}_1)\cdot {\bm x}_1} e^{i(\alpha{\bm q} + {\bm G}_0 + {\bm G}_2)\cdot {\bm x}_2} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
-    & = \frac{1}{N\Omega} \int d{\bm x}_1 d{\bm x}_2 e^{-i[\alpha({\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1))]\cdot {\bm x}_1} e^{i[\alpha({\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2))]\cdot {\bm x}_2} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
-    & = \frac{1}{N\Omega} \int d{\bm x}_1 d {\bm x}_2 e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot (\alpha^{-1}{\bm x}_1)} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot (\alpha^{-1}{\bm x}_2)} \epsilon^{-1}({\bm x}_1,{\bm x}_2;\omega), \quad {\bm y}=\alpha^{-1}{\bm x} - \alpha^{-1}{\bm t} \\
-    & = \frac{1}{N\Omega} \int d (\alpha {\bm y}_1 + {\bm t}) d (\alpha {\bm y}_2 + {\bm t}) e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot ({\bm y}_1 + \alpha^{-1}{\bm t})} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot ({\bm y}_2 + \alpha^{-1}{\bm t})} \epsilon^{-1}(\alpha{\bm y}_1 + {\bm t},\alpha{\bm y}_2 + {\bm t};\omega) \\
-    & = e^{-i({\bm G}_1 - {\bm G}_2)\cdot {\bm t}} \frac{1}{N\Omega} \int d{\bm y}_1 d{\bm y}_2 e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot {\bm y}_1} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot {\bm y}_2} \epsilon^{-1}({\bm y}_1, {\bm y}_2;\omega) \\
-    & = e^{-i({\bm G}_1 - {\bm G}_2)\cdot {\bm t}} \epsilon^{-1}_{\alpha^{-1}({\bm G}_0 + {\bm G}_1) \alpha^{-1}({\bm G}_0 + {\bm G}_2)}({\bm q};\omega)
+    & \varepsilon^{-1}_{{\bm G}_1 {\bm G}_2}({\bm q}';\omega) = \frac{1}{N\Omega} \int d{\bm x}_1 d {\bm x}_2 e^{-i({\bm q}'+{\bm G}_1)\cdot {\bm x}_1} e^{i({\bm q}+{\bm G}_2)\cdot {\bm x}_2} \varepsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
+    & = \frac{1}{N\Omega} \int d{\bm x}_1 d{\bm x}_2 e^{-i(\alpha {\bm q}+{\bm G}_0 + {\bm G}_1)\cdot {\bm x}_1} e^{i(\alpha{\bm q} + {\bm G}_0 + {\bm G}_2)\cdot {\bm x}_2} \varepsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
+    & = \frac{1}{N\Omega} \int d{\bm x}_1 d{\bm x}_2 e^{-i[\alpha({\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1))]\cdot {\bm x}_1} e^{i[\alpha({\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2))]\cdot {\bm x}_2} \varepsilon^{-1}({\bm x}_1,{\bm x}_2;\omega) \\
+    & = \frac{1}{N\Omega} \int d{\bm x}_1 d {\bm x}_2 e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot (\alpha^{-1}{\bm x}_1)} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot (\alpha^{-1}{\bm x}_2)} \varepsilon^{-1}({\bm x}_1,{\bm x}_2;\omega), \quad {\bm y}=\alpha^{-1}{\bm x} - \alpha^{-1}{\bm t} \\
+    & = \frac{1}{N\Omega} \int d (\alpha {\bm y}_1 + {\bm t}) d (\alpha {\bm y}_2 + {\bm t}) e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot ({\bm y}_1 + \alpha^{-1}{\bm t})} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot ({\bm y}_2 + \alpha^{-1}{\bm t})} \varepsilon^{-1}(\alpha{\bm y}_1 + {\bm t},\alpha{\bm y}_2 + {\bm t};\omega) \\
+    & = e^{-i({\bm G}_1 - {\bm G}_2)\cdot {\bm t}} \frac{1}{N\Omega} \int d{\bm y}_1 d{\bm y}_2 e^{-i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_1)]\cdot {\bm y}_1} e^{i[{\bm q}+\alpha^{-1}({\bm G}_0 + {\bm G}_2)]\cdot {\bm y}_2} \varepsilon^{-1}({\bm y}_1, {\bm y}_2;\omega) \\
+    & = e^{-i({\bm G}_1 - {\bm G}_2)\cdot {\bm t}} \varepsilon^{-1}_{\alpha^{-1}({\bm G}_0 + {\bm G}_1) \alpha^{-1}({\bm G}_0 + {\bm G}_2)}({\bm q};\omega).
   \end{aligned}
 \end{equation}
 
-This identity also applies to $\chi^{\star}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$. In this way, we only need to calculate $\epsilon^{-1}$ or $\chi^{\star}$ at symmetry reduced $k$-points and unfold it to recover the value at symmetry-equivalent $k$-points. This unfolding scheme has been implemented in {\tt RealSpace.x}.
+This identity also applies to $\chi^{\star}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$. In this way, we only need to calculate $\varepsilon^{-1}$ or $\chi^{\star}$ at symmetry reduced $k$-points and unfold it to recover the value at symmetry-equivalent $k$-points. This unfolding scheme has been implemented in {\tt RealSpace.x}.
 
-\section{Real-space $\epsilon^{-1}$ and $\chi^{\star}$}
+\section{Real-space $\varepsilon^{-1}$ and $\chi^{\star}$}
 \label{sec:real-space-epsilon}
 
-There are two requirements for the real-space inverse dielectric function $\epsilon^{-1}({\bm r}_1, {\bm r}_2; \omega)$.
+There are two requirements for the real-space inverse dielectric function $\varepsilon^{-1}({\bm r}_1, {\bm r}_2; \omega)$.
 \begin{equation}
   \label{eq:two_conditions}
   \begin{aligned}
-    & \epsilon^{-1}({\bm r}_1+{\bm R},{\bm r}_2+{\bm R};\omega) = \epsilon^{-1}({\bm r}_1,{\bm r}_2;\omega) \\
-    & \epsilon^{-1}({\bm r}_1+{\bm N}_{\mathsf{BvO}},{\bm r}_2;\omega) = \epsilon^{-1}({\bm r}_1,{\bm r}_2;\omega)
+    & \varepsilon^{-1}({\bm r}_1+{\bm R},{\bm r}_2+{\bm R};\omega) = \varepsilon^{-1}({\bm r}_1,{\bm r}_2;\omega), \\
+    & \varepsilon^{-1}({\bm r}_1+{\bm N}_{\mathsf{BvO}},{\bm r}_2;\omega) = \varepsilon^{-1}({\bm r}_1,{\bm r}_2;\omega).
   \end{aligned}
 \end{equation}
-where ${\bm R}=m {\bm a}_1 + n {\bm a}_2 + l {\bm a}_3$ is a lattice vector and ${\bm N}_{\mathsf{BvO}} = N^{i}_{\mathsf{BvO}} {\bm a}_i, \forall i=x,y,z$ is the period of the large BvO supercell. So it is sufficient to define a real-space function $\epsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2}({\bm R}; \omega) \equiv \epsilon^{-1}({\bm \xi}_1 + {\bm R}, {\bm \xi}_2; \omega)$, where ${\bm \xi}_1$ and ${\bm \xi}_2$ are real-space FFT grid within a primitive cell. The number of ${\bm \xi}_1$ (${\bm \xi}_2$) is equal to the number of $G-$vectors used in doing the Fourier transform. In this section, we use the information $\epsilon^{-1}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$ to calculate $\epsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2} ({\bm R}; \omega)$ with fixed ${\bm \xi}_2$ within a primitive cell, while ${\bm \xi}_1+{\bm R}$ is defined in the BvO cell.
+where ${\bm R}=m {\bm a}_1 + n {\bm a}_2 + l {\bm a}_3$ is a lattice vector and ${\bm N}_{\mathsf{BvO}} = N^{i}_{\mathsf{BvO}} {\bm a}_i, \forall i=x,y,z$ is the period of the large BvO supercell. So it is sufficient to define a real-space function $\varepsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2}({\bm R}; \omega) \equiv \varepsilon^{-1}({\bm \xi}_1 + {\bm R}, {\bm \xi}_2; \omega)$, where ${\bm \xi}_1$ and ${\bm \xi}_2$ are real-space FFT grid within a primitive cell. The number of ${\bm \xi}_1$ (${\bm \xi}_2$) is equal to the number of $G-$vectors used in doing the Fourier transform. In this section, we use the information $\varepsilon^{-1}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$ to calculate $\varepsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2} ({\bm R}; \omega)$ with fixed ${\bm \xi}_2$ within a primitive cell, while ${\bm \xi}_1+{\bm R}$ is defined in the BvO cell.
 
 Note that the real-space and reciprocal-space lattice vectors are different. In reciprocal space, ${\bm q}$ is defined in the full Brillouin zone, and ${\bm G}_1$ and ${\bm G}_2$ are defined in a sphere around $\Gamma$ point with a kinetic energy cutoff. We order the ${\bm G}$-vectors using the kinetic energy $\propto |{\bm G}+{\bm q}|^2$. In real space, however, we define ${\bm \xi}_1$, ${\bm \xi}_2$ and ${\bm R}$ using a $[0,1]$-like convention. For example, we have FFT grid in the primitive cell $N_{\mathsf{FFT}} = [n_1,n_2,n_3]$. Then the fractional coordinates of ${\bm \xi}_1$ (${\bm \xi}_2$) in the basis of ${\bm a}_i$ are in the range of $[0,0,0] \rightarrow [\frac{n_1-1}{n_1},\frac{n_2-1}{n_2},\frac{n_3-1}{n_3}]$. We order ${\bm \xi}_1=[\frac{\tt i}{n_1},\frac{\tt j}{n_2},\frac{\tt k}{n_3}]$ using the following function, ${\tt INDEX\_xi}({\bm \xi}) = {\tt i} + {\tt j} * n_1 + {\tt k} * n_1 * n_2+1$ where ${\tt i} = 0, 1, \cdots, n_1$. As for ${\bm R}=[{\tt R_1}, {\tt R_2}, {\tt R_3}]$, it is defined with the same fractional coordinates in the range of $[0,0,0] \rightarrow [N^{\mathsf{BvO}}_1,N^{\mathsf{BvO}}_2,N^{\mathsf{BvO}}_3]$. A corresponding indexing function is defined as, ${\tt INDEX\_R}({\bm R}) = {\tt R_1} + {\tt R_2} * N^{\mathsf{BvO}}_1 + {\tt R_3} * N^{\mathsf{BvO}}_1 * N^{\mathsf{BvO}}_2 + 1$.
 
 \begin{equation}
   \label{eq:epsinv_G_to_xi}
   \begin{aligned}
-    & \epsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2} ({\bm R}; \omega) \equiv \epsilon^{-1} ({\bm \xi}_1+{\bm R}, {\bm \xi}_2; \omega) = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1 {\bm G}_2} e^{i ({\bm q} + {\bm G}_1) \cdot ({\bm \xi}_1 + {\bm R})} e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm \xi}_2} \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q};\omega) \\
-    & = \frac{1}{N \Omega} \sum_{{\bm q}} e^{i {\bm q} \cdot ({\bm \xi}_1 + {\bm R})} \left [ \sum_{{\bm G}_1} e^{i {\bm G}_1 \cdot {\bm \xi}_1} \left ( \sum_{{\bm G}_2} \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm \xi}_2} \right ) \right ] \\
+    & \varepsilon^{-1}_{{\bm \xi}_1 {\bm \xi}_2} ({\bm R}; \omega) \equiv \varepsilon^{-1} ({\bm \xi}_1+{\bm R}, {\bm \xi}_2; \omega) = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1 {\bm G}_2} e^{i ({\bm q} + {\bm G}_1) \cdot ({\bm \xi}_1 + {\bm R})} e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm \xi}_2} \varepsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q};\omega) \\
+    & = \frac{1}{N \Omega} \sum_{{\bm q}} e^{i {\bm q} \cdot ({\bm \xi}_1 + {\bm R})} \left [ \sum_{{\bm G}_1} e^{i {\bm G}_1 \cdot {\bm \xi}_1} \left ( \sum_{{\bm G}_2} \varepsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm \xi}_2} \right ) \right ] \\
     & = \frac{1}{N \Omega} \sum_{{\bm q}} e^{i {\bm q} \cdot ( {\bm \xi}_1 + {\bm R} ) } {\tt ucfft}( {\bm \xi}_1; {\bm \xi}_2, {\bm q}, \omega)
   \end{aligned}
 \end{equation}
 
-Now suppose we take the simplest form of $\epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega)$, corresponding to no screening at all,
+Now suppose we take the simplest form of $\varepsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega)$, corresponding to no screening at all,
 \begin{equation}
   \label{eq:simple_epsinv}
-  \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) = \delta_{{\bm G}_1 {\bm G}_2}
+  \varepsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) = \delta_{{\bm G}_1 {\bm G}_2}
 \end{equation}
-And then the real-space $\epsilon^{-1}({\bm r}_1, {\bm r}_2; \omega)$ is given by,
+And then the real-space $\varepsilon^{-1}({\bm r}_1, {\bm r}_2; \omega)$ is given by,
 \begin{equation}
   \label{eq:real_space_simple_epsinv}
   \begin{aligned}
-    & \epsilon^{-1} ({\bm r}_1, {\bm r}_2; \omega) = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1 {\bm G}_2} e^{i ({\bm q} + {\bm G}_1) \cdot {\bm r}_1} e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm r}_2} \epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) \\
+    & \varepsilon^{-1} ({\bm r}_1, {\bm r}_2; \omega) = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1 {\bm G}_2} e^{i ({\bm q} + {\bm G}_1) \cdot {\bm r}_1} e^{-i ({\bm q} + {\bm G}_2) \cdot {\bm r}_2} \varepsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega) \\
     & = \frac{1}{N \Omega} \sum_{{\bm q} {\bm G}_1} e^{i ({\bm q} + {\bm G}_1) \cdot ({\bm r}_1 - {\bm r}_2)} \\
     & = \frac{1}{N \Omega} \frac{1}{\Delta {\bm k}} \sum_{{\bm k}} \Delta {\bm k} \, e^{i {\bm k} \cdot ({\bm r}_1 - {\bm r}_2)}, \quad \Delta {\bm k} = \frac{(2\pi)^3}{N \Omega} \\
     & = \frac{1}{(2 \pi)^3} \int d {\bm k}\, e^{i {\bm k} \cdot ({\bm r}_1 - {\bm r}_2)} = \delta ({\bm r}_1 - {\bm r}_2)
   \end{aligned}
 \end{equation}
 
-But wait, what units should we use for $\Omega$? It actually depends on what unit we use for $({\bm r}_1 - {\bm r}_2)$. Since we use angstrom as the length unit in {\tt RealSpace.x}, we will also use ${\tt \AA}^{3}$ for $\Omega$ here. In practice, we will partition ${\bm q}$'s in FBZ among different processors. We then fix ${\bm \xi}_2$ and $\omega$. For each FBZ ${\bm q}$ we will determine the corresponding RBZ ${\bm q}$. $\epsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega)$ for this RBZ ${\bm q}$ will be read and unfold.
+But wait, what units should we use for $\Omega$? It actually depends on what unit we use for $({\bm r}_1 - {\bm r}_2)$. Since we use angstrom as the length unit in {\tt RealSpace.x}, we will also use ${\tt \AA}^{3}$ for $\Omega$ here. In practice, we will partition ${\bm q}$'s in FBZ among different processors. We then fix ${\bm \xi}_2$ and $\omega$. For each FBZ ${\bm q}$ we will determine the corresponding RBZ ${\bm q}$. $\varepsilon^{-1}_{{\bm G}_1 {\bm G}_2} ({\bm q}; \omega)$ for this RBZ ${\bm q}$ will be read and unfold.
 
-\bibliography{references_2}
+\section{Parallelism and scaling performance}
+
+\subsection{{\tt Chi.x}}
+
+In {\tt Chi.x}, we parallel over $k$-points and calculate each $q$-point sequentially. We need wavefunction files {\tt WFN} ($| {\bm k} \rangle$ for both valence and conduction bands), {\tt WFNmq} ($| {\bm k} - {\bm q} \rangle$ for valence bands) or {\tt WFNq} ($| {\bm k} + {\bm q} \rangle$ for valence bands) on a reduced BZ. That is, in Quantum ESPRESSO calculation, we can use crystal symmetry to reduced the number of $k$points in the wavefunction files. We will use symmetry operation to unfold the wavefunctions from reduced BZ to full BZ.
+
+To benchmark the scaling performance of {\tt Chi.x}, we consider the example of bulk Si. We use a $16 \times 16 \times 16$ $k$-grid with 145 $k$-points in the reduced BZ. Interband transitions between 4 valence bands and 196 conductions bands are used to construct the polarizability function matrix. Kinetic energy cutoff of the polarizability function is set to 20 Ry. We tested the wall time on NERSC Cori Haswell nodes (32 CPUs per node). We use 1 OpenMP thread in the following.
+
+\begin{table}[!htbp]
+  \centering
+  \begin{tabular}{| c | c | c | c | c |}
+    \hline
+    NNode & Wall times (s) & Speedup & Wall time w/o IO & Speedup w/o IO \\ 
+    \hline
+    1  & 4083.40 & 1.00  & 4029.73 & 1.00 \\
+    2  & 2051.02 & 1.99  & 2018.97 & 2.00 \\
+    4  & 1145.31 & 3.57  & 1061.70 & 3.80 \\
+    8  & 560.50  & 7.29  & 514.62  & 7.83 \\
+    16 & 324.02  & 12.60 & 258.05  & 15.62 \\
+    32 & 180.05  & 22.68 & 134.94  & 29.86 \\
+    64 & 100.13  & 40.78 & 73.25   & 55.01 \\
+    \hline
+  \end{tabular}
+  \caption{Scaling performance of {\tt Chi.x}}
+  \label{tab:Scaling_Chi}
+\end{table}
+
+\subsection{{\tt EpsInv.x}}
+
+In {\tt EpsInv.x}, we parallel over ${\bm G}_1$ and ${\bm G}_2$ vectors in $\chi^{*}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$ and calculate each $q$-point sequentially. We use {\tt SCALAPACK} to invert the dielectric function $\varepsilon_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega) = \delta_{{\bm G}_1 {\bm G}_2} - v_{{\bm G}_1}({\bm q}) \chi^{*}_{{\bm G}_1 {\bm G}_2}({\bm q}; \omega)$. The matrix inversion step is fairly quick for the benchmark case of bulk Si, and the wall time is dominated by the output of HDF5 files.
+
+% \begin{table}
+%   \centering
+%   \begin{tabular}{| c | c | c |}
+%     \hline 
+%     NNode & WALL times (s) & Speedup  \\
+%     1  &  & \\
+%     2  &  & \\
+%     4  &  & \\
+%     8  & 78.392 & \\
+%     16 & 89.799 & \\
+%     32 & 112.868 & \\
+%     64 & 185.129 & \\
+%   \end{tabular}
+%   \caption{Scaling performance of {\tt EpsInv.x}}
+%   \label{tab:Scaling_EpsInv}
+% \end{table}
+
+\subsection{{\tt RealSpace.x}}
+
+In {\tt RealSpace.x}, we parallel over ${\bm q}$-points in full BZ and calculate each ${\bm \xi}_2$ sequentially. 
+
+% \begin{table}
+%   \centering
+%   \begin{tabular}[!htbp]{| c | c | c |}
+%     \hline
+%     NNode & WALL times (s) & Speedup 
+%     1  &  &
+%     2  &  &
+%     4  &  &
+%     8  &  &
+%     16 &  & 
+%     32 &  & 
+%     64 &  & 
+%   \end{tabular}
+%   \caption{Scaling performance of {\tt RealSpace.x}}
+%   \label{tab:Scaling_Chi}
+% \end{table}
+
+\bibliography{references}
 \bibliographystyle{naturemag}
 
 \end{document}

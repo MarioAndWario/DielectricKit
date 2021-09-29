@@ -37,7 +37,7 @@ See the [pdf](/doc/formalism.pdf) file within the `doc` folder.
 
 ## Usage
 
-See the example of Bulk Si within the `example` folder
+See the example of bulk Si within the `example` folder
 
 ## References
 

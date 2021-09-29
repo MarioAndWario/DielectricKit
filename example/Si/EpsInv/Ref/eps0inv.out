@@ -1,0 +1,85 @@
+ sFileName = chi0mat.h5
+Atoms:
+Atom #    1 Z =    14 f = (-0.125000000-0.125000000-0.125000000 )
+Atom #    2 Z =    14 f = ( 0.125000000 0.125000000 0.125000000 )
+ Lattice vectors = [a1, a2, a3] :
+     0.70710678      0.00000000      0.70710678
+     0.70710678      0.70710678      0.00000000
+     0.00000000      0.70710678      0.70710678
+ Reciprocal vectors = [b1, b2, b3] :
+     0.70710678     -0.70710678      0.70710678
+     0.70710678      0.70710678     -0.70710678
+    -0.70710678      0.70710678      0.70710678
+ bdot = [b1, b2, b3]^T \cdot [b1, b2, b3] :
+     1.12482146     -0.37494049     -0.37494049
+    -0.37494049      1.12482146     -0.37494049
+    -0.37494049     -0.37494049      1.12482146
+cell_symmetry_ =          0
+ntran_ =         48
+spacegroup_ =        227
+symbol_ = Fd-3m                
+-----------------------
+ FCC structure
+ For q0 vectors:
+ Reciprocal-space information:
+ - Q-grid :   6    6    6  with  216 qpoints in full BZ.
+ - G-cutoff of eps read from chi0mat.h5 :     10.000 Ryd.
+ Time-ordered <=> varepsilon is non-zero for real-axis frequencies
+ Real-axis frequencies: nfreq_real =          1
+ #    1 omega = (     0.00000 ) eV varepsilon =      0.00000 eV
+
+ We are using no truncation
+ - Number of valence bands: 4
+ - Number of conduction bands: 96
+ - Number of spins: 1
+ - Max. number of G1/G2 vectors for one q: 137
+
+ Initializing eps0mat.h5
+ sFileName = eps0mat.h5
+
+ Process grid :        4 x        8
+ Blocksize of (ik, ikp) :       34 x       34
+ Max. number of (ik, ikp) on a proc :       35 x       34 =     1190
+
+ ======================================================================
+     1 /    1      q =         0.0000000000        0.0000000000        0.0010000000
+ ======================================================================
+
+ |q| =      0.00106058 Bohr^{-1}
+ This is the special q->0 point.
+
+ Rank of the polarizability matrix: 137
+
+ Reading chi0mat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      1:    Eps(G=0,Gp=0) =     17.04763067    -0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      1: Epsinv(G=0,Gp=0) =      0.06468273     0.00000000 isrtxi(1) =     1
+
+ Outputing eps0mat.h5
+
+ 
+                             CPU (s)        WALL (s)          #
+ 
+ INIT:           (min.)        0.010           3.051          1
+                 (PE 0)        0.010           3.051
+                 (max.)        2.910           3.051
+ READ CHI:       (min.)       -0.000           0.022          1
+                 (PE 0)        0.010           0.043
+                 (max.)        0.010           0.045
+ CALC VCOUL:     (min.)       -0.000           0.000          1
+                 (PE 0)        0.000           0.000
+                 (max.)        0.020           0.023
+ GET EPS:        (min.)       -0.000           0.001          1
+                 (PE 0)        0.000           0.001
+                 (max.)        0.010           0.001
+ INVERT EPS:     (min.)        0.040           0.526          1
+                 (PE 0)        0.040           0.526
+                 (max.)        0.470           0.526
+ OUTPUT:         (min.)       -0.000           0.008          1
+                 (PE 0)        0.010           0.010
+                 (max.)        0.010           0.010
+ TOTAL:          (min.)        0.070           4.056          1
+                 (PE 0)        0.070           4.056
+                 (max.)        3.670           4.056

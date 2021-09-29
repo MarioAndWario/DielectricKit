@@ -2,7 +2,9 @@
 
 !!====================================================================
 !!
-!! Program: Chi     By Meng Wu (2020)
+!! Program:
+!!
+!!    Chi     By Meng Wu (2020)
 !!
 !!    Chi.x calculates RPA polarizability function and stores it in
 !!    chimat.h5 for uniform qgrid, and chi0mat.h5 for q --> 0. 

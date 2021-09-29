@@ -1,0 +1,355 @@
+ sFileName = chimat.h5
+Atoms:
+Atom #    1 Z =    14 f = (-0.125000000-0.125000000-0.125000000 )
+Atom #    2 Z =    14 f = ( 0.125000000 0.125000000 0.125000000 )
+ Lattice vectors = [a1, a2, a3] :
+     0.70710678      0.00000000      0.70710678
+     0.70710678      0.70710678      0.00000000
+     0.00000000      0.70710678      0.70710678
+ Reciprocal vectors = [b1, b2, b3] :
+     0.70710678     -0.70710678      0.70710678
+     0.70710678      0.70710678     -0.70710678
+    -0.70710678      0.70710678      0.70710678
+ bdot = [b1, b2, b3]^T \cdot [b1, b2, b3] :
+     1.12482146     -0.37494049     -0.37494049
+    -0.37494049      1.12482146     -0.37494049
+    -0.37494049     -0.37494049      1.12482146
+cell_symmetry_ =          0
+ntran_ =         48
+spacegroup_ =        227
+symbol_ = Fd-3m                
+-----------------------
+ FCC structure
+ For q1 vectors:
+ Reciprocal-space information:
+ - Q-grid :   6    6    6  with  216 qpoints in full BZ.
+ - G-cutoff of eps read from chimat.h5 :     10.000 Ryd.
+ Time-ordered <=> varepsilon is non-zero for real-axis frequencies
+ Real-axis frequencies: nfreq_real =          1
+ #    1 omega = (     0.00000 ) eV varepsilon =      0.00000 eV
+
+ We are using no truncation
+ - Number of valence bands: 4
+ - Number of conduction bands: 96
+ - Number of spins: 1
+ - Max. number of G1/G2 vectors for one q: 150
+
+ Initializing epsmat.h5
+ sFileName = epsmat.h5
+
+ Process grid :        4 x        8
+ Blocksize of (ik, ikp) :       37 x       37
+ Max. number of (ik, ikp) on a proc :       39 x       37 =     1443
+
+ ======================================================================
+     1 /   16      q =         0.0000000000        0.0000000000        0.0000000000
+ ======================================================================
+
+ |q| =      0.00000000 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 137
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      1:    Eps(G=0,Gp=0) =      1.00000000     0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      1: Epsinv(G=0,Gp=0) =      1.00000000     0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     2 /   16      q =         0.0000000000        0.0000000000        0.1666666670
+ ======================================================================
+
+ |q| =      0.17676267 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 150
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      2:    Eps(G=0,Gp=0) =      9.07257521     0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      2: Epsinv(G=0,Gp=0) =      0.12496341    -0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     3 /   16      q =         0.0000000000        0.0000000000        0.3333333330
+ ======================================================================
+
+ |q| =      0.35352533 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 144
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      3:    Eps(G=0,Gp=0) =      5.22693379    -0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      3: Epsinv(G=0,Gp=0) =      0.21773561     0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     4 /   16      q =         0.0000000000        0.0000000000        0.5000000000
+ ======================================================================
+
+ |q| =      0.53028800 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 138
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      4:    Eps(G=0,Gp=0) =      3.41460412    -0.00000000 isrtxi(1) =     2
+
+ Inverting epsilon matrix
+ q-pt      4: Epsinv(G=0,Gp=0) =      0.33059007     0.00000000 isrtxi(1) =     2
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     5 /   16      q =         0.0000000000        0.1666666670        0.1666666670
+ ======================================================================
+
+ |q| =      0.20410795 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 149
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      5:    Eps(G=0,Gp=0) =      8.89467744    -0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      5: Epsinv(G=0,Gp=0) =      0.12432276     0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     6 /   16      q =         0.0000000000        0.1666666670        0.3333333330
+ ======================================================================
+
+ |q| =      0.33847474 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 143
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      6:    Eps(G=0,Gp=0) =      6.01607763    -0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      6: Epsinv(G=0,Gp=0) =      0.18357461     0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     7 /   16      q =         0.0000000000        0.1666666670        0.5000000000
+ ======================================================================
+
+ |q| =      0.49996032 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 146
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      7:    Eps(G=0,Gp=0) =      3.94759972    -0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt      7: Epsinv(G=0,Gp=0) =      0.27910753     0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     8 /   16      q =         0.0000000000        0.1666666670        0.6666666670
+ ======================================================================
+
+ |q| =      0.66921266 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 145
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      8:    Eps(G=0,Gp=0) =      2.83646517    -0.00000000 isrtxi(1) =     2
+
+ Inverting epsilon matrix
+ q-pt      8: Epsinv(G=0,Gp=0) =      0.38417663     0.00000000 isrtxi(1) =     2
+
+ Outputing epsmat.h5
+
+ ======================================================================
+     9 /   16      q =         0.0000000000        0.1666666670        0.8333333330
+ ======================================================================
+
+ |q| =      0.84155863 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 143
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt      9:    Eps(G=0,Gp=0) =      2.23518765    -0.00000000 isrtxi(1) =     3
+
+ Inverting epsilon matrix
+ q-pt      9: Epsinv(G=0,Gp=0) =      0.47974465     0.00000000 isrtxi(1) =     3
+
+ Outputing epsmat.h5
+
+ ======================================================================
+    10 /   16      q =         0.0000000000        0.3333333330        0.3333333330
+ ======================================================================
+
+ |q| =      0.40821589 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 141
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt     10:    Eps(G=0,Gp=0) =      5.02298697     0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt     10: Epsinv(G=0,Gp=0) =      0.21607627    -0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+    11 /   16      q =         0.0000000000        0.3333333330        0.5000000000
+ ======================================================================
+
+ |q| =      0.53028800 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 139
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt     11:    Eps(G=0,Gp=0) =      3.84748684     0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt     11: Epsinv(G=0,Gp=0) =      0.28221202    -0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+    12 /   16      q =         0.0000000000        0.3333333330        0.6666666670
+ ======================================================================
+
+ |q| =      0.67694948 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 142
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt     12:    Eps(G=0,Gp=0) =      2.92645164    -0.00000000 isrtxi(1) =     3
+
+ Inverting epsilon matrix
+ q-pt     12: Epsinv(G=0,Gp=0) =      0.37026911     0.00000000 isrtxi(1) =     3
+
+ Outputing epsmat.h5
+
+ ======================================================================
+    13 /   16      q =         0.0000000000        0.5000000000        0.5000000000
+ ======================================================================
+
+ |q| =      0.61232384 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 150
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt     13:    Eps(G=0,Gp=0) =      3.21066430     0.00000000 isrtxi(1) =     2
+
+ Inverting epsilon matrix
+ q-pt     13: Epsinv(G=0,Gp=0) =      0.33513709    -0.00000000 isrtxi(1) =     2
+
+ Outputing epsmat.h5
+
+ ======================================================================
+    14 /   16      q =         0.1666666670        0.3333333330        0.5000000000
+ ======================================================================
+
+ |q| =      0.45639924 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 143
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt     14:    Eps(G=0,Gp=0) =      4.58713887    -0.00000000 isrtxi(1) =     1
+
+ Inverting epsilon matrix
+ q-pt     14: Epsinv(G=0,Gp=0) =      0.23862007     0.00000000 isrtxi(1) =     1
+
+ Outputing epsmat.h5
+
+ ======================================================================
+    15 /   16      q =         0.1666666670        0.3333333330        0.6666666670
+ ======================================================================
+
+ |q| =      0.60375945 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 142
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt     15:    Eps(G=0,Gp=0) =      3.34412870     0.00000000 isrtxi(1) =     2
+
+ Inverting epsilon matrix
+ q-pt     15: Epsinv(G=0,Gp=0) =      0.32586900    -0.00000000 isrtxi(1) =     2
+
+ Outputing epsmat.h5
+
+ ======================================================================
+    16 /   16      q =         0.1666666670        0.5000000000        0.6666666670
+ ======================================================================
+
+ |q| =      0.64544600 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix: 140
+
+ Reading chimat.h5
+ call vcoul_generator_zerovq0(...)
+ q-pt     16:    Eps(G=0,Gp=0) =      3.12691379     0.00000000 isrtxi(1) =     2
+
+ Inverting epsilon matrix
+ q-pt     16: Epsinv(G=0,Gp=0) =      0.34699194    -0.00000000 isrtxi(1) =     2
+
+ Outputing epsmat.h5
+
+ 
+                             CPU (s)        WALL (s)          #
+ 
+ INIT:           (min.)        0.010           1.862          1
+                 (PE 0)        0.010           1.862
+                 (max.)        1.810           1.862
+ READ CHI:       (min.)        0.020           0.196         16
+                 (PE 0)        0.020           0.196
+                 (max.)        0.150           0.247
+ CALC VCOUL:     (min.)       -0.000           0.001         16
+                 (PE 0)        0.000           0.001
+                 (max.)        0.050           0.050
+ GET EPS:        (min.)       -0.000           0.009         16
+                 (PE 0)        0.000           0.010
+                 (max.)        0.030           0.010
+ INVERT EPS:     (min.)        0.330           0.736         16
+                 (PE 0)        0.330           0.736
+                 (max.)        0.720           0.738
+ OUTPUT:         (min.)        0.100           0.475         16
+                 (PE 0)        0.100           0.499
+                 (max.)        0.460           0.499
+ TOTAL:          (min.)        0.470           3.491          1
+                 (PE 0)        0.470           3.491
+                 (max.)        3.150           3.491

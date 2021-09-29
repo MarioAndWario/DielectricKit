@@ -1,0 +1,318 @@
+ q0 vectors:
+    1     0.00000000     0.00000000     0.00100000
+ q1 vectors:
+    2     0.00000000     0.00000000     0.00000000
+    3     0.00000000     0.00000000     0.16666667
+    4     0.00000000     0.00000000     0.33333333
+    5     0.00000000     0.00000000     0.50000000
+    6     0.00000000     0.16666667     0.16666667
+    7     0.00000000     0.16666667     0.33333333
+    8     0.00000000     0.16666667     0.50000000
+    9     0.00000000     0.16666667     0.66666667
+   10     0.00000000     0.16666667     0.83333333
+   11     0.00000000     0.33333333     0.33333333
+   12     0.00000000     0.33333333     0.50000000
+   13     0.00000000     0.33333333     0.66666667
+   14     0.00000000     0.50000000     0.50000000
+   15     0.16666667     0.33333333     0.50000000
+   16     0.16666667     0.33333333     0.66666667
+   17     0.16666667     0.50000000     0.66666667
+ Running with verbosity level 1 (default).
+
+ We will calculate polarizability with cutoff =     10.000 nvb =     4 ncb =    96
+ We will skip transitions from the top     0 valence states to the bottom     0 conduction states
+
+ Use |k+q> for valence states.
+
+ Use GPP.
+
+ VBM energy =      6.22511 eV
+ CBM energy =      6.91839 eV
+ Fermi energy =      6.57175 eV
+ Use symmetries to expand the coarse grid sampling.
+ Use symmetries to expand the shifted coarse grid sampling.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ construct little group of q
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+ kpoints in wave function outside WS BZ.
+
+ Crystal wavefunctions read from file WFN:
+ - Number of k-points in WFN: 16
+ - Number of k-points in the full BZ of WFN: 216
+
+ Crystal wavefunctions read from file WFNmq:
+ - Number of k-points in WFNmq: 56
+ - Number of k-points in the full BZ of WFNmq: 216
+
+ More job parameters:
+ - Number of valence bands: 4
+ - Number of valence bands to skip: 0
+ - Number of conduction bands: 96
+ - Number of conduction bands to skip: 0
+ - Number of spins: 1
+ - FFTgrid =         13        13        13
+
+ Initializing chi0mat.h5
+ sFileName = chi0mat.h5
+ Initializing chimat.h5
+ sFileName = chimat.h5
+ ======================================================================
+     1 /   17      q =         0.0000000000        0.0000000000        0.0010000000
+ ======================================================================
+
+ |q| =      0.00106058 Bohr^{-1}
+ This is the special q->0 point.
+
+ Rank of the polarizability matrix (nmtx): 137
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.00000072     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03512465    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =     -0.00001170    -0.00000000
+ ======================================================================
+     2 /   17      q =         0.0000000000        0.0000000000        0.0000000000
+ ======================================================================
+
+ |q| =      0.00000000 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 137
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.00000000    -0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03512483    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =     -0.00000000    -0.00000000
+ ======================================================================
+     3 /   17      q =         0.0000000000        0.0000000000        0.1666666670
+ ======================================================================
+
+ |q| =      0.17676267 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 150
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.01003583    -0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03591949     0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00103520     0.00000000
+ ======================================================================
+     4 /   17      q =         0.0000000000        0.0000000000        0.3333333330
+ ======================================================================
+
+ |q| =      0.35352533 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 144
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.02101971     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03679473     0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00367101     0.00000000
+ ======================================================================
+     5 /   17      q =         0.0000000000        0.0000000000        0.5000000000
+ ======================================================================
+
+ |q| =      0.53028800 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 138
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.02701654     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03705529     0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00521690    -0.00000000
+ ======================================================================
+     6 /   17      q =         0.0000000000        0.1666666670        0.1666666670
+ ======================================================================
+
+ |q| =      0.20410795 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 149
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.01308622     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03556395    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =     -0.00056425     0.00000000
+ ======================================================================
+     7 /   17      q =         0.0000000000        0.1666666670        0.3333333330
+ ======================================================================
+
+ |q| =      0.33847474 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 143
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.02286530     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03654062     0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00201970    -0.00000000
+ ======================================================================
+     8 /   17      q =         0.0000000000        0.1666666670        0.5000000000
+ ======================================================================
+
+ |q| =      0.49996032 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 146
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.02931566     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03737142    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00452974    -0.00000000
+ ======================================================================
+     9 /   17      q =         0.0000000000        0.1666666670        0.6666666670
+ ======================================================================
+
+ |q| =      0.66921266 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 145
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.03272436     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03751984     0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00592074     0.00000000
+ ======================================================================
+    10 /   17      q =         0.0000000000        0.1666666670        0.8333333330
+ ======================================================================
+
+ |q| =      0.84155863 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 143
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.03480662     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03716777    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00663081     0.00000000
+ ======================================================================
+    11 /   17      q =         0.0000000000        0.3333333330        0.3333333330
+ ======================================================================
+
+ |q| =      0.40821589 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 141
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.02667403    -0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03593109    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00172201     0.00000000
+ ======================================================================
+    12 /   17      q =         0.0000000000        0.3333333330        0.5000000000
+ ======================================================================
+
+ |q| =      0.53028800 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 139
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.03185998    -0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03684922    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00400522    -0.00000000
+ ======================================================================
+    13 /   17      q =         0.0000000000        0.3333333330        0.6666666670
+ ======================================================================
+
+ |q| =      0.67694948 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 142
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.03512617     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03765575     0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00600870    -0.00000000
+ ======================================================================
+    14 /   17      q =         0.0000000000        0.5000000000        0.5000000000
+ ======================================================================
+
+ |q| =      0.61232384 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 150
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.03297959    -0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03592824     0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00363764    -0.00000000
+ ======================================================================
+    15 /   17      q =         0.1666666670        0.3333333330        0.5000000000
+ ======================================================================
+
+ |q| =      0.45639924 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 143
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.02973022     0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03578442    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00068580    -0.00000000
+ ======================================================================
+    16 /   17      q =         0.1666666670        0.3333333330        0.6666666670
+ ======================================================================
+
+ |q| =      0.60375945 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 142
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.03399926    -0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03707038    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00387418    -0.00000000
+ ======================================================================
+    17 /   17      q =         0.1666666670        0.5000000000        0.6666666670
+ ======================================================================
+
+ |q| =      0.64544600 Bohr^{-1}
+ This is a regular non-zero q-point.
+
+ Rank of the polarizability matrix (nmtx): 140
+
+ chi_noeh(  G =     0    0    0, Gp =     0    0    0 ) =     -0.03525574    -0.00000000
+ chi_noeh(  G =    -1   -1   -1, Gp =    -1   -1   -1 ) =     -0.03643150    -0.00000000
+ chi_noeh(  G =     0    0    0, Gp =    -1   -1   -1 ) =      0.00377721     0.00000000
+ 
+                             CPU (s)        WALL (s)          #
+ 
+ INPUT_CHI:      (min.)        0.120           0.423          1
+                 (PE 0)        0.120           0.424
+                 (max.)        0.420           0.424
+ GENWF:          (min.)        0.000           0.001        238
+                 (PE 0)        0.580           0.591
+                 (max.)        2.140           2.186
+ GET_MDAT:       (min.)        0.000           0.000        119
+                 (PE 0)        2.850           3.219
+                 (max.)        2.850           3.219
+ GET_CHI:        (min.)        0.240           0.256         17
+                 (PE 0)        0.240           0.256
+                 (max.)        5.060           5.195
+ OUTPUT_CHI:     (min.)       -0.000           0.000         17
+                 (PE 0)        0.020           1.025
+                 (max.)        0.020           1.025
+ TOTAL:          (min.)        3.880           5.703          1
+                 (PE 0)        3.880           5.703
+                 (max.)        5.570           5.704

@@ -2,27 +2,20 @@
 
 !=====================================================================
 !
-! Routines:
+! Program
 !
-! (1) EpsInv (main)      by Meng Wu (2020)
+!   EpsInv      by Meng Wu (2020)
 !
 ! DESCRIPTION:
 !
-! EpsInv.x calculates inverse dielectric response function $\epsilon^{-1}_{G_1 G_2}(q, \omega)$
-! with input of irreducible polarizability $\chi^{\star}_{G_1 G_2}(q, \omega)$
-! by inverting $\delta_{G_1 G_2} - v_{G_1}(q) chi^{\star}_{G_1 G_2}(q, \omega)$
-!
-! FEATURES:
-!
-! 1. MPI / OpenMP parallelism
-! 2. HDF5 parallel I/O
-! 3. Fast Fourier transform (FFT)
-! 4. Matrix invertion with LAPACK or SCALAPACK
+!   EpsInv.x calculates inverse dielectric response function $\epsilon^{-1}_{G_1 G_2}(q, \omega)$
+!   with input of irreducible polarizability $\chi^{\star}_{G_1 G_2}(q, \omega)$
+!   by inverting $\delta_{G_1 G_2} - v_{G_1}(q) chi^{\star}_{G_1 G_2}(q, \omega)$
 !
 ! USAGE:
 !
-! 1. For q1 on a uniform grid: EpsInv.x chimat.h5
-! 2. For q0 on a shifted grid: EpsInv.x chi0mat.h5
+!   1. For q1 on a uniform grid: EpsInv.x chimat.h5
+!   2. For q0 on a shifted grid: EpsInv.x chi0mat.h5
 !
 !=====================================================================
 

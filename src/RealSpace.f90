@@ -1,17 +1,20 @@
 #include "f_defs.h"
 
-!====================================================================
-!
-! Program:  RealSpace     By Meng Wu (2020)
-!
-! input files: epsmat.h5 or chimat.h5, RealSpace.inp
-!
-! output files:
-!
-! 1. Now each proc reads in the whole eps[0]mat, but if epsinv is too
-!    large, we might need to read eps[0]mat within the ifq loop
-! 3. Check multiple r2 points
-!====================================================================
+!!====================================================================
+!!
+!! Program:
+!!
+!!    RealSpace     By Meng Wu (2020)
+!!
+!!    Calculate real-space polarizability function \chi^{\star}(r1,r2)
+!!    or inverse dielectric function \varepsilon(r1,r2) as a function of
+!!    r1 for selected r2.
+!!
+!! Input files: epsmat.h5 or chimat.h5, RealSpace.inp
+!!
+!! Output files: OUT.[OPTION].ir2_[Index_of_r2]_is_[Index_of_spin].xsf
+!!
+!!====================================================================
 
 program RealSpace
   use global_m

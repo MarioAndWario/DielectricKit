@@ -9,12 +9,11 @@ dielectric response function within the random-phase approximation.
 incorporated from the open-source [`BerkeleyGW`](https://berkeleygw.org) package. The input and output formats are also compatible
 with `BerkeleyGW`.
 
-`Chi.x` calculates the polarizability function (`chimat.h5` and/or `chi0mat.h5`) in reciprocal space using Kohn-Sham eigenstates and eigenvalues from a density-functional
-theory calculation. Current, we only support [`Quantum ESPRESSO`](https://www.quantum-espresso.org), which is an open-source DFT code.
+`Chi.x` calculates the irreducible polarizability function (`chimat.h5` and/or `chi0mat.h5`) in reciprocal space using Kohn-Sham eigenstates and eigenvalues from a density-functional theory (DFT) calculation. Current, we only support [`Quantum ESPRESSO`](https://www.quantum-espresso.org), which is an open-source DFT code.
 
-`EpsInv.x` calculates use `chimat.h5` and/or `chi0mat.h5` as input to calculate the inverse dielectric response function (`epsmat.h5` and/or `eps0mat.h5`) in reciprocal space.
+`EpsInv.x` uses `chimat.h5` and/or `chi0mat.h5` as input to calculate the inverse dielectric response function (`epsmat.h5` and/or `eps0mat.h5`) in reciprocal space.
 
-`RealSpace.x` perform fast Fourier transform to calculate polarizability or inverse dielectric response functions in real space. The result with one fixed coordinate is output in the Xcrysden format (.xsf).
+`RealSpace.x` performs Fast Fourier Transform (FFT) to calculate the polarizability or inverse dielectric response functions in real space. The result with one fixed coordinate is output in the [XCrySDen](http://www.xcrysden.org) format (.xsf).
 
 ## Theoretical formalism
 
@@ -27,17 +26,17 @@ See the [pdf](/doc/formalism.pdf) file within the `doc` folder.
 * Math libraries:
   * Linear algebra: BLAS, LAPACK, SCALAPACK
   * Fast Fourier transform: FFTW
-* We also need `pw.x` and `pw2bgw.x` in the Quantum ESPRESSO package to perform density-functional theory (DFT) calculations and postprocessing.
+* We also need `pw.x` and `pw2bgw.x` in the Quantum ESPRESSO package to perform DFT calculations and postprocessing.
 
 ## Installation
 
-* Copy one `arch.mk` file from `config` folder to `src` folder. Make necessary modifications for the compiler, compilation flags, and library paths.
+* Copy one `arch.mk` file from `config` folder to `src` folder. Make necessary modifications of the compiler, compilation flags, and library paths.
 
-* Use `make` to compile the source code.  Use `make -j` to enable parallel compilation to same time.
+* Use `make` to compile the source code.  Use `make -j` to enable parallel compilation and same time.
 
 ## Usage
 
-See the example of bulk Si within the `example` folder
+See the example of bulk Si within the `example` folder.
 
 ## References
 

@@ -54,7 +54,7 @@ program RealSpace
   type (grid) :: qg
   type (realspace_t) :: peps
   integer :: ii, igrid1_super, igrid2_super, igrid3_super, ir2_loop
-  integer :: igrid1_primitive, igrid2_primitive, igrid3_primitive,
+  integer :: igrid1_primitive, igrid2_primitive, igrid3_primitive
   integer :: igrid1_super_downsample, igrid2_super_downsample, igrid3_super_downsample
   integer :: ncount, ntim
   integer :: ngrid_super(3), ngrid_super_downsample(3), nfft(3)
@@ -508,7 +508,7 @@ program RealSpace
            !! MATMUL(syms%mtrx_reci(1:3,1:3,itran),rq(1:3)) + kg0(1:3) = fq(1:3)
            !! isorti: map from old file (rq) to gvec%components
            !! isort: map from gvec%components to new file (fq)
-           call gmap_2(gvec, syms, nmtx, itran, kg0, isrtx, peps%isrtxi(:, irq_global), ind, ph)
+           call gmap(gvec, syms, nmtx, itran, kg0, isrtx, peps%isrtxi(:, irq_global), ind, ph)
 
            !! Unfold epsinv_rq to epsinv_fq, with extra CONJG(phr2(ig1)) = e^{i G \cdot r2} phase
            SAFE_ALLOCATE(epsinv_fq, (nmtx, nmtx))

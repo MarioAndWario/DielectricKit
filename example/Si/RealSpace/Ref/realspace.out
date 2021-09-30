@@ -4,6 +4,7 @@
  Dealing with file:chimat.h5
 
  List of output files:
+ Output absolute value of epsinv.
  Output module square of epsinv.
  We will use dense FFT grid (gvec%FFTgrid) to plot high-resolution image.
 
@@ -38,15 +39,21 @@
  - Effective supercell grid: 180 180 180
  r2 = (       0.000000       0.000000       0.000000)
 
+ Writing data set to OUT.ABS.ir2_1_is_1.xsf
+
  Writing data set to OUT.ABS2.ir2_1_is_1.xsf
  r2 = (       0.125000       0.125000       0.125000)
 
+ Writing data set to OUT.ABS.ir2_2_is_1.xsf
+
  Writing data set to OUT.ABS2.ir2_2_is_1.xsf
  r2 = (       0.500000       0.500000       0.500000)
+
+ Writing data set to OUT.ABS.ir2_3_is_1.xsf
 
  Writing data set to OUT.ABS2.ir2_3_is_1.xsf
  
                             CPU (s)        WALL (s)          #
  
- TOTAL:                       16.220          30.627
+ TOTAL:                       26.550          39.479
  

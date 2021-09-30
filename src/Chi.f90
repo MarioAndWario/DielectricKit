@@ -78,17 +78,17 @@ program Chi
   integer(HSIZE_T) :: count_mdat(6), offset_mdat(6)
 
   !! mdat(ig, is, iv, ic, ifk_loc)
-  complex(DPC), allocatable :: mdat(:,:,:,:,:), vrhoc_noeh_aux(:,:,:,:,:), cg_(:,:,:), cg_2d(:,:), cg_2d_(:,:)
-  complex(DPC), allocatable :: ph(:), chi_noeh(:,:,:)
+  complex(DPC), allocatable :: mdat(:,:,:,:,:), vrhoc_noeh_aux(:,:,:,:,:)
+  complex(DPC), allocatable :: ph(:), chi_noeh(:,:,:), cg_(:,:,:), cg_2d(:,:), cg_2d_(:,:)
   real(DP), allocatable :: chi_noeh_out(:,:,:,:)
-  integer, allocatable :: ifk_map(:,:), irk_map(:,:), gumk_map(:,:,:), isort_old2gvec(:), isorti_gvec2old(:)
-  integer, allocatable :: ind(:), data_temp2(:,:)
+  integer, allocatable :: ifk_map(:,:), irk_map(:,:), gumk_map(:,:,:)
+  integer, allocatable :: ind(:), data_temp2(:,:), isort_old2gvec(:), isorti_gvec2old(:)
   integer :: size_temp1(1), size_temp2(2), size_temp6(6)
   real(DP) :: q_vector(3), k_vector(3), fkq_vector(3), rkq_vector(3), lambda
   complex(DPC) :: umtrx(2,2), umtrx_transpose(2,2), prefactor, fact_FF, temp
   integer :: ifk_loc, ifk, ispin, gumk(3), irk_need, irk_start, irk_end, gumk_(3)
-  integer :: gumk__(3), rk_blocksize, nrk_loc, nrk_loc_max, nfk_loc, nfk_loc_max, iq, ipes, ifk_, irk_loc
-  integer :: request, request_, irk_target, ib, is, ispinor
+  integer :: gumk__(3), rk_blocksize, nrk_loc, nrk_loc_max, nfk_loc, nfk_loc_max
+  integer :: request, request_, irk_target, ib, is, ispinor, iq, ipes, ifk_, irk_loc
   integer :: iv, ic, ib_c, ib_v, irk_c, irk_v, ib_vbm, iq_offset, nroutnam, ifreq, imat
   logical :: qpt_done, found  
 
@@ -106,7 +106,8 @@ program Chi
   !! Read wavefunctions on the fine grid
   call timacc(2,1)
 
-  call input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, kpq, kgq, symsq_wfn, intwfnvq)
+  call input_chi(pol, crys, gvec, kp, kg, syms, syms_wfn, intwfnv, intwfnc, kpq, &
+       kgq, symsq_wfn, intwfnvq)
 
   call timacc(2,2)
 
@@ -183,7 +184,8 @@ program Chi
               filename_chi_hdf5 = "chi0mat.mag.kpq.h5"
            endif
         endif
-        call eps_hdf5_setup_part(kp, gvec, syms, crys, pol, TRUNC(filename_chi_hdf5), 1, pol%nq0, restart = pol%restart)
+        call eps_hdf5_setup_part(kp, gvec, syms, crys, pol, TRUNC(filename_chi_hdf5), 1, &
+             pol%nq0, restart = pol%restart)
      endif
 
      if (pol%nq1 > 0) then
@@ -196,7 +198,8 @@ program Chi
               filename_chi_hdf5 = "chimat.mag.kpq.h5"
            endif
         endif
-        call eps_hdf5_setup_part(kp, gvec, syms, crys, pol, TRUNC(filename_chi_hdf5), pol%nq0+1, pol%nq, restart = pol%restart)
+        call eps_hdf5_setup_part(kp, gvec, syms, crys, pol, TRUNC(filename_chi_hdf5), pol%nq0+1, &
+             pol%nq, restart = pol%restart)
      endif
   endif
   if (peinf%npes > 1) then
@@ -212,7 +215,8 @@ program Chi
         write(6,'(1X,I5,A,I5,5X,A,3F20.10)') iq, " /", pol%nq, " q = ", q_vector(:)
         write(6,'(1X,A)') "======================================================================"
         write(6,'(1X,A)')
-        write(6,'(1X,A,F15.8,A)') "|q| = ", SQRT(DOT_PRODUCT(pol%qpt(:,iq), MATMUL(crys%bdot, pol%qpt(:,iq)))), " Bohr^{-1}"
+        write(6,'(1X,A,F15.8,A)') "|q| = ", SQRT(DOT_PRODUCT(pol%qpt(:,iq), &
+             MATMUL(crys%bdot, pol%qpt(:,iq)))), " Bohr^{-1}"
      endif
      !! |q+G|^2
      if (iq <= pol%nq0) then
@@ -359,9 +363,11 @@ program Chi
                  cg_(:, :, :) = intwfnv%cgk(:, :, :, irk_loc)
                  isort_old2gvec(:) = intwfnv%isort(:, irk_loc)
               else
-                 call MPI_IRECV(cg_(1,1,1), kp%ngkmax*pol%nvb*kp%nspin*kp%nspinor, MPI_SCALAR, MPI_ANY_SOURCE, irk_need, MPI_COMM_WORLD, request, mpierr)
+                 call MPI_IRECV(cg_(1,1,1), kp%ngkmax*pol%nvb*kp%nspin*kp%nspinor, MPI_SCALAR, MPI_ANY_SOURCE, &
+                      irk_need, MPI_COMM_WORLD, request, mpierr)
                  !! tags must be non-negative
-                 call MPI_IRECV(isort_old2gvec(1), gvec%ng, MPI_INTEGER, MPI_ANY_SOURCE, kp%nrk+irk_need, MPI_COMM_WORLD, request_, mpierr)
+                 call MPI_IRECV(isort_old2gvec(1), gvec%ng, MPI_INTEGER, MPI_ANY_SOURCE, kp%nrk+irk_need, &
+                      MPI_COMM_WORLD, request_, mpierr)
               endif
            endif
 
@@ -375,8 +381,10 @@ program Chi
                  if ((irk_target <= irk_end) .and. (irk_target >= irk_start)) then
                     irk_loc = INDXG2L(irk_target, rk_blocksize, 0, 0, peinf%npes)
                     if (ipes .ne. (peinf%inode+1)) then
-                       call MPI_SEND(intwfnv%cgk(1,1,1,irk_loc), kp%ngkmax*pol%nvb*kp%nspin*kp%nspinor, MPI_SCALAR, ipes-1, irk_target, MPI_COMM_WORLD, mpierr)
-                       call MPI_SEND(intwfnv%isort(1,irk_loc), gvec%ng, MPI_INTEGER, ipes-1, kp%nrk+irk_target, MPI_COMM_WORLD, mpierr)
+                       call MPI_SEND(intwfnv%cgk(1,1,1,irk_loc), kp%ngkmax*pol%nvb*kp%nspin*kp%nspinor, MPI_SCALAR, &
+                            ipes-1, irk_target, MPI_COMM_WORLD, mpierr)
+                       call MPI_SEND(intwfnv%isort(1,irk_loc), gvec%ng, MPI_INTEGER, ipes-1, kp%nrk+irk_target, &
+                            MPI_COMM_WORLD, mpierr)
                     endif
                  endif
               endif
@@ -419,7 +427,7 @@ program Chi
               ind = 0
               ph  = ZERO
               gumk__(:) = gumk_(:) + kg%kg0(:,ifk_)
-              call gmap_2(gvec, syms, wfnv%ng, kg%itran(ifk_), gumk__, wfnv%isort, isorti_gvec2old, ind, ph)
+              call gmap(gvec, syms, wfnv%ng, kg%itran(ifk_), gumk__, wfnv%isort, isorti_gvec2old, ind, ph)
 
               !$OMP PARALLEL DO collapse(4)
               do is = 1, wfnv%nspin
@@ -475,9 +483,9 @@ program Chi
 
            call timacc(4,1)
            do ispin = 1, kp%nspin
-              !! Use wfnc and wfnv to calculate M matrix elements for all valence states, all conduction states, and all Gvectors determined by the epsilon cutoff
+              !! Use wfnc and wfnv to calculate M matrix elements for all valence states,
+              !! all conduction states, and all Gvectors determined by the epsilon cutoff
               !! Here mdat = crhov_noeh
-              ! call mtxel_chi(gvec, pol, ispin, wfnc, wfnv, mdat(:,:,:,:,ifk_loc))
               !! If k_plus_q = F, mdat = < c, k   | e^{i(q+G).r} | v, k-q >
               !! If k_plus_q = T, mdat = < v, k+q | e^{i(q+G).r} | c, k   >
               call mtxel(gvec, pol, ispin, wfnc, wfnv, mdat_complex=mdat(:,:,:,:,ifk_loc))
@@ -536,11 +544,14 @@ program Chi
            do is = 1, kp%nspin
               if (pol%time_reversal) then
                  !! mdat = vrhoc_noeh
-                 call zgemm('n', 'c', pol%nmtx, pol%nmtx, nmat, prefactor, mdat(1,1,1,1,1), pol%nmtx, mdat(1,1,1,1,1), pol%nmtx, ZERO, chi_noeh(:,:,1), pol%nmtx)
-                 !! if use broken-time-reversal formalism, only have contributions from either <v(k-q)|e^{-i(q+G).r}|ck> or <ck|e^{-i(q+G).r}|v(k+q) >
+                 call zgemm('n', 'c', pol%nmtx, pol%nmtx, nmat, prefactor, mdat(1,1,1,1,1), pol%nmtx, &
+                      mdat(1,1,1,1,1), pol%nmtx, ZERO, chi_noeh(:,:,1), pol%nmtx)
+                 !! if use broken-time-reversal formalism, only have contributions
+                 !! from either <v(k-q)|e^{-i(q+G).r}|ck> or <ck|e^{-i(q+G).r}|v(k+q) >
                  !! which means the prefactor is only half of the time-reversal case ==> prefactor/2.0D0
               else
-                 call zgemm('n', 'c', pol%nmtx, pol%nmtx, nmat, prefactor/2.0D0, mdat(1,1,1,1,1), pol%nmtx, mdat(1,1,1,1,1), pol%nmtx, ZERO, chi_noeh(:,:,1), pol%nmtx)
+                 call zgemm('n', 'c', pol%nmtx, pol%nmtx, nmat, prefactor/2.0D0, mdat(1,1,1,1,1), &
+                      pol%nmtx, mdat(1,1,1,1,1), pol%nmtx, ZERO, chi_noeh(:,:,1), pol%nmtx)
               endif
            enddo
            !! FF
@@ -574,7 +585,8 @@ program Chi
                           if (.not. pol%timeordered) then
                              !! With time-reversal
                              if (pol%time_reversal) then
-                                fact_FF = -0.5D0 * ( 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd - lambda) - 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd + lambda))
+                                fact_FF = -0.5D0 * ( 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd - lambda) &
+                                     - 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd + lambda))
                                 !! Broken time-reversal
                              else
                                 !! Use |k-q>
@@ -588,7 +600,8 @@ program Chi
                           else
                              !! With time-reversal
                              if (pol%time_reversal) then
-                                fact_FF = -0.5D0 * ( 1.0D0/(pol%dFreqGrid(ifreq)/ryd - lambda + pol%dFreqBrd(ifreq)/ryd) - 1.0D0/(pol%dFreqGrid(ifreq)/ryd + lambda - pol%dFreqBrd(ifreq)/ryd))
+                                fact_FF = -0.5D0 * ( 1.0D0/(pol%dFreqGrid(ifreq)/ryd - lambda + pol%dFreqBrd(ifreq)/ryd) &
+                                     - 1.0D0/(pol%dFreqGrid(ifreq)/ryd + lambda - pol%dFreqBrd(ifreq)/ryd))
                                 !! Broken time-reversal
                              else
                                 !! Use |k-q>, the first term in Eqn. (213), Tips in Field Theory
@@ -609,7 +622,8 @@ program Chi
 
               !! Calculate chi_noeh
               do is = 1, kp%nspin
-                 call zgemm('n','c', pol%nmtx, pol%nmtx, nmat, prefactor, vrhoc_noeh_aux(1,1,1,1,1), pol%nmtx, mdat(1,1,1,1,1), pol%nmtx, ZERO, chi_noeh(:,:,ifreq), pol%nmtx)
+                 call zgemm('n','c', pol%nmtx, pol%nmtx, nmat, prefactor, vrhoc_noeh_aux(1,1,1,1,1), pol%nmtx, mdat(1,1,1,1,1), &
+                      pol%nmtx, ZERO, chi_noeh(:,:,ifreq), pol%nmtx)
               enddo
            enddo !! ifreq_real
 
@@ -640,7 +654,8 @@ program Chi
                           !! Retarded
                           !! With time-reversal
                           if (pol%time_reversal) then
-                             fact_FF = -0.5D0 * ( 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd - lambda) - 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd + lambda))
+                             fact_FF = -0.5D0 * ( 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd - lambda) &
+                                  - 1.0D0/(pol%dFreqGrid(ifreq)/ryd + pol%dFreqBrd(ifreq)/ryd + lambda))
                              !! Broken time-reversal
                           else
                              !! Use |k-q>
@@ -659,7 +674,8 @@ program Chi
 
               !! Calculate chi_noeh
               do is = 1, kp%nspin
-                 call zgemm('n','c', pol%nmtx, pol%nmtx, nmat, prefactor, vrhoc_noeh_aux(1,1,1,1,1), pol%nmtx, mdat(1,1,1,1,1), pol%nmtx, ZERO, chi_noeh(:,:,ifreq), pol%nmtx)
+                 call zgemm('n','c', pol%nmtx, pol%nmtx, nmat, prefactor, vrhoc_noeh_aux(1,1,1,1,1), pol%nmtx, &
+                      mdat(1,1,1,1,1), pol%nmtx, ZERO, chi_noeh(:,:,ifreq), pol%nmtx)
               enddo
            enddo !! ifreq_imag
            SAFE_DEALLOCATE(vrhoc_noeh_aux)
@@ -673,7 +689,8 @@ program Chi
         SAFE_DEALLOCATE(gumk_map)
      endif
 
-     call MPI_ALLREDUCE(MPI_IN_PLACE, chi_noeh(1,1,1), pol%nmtx*pol%nmtx*pol%nFreq, MPI_COMPLEX_DPC, MPI_SUM, MPI_COMM_WORLD, mpierr)
+     call MPI_ALLREDUCE(MPI_IN_PLACE, chi_noeh(1,1,1), pol%nmtx*pol%nmtx*pol%nFreq, MPI_COMPLEX_DPC, &
+          MPI_SUM, MPI_COMM_WORLD, mpierr)
 
      call timacc(5,2)
 
@@ -691,41 +708,48 @@ program Chi
         endif
 
         !! Write out chi_noeh_out using hyperslab
-        call hdf5_write_double_hyperslab(file_id, 'mats/matrix', (/pol%matrix_flavor, pol%nmtx, pol%nmtx, pol%nfreq, pol%nmatrix, 1/), (/ 0, 0, 0, 0, 0, iq_offset-1/), chi_noeh_out, error)
-        if (error .ne. 0) then
-           call die("HDF5 error", only_root_writes=.true.)
-        endif
-
+        call hdf5_write_double_hyperslab(file_id, 'mats/matrix', (/pol%matrix_flavor, pol%nmtx, pol%nmtx, pol%nfreq, &
+             pol%nmatrix, 1/), (/ 0, 0, 0, 0, 0, iq_offset-1/), chi_noeh_out, error)
         call h5fclose_f(file_id, error)
-        if (error .ne. 0) then
-           call die("HDF5 error", only_root_writes=.true.)
-        endif
+        
         call set_qpt_done(TRUNC(filename_chi_hdf5), iq_offset)
         SAFE_DEALLOCATE(chi_noeh_out)
 
         if (pol%freq_dep .eq. 0) then
-           write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,1)," ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(1),1)
-           write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,2),", Gp = ",gvec%components(:,2)," ) = ", chi_noeh(pol%isrtxi(2),pol%isrtxi(2),1)
-           write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,2)," ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(2),1)
+           write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,1), &
+                " ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(1),1)
+           write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,2),", Gp = ",gvec%components(:,2), &
+                " ) = ", chi_noeh(pol%isrtxi(2),pol%isrtxi(2),1)
+           write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,2), &
+                " ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(2),1)
         else
            !! Time-ordered
            do ifreq = 1, pol%nfreq_real
               if (pol%timeordered) then
-                 write(6,'(A,I5,A,F12.5,A,F12.5,A)') "Frequency #", ifreq, " : ", pol%dFreqGrid(ifreq), " eV varepsilon = ", DIMAG(pol%dFreqBrd(ifreq))," eV"
+                 write(6,'(A,I5,A,F12.5,A,F12.5,A)') "Frequency #", ifreq, " : ", pol%dFreqGrid(ifreq), " eV varepsilon = ", &
+                      DIMAG(pol%dFreqBrd(ifreq))," eV"
               else
-                 write(6,'(A,I5,A,"(",F12.5,",",F12.5,")",A)') "Frequency #", ifreq, " : ", pol%dFreqGrid(ifreq)+pol%dFreqBrd(ifreq), " eV varepsilon = 0 eV"
+                 write(6,'(A,I5,A,"(",F12.5,",",F12.5,")",A)') "Frequency #", ifreq, " : ", &
+                      pol%dFreqGrid(ifreq)+pol%dFreqBrd(ifreq), " eV varepsilon = 0 eV"
               endif
-              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,1)," ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(1),ifreq)
-              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,2),", Gp = ",gvec%components(:,2)," ) = ", chi_noeh(pol%isrtxi(2),pol%isrtxi(2),ifreq)
-              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,2)," ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(2),ifreq)
+              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,1), &
+                   " ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(1),ifreq)
+              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,2),", Gp = ",gvec%components(:,2), &
+                   " ) = ", chi_noeh(pol%isrtxi(2),pol%isrtxi(2),ifreq)
+              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,2), &
+                   " ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(2),ifreq)
            enddo
 
            !! Imaginary frequencies
            do ifreq = pol%nfreq_real+1, pol%nfreq
-              write(6,'(A,I5,A,"(",F12.5,",",F12.5,")",A)') "Frequency #", ifreq, " : ", pol%dFreqGrid(ifreq)+pol%dFreqBrd(ifreq), " eV varepsilon = 0 eV"
-              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,1)," ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(1),ifreq)
-              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,2),", Gp = ",gvec%components(:,2)," ) = ", chi_noeh(pol%isrtxi(2),pol%isrtxi(2),ifreq)
-              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,2)," ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(2),ifreq)
+              write(6,'(A,I5,A,"(",F12.5,",",F12.5,")",A)') "Frequency #", ifreq, " : ", &
+                   pol%dFreqGrid(ifreq)+pol%dFreqBrd(ifreq), " eV varepsilon = 0 eV"
+              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,1), &
+                   " ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(1),ifreq)
+              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,2),", Gp = ",gvec%components(:,2), &
+                   " ) = ", chi_noeh(pol%isrtxi(2),pol%isrtxi(2),ifreq)
+              write(6,'(1X,A,3I5,A,3I5,A,2F15.8)') "chi_noeh(  G = ",gvec%components(:,1),", Gp = ",gvec%components(:,2), &
+                   " ) = ", chi_noeh(pol%isrtxi(1),pol%isrtxi(2),ifreq)
            enddo
         endif
      endif !! ROOT

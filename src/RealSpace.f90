@@ -15,9 +15,15 @@
 !!    We calculate each r2 point sequentially. For each r2, we parallel
 !!    over q-points in the full Brillouin zone.
 !!
-!! Input files: epsmat.h5 or chimat.h5, RealSpace.inp
+!! Input files:
+!!    realspace.inp  : specification of r2 positions, resolution, and
+!!                     physical quantity to plot.
+!!    epsmat.h5      : inverse dielectric response function.
+!!    OR chimat.h5   : polarizability function.
 !!
-!! Output files: OUT.[OPTION].ir2_[Index_of_r2]_is_[Index_of_spin].xsf
+!! Output files:
+!!
+!!    OUT.[OPTION].ir2_[Index_of_r2]_is_[Index_of_spin].xsf
 !!
 !!====================================================================
 
@@ -47,7 +53,9 @@ program RealSpace
   type (kpoints) :: kp
   type (grid) :: qg
   type (realspace_t) :: peps
-  integer :: ii, igrid1_super, igrid2_super, igrid3_super, igrid1_primitive, igrid2_primitive, igrid3_primitive, igrid1_super_downsample, igrid2_super_downsample, igrid3_super_downsample, ir2_loop
+  integer :: ii, igrid1_super, igrid2_super, igrid3_super, ir2_loop
+  integer :: igrid1_primitive, igrid2_primitive, igrid3_primitive,
+  integer :: igrid1_super_downsample, igrid2_super_downsample, igrid3_super_downsample
   integer :: ncount, ntim
   integer :: ngrid_super(3), ngrid_super_downsample(3), nfft(3)
   real(DP) :: r1(3), scale, tsec(2)
@@ -58,12 +66,12 @@ program RealSpace
   real(DP) :: r2(3), qr2_, qr1_
   complex(DPC) :: phmqr2
 
-  !> ffeps(ig=1,pol%nmtx, 1: peinf%ikt(peinf%inode+1))
+  !! ffeps(ig=1,pol%nmtx, 1: peinf%ikt(peinf%inode+1))
   complex(DPC), allocatable :: ffeps_fq(:)
   character(len=30) :: filename_eps_hdf5 !, filename_eps0_hdf5
   integer :: ifreq, ifq_loc, irq
   logical :: skip_checkbz
-  !> integer(HID_T) :: file_id
+  !! integer(HID_T) :: file_id
   integer :: error
   logical :: file_exists
   integer :: ifq_global, irq_global, itran, kg0(3), ig, nmtx, irq_global_last_step
@@ -85,10 +93,10 @@ program RealSpace
   call timacc(0,0)
   call timacc(1,1)
 
-  !> Read realspace.inp
+  !! Read realspace.inp
   call inread_realspace(peps)
 
-  !> epsinv in {q G G'} space
+  !! epsinv in {q G G'} space
   filename_eps_hdf5=TRUNC(peps%filename)
 
   if (peinf%inode .eq. 0) then
@@ -105,7 +113,7 @@ program RealSpace
      if (peps%nfq .le. 0) then
         call die("Number of qpoints <= 0, please check qgrid", only_root_writes = .true.)
      endif
-     !> Check that all the r2 are within the peps%nsuper(3) range
+     !! Check that all the r2 are within the peps%nsuper(3) range
      if ( (any(peps%r2(1,:) > peps%nsuper(1))) .or. (any(peps%r2(2,:) > peps%nsuper(2))) .or. (any(peps%r2(3,:) > peps%nsuper(3))) ) then
         call die("r2 beyond range", only_root_writes=.TRUE.)
      elseif ( (any(peps%r2(1,:) < 0)) .or. (any(peps%r2(2,:) < 0)) .or. (any(peps%r2(3,:) < 0)) ) then
@@ -128,7 +136,7 @@ program RealSpace
      if ((peps%freq_dep .eq. 0) .and. (peps%nfreq .gt. 1)) then
         call die("RealSpace: GPP epsmat with > 1 frequencies.", only_root_writes=.true.)
      endif
-     !> if FF but with 1 frequency
+     !! if FF but with 1 frequency
      if ((peps%freq_dep .ne. 0) .and. (peps%nfreq .le. 1)) then
         call die("RealSpace: FF epsmat with <= 1 frequencies.", only_root_writes=.true.)
      endif
@@ -157,7 +165,7 @@ program RealSpace
         endif
         SAFE_DEALLOCATE(dFreqGrid)
         SAFE_DEALLOCATE(dFreqBrd)
-        !> if GPP epsmat, ifreq_target = 1
+        !! if GPP epsmat, ifreq_target = 1
      else
         if (ABS(peps%freq_target) > TOL_ZERO) then
            call die("GPP only has zero frequency.", only_root_writes=.true.)
@@ -168,9 +176,9 @@ program RealSpace
      write(6,'(1X,A,F12.5,",",F12.5,A)') "- Target frequency : (", peps%freq_target, ")."
      write(6,'(1X,A,I5)') "- ifreq_target in "//TRUNC(filename_eps_hdf5)//" = ", ifreq_target
 
-     !> GPP + real-flavor
+     !! GPP + real-flavor
      matrix_flavor = SCALARSIZE
-     !> Check matrix_flavor in epsmat
+     !! Check matrix_flavor in epsmat
      call read_eps_matrix_flavor_hdf5(matrix_flavor_, TRUNC(filename_eps_hdf5))
      if (matrix_flavor .ne. matrix_flavor_) then
         call die("RealSpace: matrix_flavor mismatch betwen code and epsmat.")
@@ -215,16 +223,16 @@ program RealSpace
      call MPI_BCAST(syms%mtrx_cart(1,1,1), 3*3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
      call MPI_BCAST(syms%tnp, 3*48, MPI_DOUBLE_PRECISION, 0, MPI_COMM_WORLD, mpierr)
   endif
-  !> prepare syms%mtrx_reci and syms%mtrx_cart  
+  !! prepare syms%mtrx_reci and syms%mtrx_cart  
   call prepare_syms(crys, syms)
 
   SAFE_ALLOCATE(gvec%components, (3, gvec%ng))
   call read_hdf5_gvectors(TRUNC(filename_eps_hdf5), gvec%ng, gvec%components)
-  !> Common/input_utils.f90:
-  !> Compute index_vec indices relating G-vectors in fractional coordinates to positions in the FFT grid
-  !> The address of gvec%components(:,i) is given by
-  !> address=((gx_i+gxmax)*(2*gymax+1)+gy_i+gymax)*(2*gzmax+1)+gz_i+gzmax+1
-  !> gvec%index_vec(iadd) = ig
+  !! Common/input_utils.f90:
+  !! Compute index_vec indices relating G-vectors in fractional coordinates to positions in the FFT grid
+  !! The address of gvec%components(:,i) is given by
+  !! address=((gx_i+gxmax)*(2*gymax+1)+gy_i+gymax)*(2*gzmax+1)+gz_i+gzmax+1
+  !! gvec%index_vec(iadd) = ig
   call gvec_index(gvec)
 
   SAFE_ALLOCATE(peps%rq, (3,peps%nrq))
@@ -237,20 +245,20 @@ program RealSpace
   if (peinf%inode .eq. 0) then
      SAFE_ALLOCATE(nmtx_file, (peps%nrq))
 
-     !> Read header of epsmat.h5 and check input parameters
+     !! Read header of epsmat.h5 and check input parameters
      call read_eps_qgrid_hdf5(peps%nrq, peps%rq, nmtx_file, TRUNC(filename_eps_hdf5))
      if (NORM2(peps%rq(:,1)) > TOL_SMALL) then
         call die("RealSpace: first rq must be Gamma.", only_root_writes=.true.)
      endif
 
-     !> Note that nmtx_max_file is for epsinv_rq read from epsmat.h5
-     !> while peps%nmtx is the number of Gvectors with peps%ecuts
+     !! Note that nmtx_max_file is for epsinv_rq read from epsmat.h5
+     !! while peps%nmtx is the number of Gvectors with peps%ecuts
      if (nmtx_max_file .ne. MAXVAL(nmtx_file(:))) then
         call die("nmtx_max_file .ne. MAXVAL(nmtx_file(:))",only_root_writes=.true.)
      endif
 
-     !> Use peps%ecut to determine a new peps%nmtx, instead of using that from epsmat.h5
-     !> Try to reduce the size of nfft using get_eps_fftgrid(...)
+     !! Use peps%ecut to determine a new peps%nmtx, instead of using that from epsmat.h5
+     !! Try to reduce the size of nfft using get_eps_fftgrid(...)
      box_max(:) = 0
      box_min(:) = 0
      do irq = 1, peps%nrq
@@ -275,7 +283,7 @@ program RealSpace
         peps%FFTgrid(:) = gvec%FFTgrid(:)
      else
         peps%FFTgrid(1:3) = peps%FFTfactor * ( box_max(1:3) - box_min(1:3) + 1 )
-        !> Use gvec%FFTgrid to correct pol%WFN_FFTgrid, to make sure that the ratio betwen gvec%FFTgrid(:) is preseved
+        !! Use gvec%FFTgrid to correct pol%WFN_FFTgrid, to make sure that the ratio betwen gvec%FFTgrid(:) is preseved
         total_gvec_grid = SUM(gvec%FFTgrid(:))
         total_peps_grid = SUM(peps%FFTgrid(:))
         peps%FFTgrid(1) = NINT(DBLE(gvec%FFTgrid(1)) / DBLE(Total_gvec_grid) * DBLE(total_peps_grid))
@@ -295,19 +303,19 @@ program RealSpace
   qg%nr = peps%nrq
   SAFE_ALLOCATE(qg%r, (3,qg%nr))
   qg%r(:,:) = peps%rq(:,:)
-  !> Use fullbz to generate from peps%rq all the qpoints in FBZ
+  !! Use fullbz to generate from peps%rq all the qpoints in FBZ
   if (peps%unfold) then
      call fullbz(crys, syms, qg)
   else
      call fullbz(crys, syms, qg, use_identity_only=.true.)
   endif
 
-  !> Block-distribute all fq points over peinf%npes procs
-  !> Blocksize
+  !! Block-distribute all fq points over peinf%npes procs
+  !! Blocksize
   peinf%nkpe = iceil(peps%nfq, peinf%npes)
-  !> (global) peinf%ik(iproc, ifq_loc) = ifq_global
+  !! (global) peinf%ik(iproc, ifq_loc) = ifq_global
   SAFE_ALLOCATE(peinf%ik, (peinf%npes, peinf%nkpe))
-  !> (global) peinf%ikt(iproc) = # of ifq_global dealt by each proc
+  !! (global) peinf%ikt(iproc) = # of ifq_global dealt by each proc
   SAFE_ALLOCATE(peinf%ikt, (peinf%npes))
   peinf%ik  = 0
   peinf%ikt = 0
@@ -332,8 +340,8 @@ program RealSpace
 
   call MPI_barrier(MPI_COMM_WORLD,mpierr)
 
-  !> low_comm
-  !> ROOT reads in epsinv matrix from epsmat.h5 and broadcast to all procs
+  !! low_comm
+  !! ROOT reads in epsinv matrix from epsmat.h5 and broadcast to all procs
   if (peps%low_comm) then
      peps%rq_blocksize = peps%nrq
      peps%nrq_loc = peps%nrq
@@ -341,7 +349,7 @@ program RealSpace
      SAFE_ALLOCATE(epsinv, (nmtx_max_file, nmtx_max_file, peps%nrq))
      if (peinf%inode .eq. 0) then
         call read_eps_matrix_ser_allq_hdf5(epsinv, nmtx_max_file, peps%nrq, 1, ifreq_target, TRUNC(filename_eps_hdf5))
-        !> Correct the head using eps0head
+        !! Correct the head using eps0head
         epsinv(1,1,1) = DCMPLX(peps%epsinvhead)
      endif
      if (peinf%npes > 1) then
@@ -354,8 +362,8 @@ program RealSpace
            peinf%irq(ipes, ifq_loc) = qg%indr(peinf%ik(ipes, ifq_loc))
         ENDDO
      ENDDO
-     !> mid_comm
-     !> Distribute nrq
+     !! mid_comm
+     !! Distribute nrq
      peps%rq_blocksize = MAX(CEILING(DBLE(peps%nrq) / DBLE(peinf%npes)), 1)
      peps%nrq_loc      = NUMROC(peps%nrq, peps%rq_blocksize, peinf%inode, 0, peinf%npes)
      peps%nrq_loc_max  = NUMROC(peps%nrq, peps%rq_blocksize,           0, 0, peinf%npes)
@@ -363,13 +371,13 @@ program RealSpace
      if (peinf%inode .eq. 0) then
         write(6,'(1X,A,I5)') "Maximal number of rq points stored in a proc : ", peps%nrq_loc_max
      endif
-     !> Parallel HDF5 read
+     !! Parallel HDF5 read
      if (peps%nrq_loc > 0) then
         irq_eps_start = INDXL2G(1, peps%rq_blocksize, peinf%inode, 0, peinf%npes)
      else
         irq_eps_start = 0
      endif
-     !> we can use MPI_Gather to assemble an epsinv with all G2, for one iq.
+     !! we can use MPI_Gather to assemble an epsinv with all G2, for one iq.
      call read_eps_matrix_par_distribute_rq_hdf5(epsinv, nmtx_max_file, 1, irq_eps_start, peps%nrq_loc, ifreq_target, TRUNC(filename_eps_hdf5))
      if (peinf%inode .eq. 0) then
         ! epsinv(1,1,1) = eps0head
@@ -378,17 +386,17 @@ program RealSpace
   endif
 
   SAFE_ALLOCATE(epsinv_rq, (nmtx_max_file, nmtx_max_file))
-  !> prefactor = 1/(N \Omega), crys%celvol in units of Bohr^3, prefactor in units of Ang^(-3)
+  !! prefactor = 1/(N \Omega), crys%celvol in units of Bohr^3, prefactor in units of Ang^(-3)
 
   prefactor = 1.0D0 / (DBLE(qg%nf) * crys%celvol * BOHR**3)
   call setup_FFT_sizes(peps%FFTgrid, nfft, scale)
-  !> The number of real-space points within a primitive cell is PRODUCT(nfft)
+  !! The number of real-space points within a primitive cell is PRODUCT(nfft)
   SAFE_ALLOCATE(ucfft, (nfft(1), nfft(2), nfft(3)))
-  !> ngrid_super defines the real-space mesh in the BvO supercell
+  !! ngrid_super defines the real-space mesh in the BvO supercell
   ngrid_super(:) = nfft(:) * peps%nsuper(:)
-  ngrid_super_downsample(:) = (ngrid_super(:) + peps%downsample(:) - 1) / peps%downsample(:) !> CEIL[ngrid_super/downsample]
+  ngrid_super_downsample(:) = (ngrid_super(:) + peps%downsample(:) - 1) / peps%downsample(:) !! CEIL[ngrid_super/downsample]
   SAFE_ALLOCATE(scfft, (ngrid_super_downsample(1), ngrid_super_downsample(2), ngrid_super_downsample(3)))
-  !> The number of real-space points within the large cell is PRODUCT(ngrid_super_downsample)
+  !! The number of real-space points within the large cell is PRODUCT(ngrid_super_downsample)
   if (peinf%inode .eq. 0) then
      write(6,'(1X,a)') 'Grids information:'
      write(6,'(1X,a,3(1x,i0))') '- FFT box size:', nfft
@@ -396,9 +404,9 @@ program RealSpace
      write(6,'(1X,a,3(1x,i0))') '- Effective supercell grid:', ngrid_super_downsample
   endif
 
-  !> Loop over r2 positions within a unit cell, r2 positions read from RealSpace.inp
+  !! Loop over r2 positions within a unit cell, r2 positions read from RealSpace.inp
   DO ir2_loop = 1, peps%nr2
-     !> r2 in fractional coordinates
+     !! r2 in fractional coordinates
      r2(:) = peps%r2(:, ir2_loop)
 
      if (peinf%inode .eq. 0) then
@@ -411,7 +419,7 @@ program RealSpace
         ! call progress_step(prog_info, ifq_loc)
         if (ifq_loc <= peinf%ikt(peinf%inode+1)) then
            ifq_global = peinf%ik(peinf%inode+1, ifq_loc)
-           !> Find corresponding iq_RBZ
+           !! Find corresponding iq_RBZ
            irq_global = qg%indr(ifq_global)
            rq(:)  = qg%r(:, irq_global)
            fq(:)  = qg%f(:, ifq_global)
@@ -427,14 +435,14 @@ program RealSpace
         endif
 
         if (peps%low_comm) then
-           !> low_comm
+           !! low_comm
            if (ifq_loc <= peinf%ikt(peinf%inode+1)) then
               epsinv_rq(:, :) = epsinv(:, :, irq_global)
            else
               epsinv_rq = ZERO
            endif
         else
-           !> mid_comm
+           !! mid_comm
            if (peps%nrq_loc > 0) then
               irq_start = INDXL2G(1,              peps%rq_blocksize, peinf%inode, 0, peinf%npes)
               irq_end   = INDXL2G(peps%nrq_loc, peps%rq_blocksize, peinf%inode, 0, peinf%npes)
@@ -443,13 +451,13 @@ program RealSpace
               irq_end = 0
            endif
 
-           !> NON-BLOCKING RECEIVE
-           !> current proc is not idle
+           !! NON-BLOCKING RECEIVE
+           !! current proc is not idle
            if (ifq_loc <= peinf%ikt(peinf%inode+1)) then
-              !> if the rq needed by current proc is elsewhere, MPI_IRECV
-              !> if the rq needed by current proc is just here, copy epsinv to epsinv_loc_rq
+              !! if the rq needed by current proc is elsewhere, MPI_IRECV
+              !! if the rq needed by current proc is just here, copy epsinv to epsinv_loc_rq
               irq_need = peinf%irq(peinf%inode+1, ifq_loc)
-              !> Current proc has the irq_need
+              !! Current proc has the irq_need
               if ((irq_need <= irq_end) .and. (irq_need >= irq_start)) then
                  irq_loc = INDXG2L(irq_need, peps%rq_blocksize, peinf%inode, 0, peinf%npes)
                  epsinv_rq(:, :) = epsinv(:, :, irq_loc)
@@ -458,13 +466,13 @@ program RealSpace
               endif
            endif
 
-           !> loop over all procs, see if current proc needs to send out epscol to a target proc
-           !> All procs take care of the ipes-th procs
+           !! loop over all procs, see if current proc needs to send out epscol to a target proc
+           !! All procs take care of the ipes-th procs
            do ipes = 1, peinf%npes
-              !> ipes-th proc is not idle
+              !! ipes-th proc is not idle
               if (peinf%ik(ipes, ifq_loc) .ne. 0) then
                  irq_target = peinf%irq(ipes, ifq_loc)
-                 !> See if ipes-th proc needs epscol from current procs
+                 !! See if ipes-th proc needs epscol from current procs
                  if ((irq_target <= irq_end) .and. (irq_target >= irq_start)) then
                     irq_loc = INDXG2L(irq_target, peps%rq_blocksize, 0, 0, peinf%npes)
                     if (ipes .ne. (peinf%inode+1)) then
@@ -473,9 +481,9 @@ program RealSpace
                  endif
               endif
            enddo
-           !> Once current procs receive the epsinv_loc_rq it needs, it is free to move on
+           !! Once current procs receive the epsinv_loc_rq it needs, it is free to move on
            if (ifq_loc <= peinf%ikt(peinf%inode+1)) then
-              !> Current proc does not have the irq_need
+              !! Current proc does not have the irq_need
               if ( .not. ((irq_need <= irq_end) .and. (irq_need >= irq_start)) ) then
                  call MPI_WAIT(request, MPI_STATUS_IGNORE, mpierr)
               endif
@@ -487,8 +495,8 @@ program RealSpace
            call sortrx(gvec%ng, ekin, isrtx, gvec = gvec%components)
            nmtx = gcutoff(gvec%ng, ekin, isrtx, peps%ecut)
 
-           !> Calculate phr2(:) = e^{-i ( q + G ) \dot r2} by rewriting part of gmap(...)
-           !> Here G is order by |fq+G|^2
+           !! Calculate phr2(:) = e^{-i ( q + G ) \dot r2} by rewriting part of gmap(...)
+           !! Here G is order by |fq+G|^2
            SAFE_ALLOCATE(phr2, (nmtx))
            do ig = 1, nmtx
               fi = 2.0D0 * PI_D * DOT_PRODUCT((DBLE(gvec%components(1:3, isrtx(ig))) + fq(1:3)), r2(1:3))
@@ -497,12 +505,12 @@ program RealSpace
 
            SAFE_ALLOCATE(ind, (nmtx))
            SAFE_ALLOCATE(ph, (nmtx))
-           !> MATMUL(syms%mtrx_reci(1:3,1:3,itran),rq(1:3)) + kg0(1:3) = fq(1:3)
-           !> isorti: map from old file (rq) to gvec%components
-           !> isort: map from gvec%components to new file (fq)
+           !! MATMUL(syms%mtrx_reci(1:3,1:3,itran),rq(1:3)) + kg0(1:3) = fq(1:3)
+           !! isorti: map from old file (rq) to gvec%components
+           !! isort: map from gvec%components to new file (fq)
            call gmap_2(gvec, syms, nmtx, itran, kg0, isrtx, peps%isrtxi(:, irq_global), ind, ph)
 
-           !> Unfold epsinv_rq to epsinv_fq, with extra CONJG(phr2(ig1)) = e^{i G \cdot r2} phase
+           !! Unfold epsinv_rq to epsinv_fq, with extra CONJG(phr2(ig1)) = e^{i G \cdot r2} phase
            SAFE_ALLOCATE(epsinv_fq, (nmtx, nmtx))
            !$OMP PARALLEL DO collapse(2)
            do ig1 = 1, nmtx
@@ -514,48 +522,48 @@ program RealSpace
            SAFE_DEALLOCATE(ind)
            SAFE_DEALLOCATE(ph)
            
-           !> Take zgemv of epsinv_fq(ig1,ig2) and phr2(ig2) to calculate ffeps_fq(ig1)
-           !> SUBROUTINE ZGEMV(TRANS,M,N,ALPHA,A,LDA,x,INCX,BETA,Y,INCY)
+           !! Take zgemv of epsinv_fq(ig1,ig2) and phr2(ig2) to calculate ffeps_fq(ig1)
+           !! SUBROUTINE ZGEMV(TRANS,M,N,ALPHA,A,LDA,x,INCX,BETA,Y,INCY)
            SAFE_ALLOCATE(ffeps_fq, (nmtx))
            call zgemv('n', nmtx, nmtx, ONE, epsinv_fq(:,:), nmtx, phr2(:), 1, ZERO, ffeps_fq(:), 1)
 
            SAFE_DEALLOCATE(phr2)
            SAFE_DEALLOCATE(epsinv_fq)
 
-           !> Take FFT of f(iq_FBZ) to calculate ucfft (FFT grid = gvec%FFTgrid)
+           !! Take FFT of f(iq_FBZ) to calculate ucfft (FFT grid = gvec%FFTgrid)
            ucfft = ZERO
-           !> gvec_index
+           !! gvec_index
            call put_into_fftbox(nmtx, ffeps_fq(:), gvec%components, isrtx, ucfft, nfft)
 
            SAFE_DEALLOCATE(ffeps_fq)
            call do_FFT(ucfft, nfft, 1)
 
-           !> r_frac = [      0,       0,       0] ==> ucfft(1,1,1)
-           !> r_frac = [  delta,   delta,   delta] ==> ucfft(2,2,2)
-           !> r_frac = [1-delta, 1-delta, 1-delta] ==> ucfft(Nfft(1),Nfft(2),Nfft(3))
+           !! r_frac = [      0,       0,       0] ==> ucfft(1,1,1)
+           !! r_frac = [  delta,   delta,   delta] ==> ucfft(2,2,2)
+           !! r_frac = [1-delta, 1-delta, 1-delta] ==> ucfft(Nfft(1),Nfft(2),Nfft(3))
 
-           !> Add e^{iq.r1} phase to ucfft and add it to scfft, of which the size is ngrid_super_downsample(1:3)
-           !> [Important] OMP does not work with loops with steps (e.g., do i = 1, N, m)
-           !> !$OMP PARALLEL DO collapse(3) private(igrid1_super_downsample,igrid2_super_downsample,igrid3_super_downsample,igrid1_primitive,igrid2_primitive,igrid3_primitive,r1,qr1_) reduction(+:scfft)
+           !! Add e^{iq.r1} phase to ucfft and add it to scfft, of which the size is ngrid_super_downsample(1:3)
+           !! [Important] OMP does not work with loops with steps (e.g., do i = 1, N, m)
+           !! !$OMP PARALLEL DO collapse(3) private(igrid1_super_downsample,igrid2_super_downsample,igrid3_super_downsample,igrid1_primitive,igrid2_primitive,igrid3_primitive,r1,qr1_) reduction(+:scfft)
            do igrid3_super = 1, ngrid_super(3), peps%downsample(3)
               do igrid2_super = 1, ngrid_super(2), peps%downsample(2)
                  do igrid1_super = 1, ngrid_super(1), peps%downsample(1)
-                    !> igrid_super_downsample from [1, 1, 1] --> [ngrid_super_downsample(1), ngrid_super_downsample(2), ngrid_super_downsample(3)]
-                    !> igrid_super_downsample = CEIL(igrid_super, peps%downsample)
+                    !! igrid_super_downsample from [1, 1, 1] --> [ngrid_super_downsample(1), ngrid_super_downsample(2), ngrid_super_downsample(3)]
+                    !! igrid_super_downsample = CEIL(igrid_super, peps%downsample)
                     igrid3_super_downsample = ((igrid3_super-1) / peps%downsample(3)) + 1
                     igrid2_super_downsample = ((igrid2_super-1) / peps%downsample(2)) + 1
                     igrid1_super_downsample = ((igrid1_super-1) / peps%downsample(1)) + 1
 
-                    !> igrid_primitive from [1, 1, 1] --> [nfft(1), nfft(2), nfft(3)]
-                    igrid3_primitive = MOD(igrid3_super-1, nfft(3)) + 1 !> the corresponding FFT grid index in the central primitive cell
+                    !! igrid_primitive from [1, 1, 1] --> [nfft(1), nfft(2), nfft(3)]
+                    igrid3_primitive = MOD(igrid3_super-1, nfft(3)) + 1 !! the corresponding FFT grid index in the central primitive cell
                     igrid2_primitive = MOD(igrid2_super-1, nfft(2)) + 1
                     igrid1_primitive = MOD(igrid1_super-1, nfft(1)) + 1
 
                     R_vector_frac(:) = (/ (igrid1_super-1)/nfft(1), (igrid2_super-1)/nfft(2), (igrid3_super-1)/nfft(3) /)
                     xi1_frac(:) = (/ DBLE(igrid1_primitive-1)/DBLE(nfft(1)), DBLE(igrid2_primitive-1)/DBLE(nfft(2)), DBLE(igrid3_primitive-1)/DBLE(nfft(3))  /)
 
-                    !> r1 ==> fractional coordinates (can be > 1) in the BvO cell
-                    !> r1(:) within a primitive cell from [0, 0, 0] --> [1-delta, 1-delta, 1-delta]
+                    !! r1 ==> fractional coordinates (can be > 1) in the BvO cell
+                    !! r1(:) within a primitive cell from [0, 0, 0] --> [1-delta, 1-delta, 1-delta]
                     r1(3) = DBLE(igrid3_super-1)/DBLE(nfft(3))
                     r1(2) = DBLE(igrid2_super-1)/DBLE(nfft(2))
                     r1(1) = DBLE(igrid1_super-1)/DBLE(nfft(1))
@@ -566,12 +574,12 @@ program RealSpace
                  enddo ! igrid1_super
               enddo ! igrid2_super
            enddo ! igrid3_super
-           !> !$OMP END PARALLEL DO
-        endif !> if not idle
+           !! !$OMP END PARALLEL DO
+        endif !! if not idle
      ENDDO ! ifq_loc
 
      if (peinf%npes > 1) then
-        !> Sum over all the procs (all fq)
+        !! Sum over all the procs (all fq)
         if (peinf%inode .eq. 0) then
            call MPI_REDUCE(MPI_IN_PLACE, scfft(1,1,1), ngrid_super_downsample(1)*ngrid_super_downsample(2)*ngrid_super_downsample(3), MPI_COMPLEX_DPC, MPI_SUM, 0, MPI_COMM_WORLD, mpierr)
         else
@@ -579,7 +587,7 @@ program RealSpace
         endif
      endif
 
-     !> ROOT writes out epsinv for ir2_loop
+     !! ROOT writes out epsinv for ir2_loop
      if (peinf%inode.eq.0) then
         call write_eps(peps, crys, nfft, scfft, ir2_loop)
      endif
@@ -604,7 +612,7 @@ program RealSpace
 
   call dealloc_grid_simple(qg)
 
-  !> Time accounting
+  !! Time accounting
   ntim = 1
   SAFE_ALLOCATE(routnam, (ntim))
   routnam(1) = 'TOTAL:'

@@ -18,5 +18,5 @@ cutoff 10.0
 
 #real_part
 #imag_part
-#abs
+abs
 abs2

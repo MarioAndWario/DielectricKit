@@ -17,7 +17,8 @@ PW2BGW_INPUT="pw2bgw.inp"
 PW2BGW_OUTPUT="pw2bgw.out"
 
 MPIRUN="srun"
-POOLS="-nk 32" #We only use pools for calculations with many k-points
+# K-point pools
+POOLS="-nk 32"
 export OMP_NUM_THREADS=1
 
 cd ./01-scf

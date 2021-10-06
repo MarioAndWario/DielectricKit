@@ -1,9 +1,21 @@
-# DielectricKit
+<h1 align="center">DielectricKit</h1>
+<h4 align="center"> First-principles HPC toolkit for simulating dielectric responses </h4>
 
-High-performance computing toolkit to calculate and visualize polarizability and
-dielectric response function within the random-phase approximation.
+<h4 align="center">
+
+![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+[![GitHub Repo Size](https://img.shields.io/github/repo-size/wu2meng3/Di\
+electricKit?label=Repo+Size)](https://github.com/wu2meng3/DielectricKit/\
+graphs/contributors)
+[![GitHub last commit](https://img.shields.io/github/last-commit/wu2meng\
+3/DielectricKit?label=Last+Commit)](https://github.com/wu2meng3/Dielectr\
+icKit/commits)
+
+</h4>
 
 ## Introduction
+
+`DielectricKit` is a high-performance computing toolkit to calculate and visualize polarizability and dielectric response function within the random-phase approximation.
 
 `DielectricKit` includes three Fortran programs: `Chi.x`, `EpsInv.x`, and `RealSpace.x`. Some of the libraries and modules are
 incorporated from the open-source [`BerkeleyGW`](https://berkeleygw.org) package. The input and output formats are also compatible

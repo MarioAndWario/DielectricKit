@@ -4,12 +4,6 @@
 <h4 align="center">
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
-[![GitHub Repo Size](https://img.shields.io/github/repo-size/wu2meng3/Di\
-electricKit?label=Repo+Size)](https://github.com/wu2meng3/DielectricKit/\
-graphs/contributors)
-[![GitHub last commit](https://img.shields.io/github/last-commit/wu2meng\
-3/DielectricKit?label=Last+Commit)](https://github.com/wu2meng3/Dielectr\
-icKit/commits)
 
 </h4>
 

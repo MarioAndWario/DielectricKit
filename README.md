@@ -5,7 +5,7 @@
 
 ![License: MIT](https://img.shields.io/github/license/wu2meng3/DielectricKit?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/wu2meng3/DielectricKit?style=flat-square)
-
+![GitHub repo size](https://img.shields.io/github/repo-size/wu2meng3/DielectricKit?style=flat-square)
 </h4>
 
 ## Introduction

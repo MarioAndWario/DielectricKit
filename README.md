@@ -3,8 +3,8 @@
 
 <h4 align="center">
 
-![License: MIT](https://img.shields.io/github/license/wu2meng3/DielectricKit?style=plastic)
-![GitHub last commit](https://img.shields.io/github/last-commit/wu2meng3/DielectricKit)
+![License: MIT](https://img.shields.io/github/license/wu2meng3/DielectricKit?style=flat-square)
+![GitHub last commit](https://img.shields.io/github/last-commit/wu2meng3/DielectricKit?style=flat-square)
 
 </h4>
 

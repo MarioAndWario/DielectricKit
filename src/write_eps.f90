@@ -44,7 +44,7 @@ contains
     
     !! real part of epsinv
     if (peps%realpart) then
-       write(filename,'(a,i0,a,i0,a)') 'OUT.REAL.ir2_', ir2, '_is_', peps%ispin,'.xsf'
+       write(filename,'(a,i0,a,i0,a)') 'REAL.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')
        write(6,'(1X,A)') "Writing data set to "//TRUNC(filename)
        call open_file(30,file=TRUNC(filename),form='formatted',status='replace')
@@ -130,7 +130,7 @@ contains
 
     !! imaginary part of epsinv
     if (peps%imagpart) then
-       write(filename,'(a,i0,a,i0,a)') 'OUT.IMAG.ir2_', ir2, '_is_', peps%ispin,'.xsf'
+       write(filename,'(a,i0,a,i0,a)') 'IMAG.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')       
        write(6,'(1X,A)') "Writing data set to "//TRUNC(filename)
        call open_file(30,file=TRUNC(filename),form='formatted',status='replace')
@@ -213,7 +213,7 @@ contains
 
     !! abs of epsinv
     if (peps%abs) then
-       write(filename,'(a,i0,a,i0,a)') 'OUT.ABS.ir2_', ir2, '_is_', peps%ispin,'.xsf'
+       write(filename,'(a,i0,a,i0,a)') 'ABS.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')       
        write(6,'(1X,A)') "Writing data set to "//TRUNC(filename)
        call open_file(30,file=TRUNC(filename),form='formatted',status='replace')
@@ -299,7 +299,7 @@ contains
 
     !! abs2 of epsinv
     if (peps%abs2) then
-       write(filename,'(a,i0,a,i0,a)') 'OUT.ABS2.ir2_', ir2, '_is_', peps%ispin,'.xsf'
+       write(filename,'(a,i0,a,i0,a)') 'ABS2.ir2_', ir2, '_is_', peps%ispin,'.xsf'
        write(6,'(A)')       
        write(6,'(1X,A)') "Writing data set to "//TRUNC(filename)
        call open_file(30,file=TRUNC(filename),form='formatted',status='replace')

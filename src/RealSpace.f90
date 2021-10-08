@@ -23,7 +23,8 @@
 !!
 !! Output files:
 !!
-!!    OUT.[OPTION].ir2_[Index_of_r2]_is_[Index_of_spin].xsf
+!!    [OPTION].ir2_[Index_of_r2]_is_[Index_of_spin].xsf
+!!    OPTION = REAL, IMAG, ABS, ABS2
 !!
 !!====================================================================
 

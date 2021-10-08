@@ -1,0 +1,31 @@
+#!/bin/bash -l
+#SBATCH --partition=debug
+#SBATCH --nodes=1
+#SBATCH --time=00:30:00
+#SBATCH --job-name=my_job
+#SBATCH --license=SCRATCH
+#SBATCH -C haswell
+#SBATCH --ntasks-per-node=32
+
+# Edit these lines as needed
+SRC="../../../src"
+CHI="${SRC}/Chi.x"
+EPSINV="${SRC}/EpsInv.x"
+REALSPACE="${SRC}/RealSpace.x"
+export OMP_NUM_THREADS=1
+MPIRUN="srun "
+
+#
+cd ./Chi
+$MPIRUN $CHI &> ./chi.out
+cd ..
+#
+cd ./EpsInv
+ln -sf ../Chi/chimat.h5 .
+$MPIRUN $EPSINV chimat.h5 &> ./epsinv.out
+cd ..
+#
+cd ./RealSpace
+ln -sf ../Chi/chimat.h5 .
+$MPIRUN $REALSPACE &> ./realspace.out
+cd ..

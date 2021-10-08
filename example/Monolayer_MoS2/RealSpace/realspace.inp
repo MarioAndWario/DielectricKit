@@ -1,0 +1,21 @@
+filename chimat.h5
+
+begin r2
+0.0 0.0 0.0
+0.333333333  0.666666667 0.0
+end
+
+#high_resolution
+FFTfactor 2
+
+low_comm
+#mid_comm
+
+use_symmetry
+downsample 1 1 1
+cutoff 10.0
+
+#real_part
+#imag_part
+abs
+abs2

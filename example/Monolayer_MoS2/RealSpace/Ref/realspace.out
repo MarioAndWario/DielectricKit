@@ -6,54 +6,45 @@
  List of output files:
  Output absolute value of epsinv.
  Output module square of epsinv.
- We will use dense FFT grid (gvec%FFTgrid) to plot high-resolution image.
+ We will use self-adaptive FFT grid (using peps cutoff) to plot low-resolution image.
 
  Unfolding epsinv matrix using symmetry.
 
  Real-space grid will be downsampled by a factor of:   1    1    1
- Real-space FFTgrid will be multiplied by a factor of:   1
+ Real-space FFTgrid will be multiplied by a factor of:   2
  G-cutoff for epsinv used in FFT :     10.000 Ry
 
  chi(G=Gp=0)(q-->0) = 0
- We will consider     3 r2 points (in fractional coordinates): 
+ We will consider     2 r2 points (in fractional coordinates): 
  #    1       0.000000       0.000000       0.000000
- #    2       0.125000       0.125000       0.125000
- #    3       0.500000       0.500000       0.500000
+ #    2       0.333333       0.666667       0.000000
 
  Readingchimat.h5                      file
- - Supercell size:   6    6    6
- - Qgrid :   6    6    6  with  216 qpoints in full BZ
+ - Supercell size:  12   12    1
+ - Qgrid :  12   12    1  with  144 qpoints in full BZ
  - G-cutoff of epsinv read from chimat.h5 :     10.000 Ry
  - Target frequency : (     0.00000,     0.00000).
  - ifreq_target in chimat.h5 =     1
- kpoints in wave function outside WS BZ.
- kpoints in wave function outside WS BZ.
- kpoints in wave function outside WS BZ.
  Distribute fq points:
- - Maximal number of full BZ qpoint on a proc: 7
- - Number of idle procs : 1
+ - Maximal number of full BZ qpoint on a proc: 5
+ - Number of idle procs : 3
 
  Grids information:
- - FFT box size: 30 30 30
- - Supercell grid: 180 180 180
- - Effective supercell grid: 180 180 180
+ - FFT box size: 15 15 64
+ - Supercell grid: 180 180 64
+ - Effective supercell grid: 180 180 64
  r2 = (       0.000000       0.000000       0.000000)
 
  Writing data set to ABS.ir2_1_is_1.xsf
 
  Writing data set to ABS2.ir2_1_is_1.xsf
- r2 = (       0.125000       0.125000       0.125000)
+ r2 = (       0.333333       0.666667       0.000000)
 
  Writing data set to ABS.ir2_2_is_1.xsf
 
  Writing data set to ABS2.ir2_2_is_1.xsf
- r2 = (       0.500000       0.500000       0.500000)
-
- Writing data set to ABS.ir2_3_is_1.xsf
-
- Writing data set to ABS2.ir2_3_is_1.xsf
  
                             CPU (s)        WALL (s)          #
  
- TOTAL:                       27.960          41.603
+ TOTAL:                        7.060          11.408
  
